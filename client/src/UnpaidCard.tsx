@@ -3,7 +3,7 @@ import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } fr
 
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
 	return (
-		<Card className="p-4">
+		<Card className="p-4 w-fit min-w-80">
 			<div className="flex gap-8 items-end">
 				<div>
 					<p className="text-base">Unpaid balance</p>
