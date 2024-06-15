@@ -13,7 +13,7 @@ export default function UnpaidCard({ balance, distance }: { balance: number; dis
 					</p>
 				</div>
 				<div>
-					<p className="text-base">Unpaid miles</p>
+					<p className="text-base">Unpaid distance</p>
 					<p className="text-2xl">
 						{distance.toFixed(distanceDecimals)}
 						{distanceSymbol}

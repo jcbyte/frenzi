@@ -700,10 +700,6 @@ video {
   top: var(--navbar-height);
 }
 
-.right-0 {
-  right: 0px;
-}
-
 .-z-30 {
   z-index: -30;
 }
@@ -902,26 +898,6 @@ video {
 
 .hidden {
   display: none;
-}
-
-.size-8 {
-  width: 2rem;
-  height: 2rem;
-}
-
-.size-96 {
-  width: 24rem;
-  height: 24rem;
-}
-
-.size-\[960\] {
-  width: 960;
-  height: 960;
-}
-
-.size-\[3\] {
-  width: 3;
-  height: 3;
 }
 
 .\!h-auto {

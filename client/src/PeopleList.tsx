@@ -1,19 +1,5 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-
-const columns = [
-	{
-		key: "name",
-		label: "Name",
-	},
-	{
-		key: "balance",
-		label: "Balance",
-	},
-	{
-		key: "distance",
-		label: "Distance",
-	},
-];
+import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "./globals";
 
 const rows = [
 	{
@@ -35,17 +21,23 @@ export default function PeopleList() {
 			onRowAction={(key) => alert(`Open ${rows[key as number].name}`)}
 			className="w-fit min-w-96"
 		>
-			<TableHeader columns={columns}>
-				{columns.map((column) => (
-					<TableColumn key={column.key}>{column.label}</TableColumn>
-				))}
+			<TableHeader>
+				<TableColumn key={"name"}>Name</TableColumn>
+				<TableColumn key={"balance"}>Balance</TableColumn>
+				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
-			<TableBody items={rows}>
+			<TableBody>
 				{rows.map((row, i) => (
 					<TableRow key={i}>
-						{Object.values(row).map((value) => (
-							<TableCell>{value}</TableCell>
-						))}
+						<TableCell>{row.name}</TableCell>
+						<TableCell>
+							{currencySymbol}
+							{row.balance.toFixed(currencyDecimals)}
+						</TableCell>
+						<TableCell>
+							{row.distance.toFixed(distanceDecimals)}
+							{distanceSymbol}
+						</TableCell>
 					</TableRow>
 				))}
 			</TableBody>
