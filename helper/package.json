@@ -1,19 +1,19 @@
 {
-  "author": "",
-  "description": "",
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "copy-and-watch": "^0.1.8"
-  },
-  "keywords": [],
-  "license": "ISC",
-  "main": "index.js",
-  "name": "helper",
-  "scripts": {
-    "build": "npm run build-files & npm --prefix ../client run build & npm --prefix ../server run build",
-    "build-files": "concurrently \"copy-and-watch ./shared ../server/src\" \"copy-and-watch ./shared ../client/src\"",
-    "dev": "concurrently \"npm --prefix ../client run dev\" \"npm --prefix ../server run dev\" \"npm run dev-files\" ",
-    "dev-files": "concurrently \"copy-and-watch --watch ./shared ../server/src\" \"copy-and-watch --watch ./shared ../client/src\""
-  },
-  "version": "1.0.0"
+	"author": "",
+	"description": "",
+	"devDependencies": {
+		"concurrently": "^8.2.2",
+		"copy-and-watch": "^0.1.8"
+	},
+	"keywords": [],
+	"license": "ISC",
+	"main": "index.js",
+	"name": "helper",
+	"scripts": {
+		"build": "npm run build-files & npm --prefix ../client run build-tailwind & npm --prefix ../client run build & npm --prefix ../server run build",
+		"build-files": "concurrently \"copy-and-watch ./shared ../server/src\" \"copy-and-watch ./shared ../client/src\"",
+		"dev": "concurrently \"npm --prefix ../client run dev\" \"npm --prefix ../client run dev-tailwind\" \"npm --prefix ../server run dev\" \"npm run dev-files\" ",
+		"dev-files": "concurrently \"copy-and-watch --watch ./shared ../server/src\" \"copy-and-watch --watch ./shared ../client/src\""
+	},
+	"version": "1.0.0"
 }

@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import "./App.css";
 import { ApiMessage } from "./shared/types";
@@ -16,7 +17,9 @@ export default function App() {
 
 	return (
 		<>
-			<input type="button" value="Get data" onClick={getData} />
+			<Button onClick={getData} color="primary">
+				Get data
+			</Button>
 			<br />
 			{data}
 		</>
