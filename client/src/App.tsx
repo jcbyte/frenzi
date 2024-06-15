@@ -22,9 +22,11 @@ export default function App() {
 		<>
 			<MyNavbar />
 
-			<div className="p-4 flex flex-col gap-2">
-				<UnpaidCard balance={10.4} distance={46} />
-				<PeopleList />
+			<div className="flex justify-center w-full">
+				<div className="p-4 flex flex-col gap-2">
+					<UnpaidCard balance={10.4} distance={46} />
+					<PeopleList />
+				</div>
 			</div>
 
 			<Button onClick={getData} color="primary">

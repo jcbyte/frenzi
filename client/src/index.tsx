@@ -4,16 +4,20 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import { NextUIProvider } from "@nextui-org/react";
+import SnazzyBackground from "./SnazzyBackground";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-	<React.StrictMode>
-		<NextUIProvider>
-			<main className="dark text-foreground bg-background">
-				<App />
-			</main>
-		</NextUIProvider>
-	</React.StrictMode>
+	<>
+		<React.StrictMode>
+			<NextUIProvider>
+				<main className="dark text-foreground bg-background">
+					<SnazzyBackground />
+					<App />
+				</main>
+			</NextUIProvider>
+		</React.StrictMode>
+	</>
 );
 
 // If you want to start measuring performance in your app, pass a function
