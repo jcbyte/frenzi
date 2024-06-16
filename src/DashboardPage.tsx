@@ -1,4 +1,5 @@
 import { Button } from "@nextui-org/button";
+import toast from "react-hot-toast";
 import PeopleList from "./PeopleList";
 import UnpaidCard from "./UnpaidCard";
 import { testfb } from "./firestore/db";
@@ -16,6 +17,10 @@ export default function DashboardPage() {
 
 			<Button onClick={testfb} color="primary">
 				test fb
+			</Button>
+
+			<Button onClick={() => toast("Here is your toast.")} color="primary">
+				test toaster
 			</Button>
 
 			<Button onClick={signOutFirebase} color="primary">

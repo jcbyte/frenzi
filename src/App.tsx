@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import DashboardPage from "./DashboardPage";
@@ -18,6 +19,8 @@ export default function App() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="*" element={<NoPage />} />
 			</Routes>
+
+			<Toaster />
 		</>
 	);
 }
