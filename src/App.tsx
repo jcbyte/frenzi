@@ -1,15 +1,28 @@
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import PrivateRoute from "./AuthorisedRoute";
 import DashboardPage from "./DashboardPage";
+import Loading from "./Loading";
 import LoginPage from "./LoginPage";
 import MyNavbar from "./MyNavbar";
 import NoPage from "./NoPage";
+import { auth } from "./firestore/firebase";
 
 export default function App() {
-	// ! Initially firebase auth is not initialed, we should wait for this before loading the page content
+	const [loadingFirebase, setLoadingFirebase] = useState(true);
 
+	useEffect(() => {
+		auth.authStateReady().then(() => {
+			setLoadingFirebase(false);
+		});
+	}, []);
+
+	return <>{loadingFirebase ? <Loading /> : <AppLayout />}</>;
+}
+
+function AppLayout() {
 	return (
 		<>
 			<MyNavbar />
