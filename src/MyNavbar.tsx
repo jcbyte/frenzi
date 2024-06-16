@@ -2,7 +2,7 @@ import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-
 
 import { IconSettings } from "@tabler/icons-react";
 
-export default function MyNavbar({ settingsDisabled = false }: { settingsDisabled: boolean }) {
+export default function MyNavbar({ settingsDisabled = false }: { settingsDisabled?: boolean }) {
 	return (
 		<Navbar>
 			<NavbarBrand>
