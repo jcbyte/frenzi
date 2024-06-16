@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/button";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
 import { testfb } from "../firestore/db";

@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 import { GoogleAuthProvider, getAuth, signInWithPopup, signOut } from "firebase/auth";
+import { firebaseResult } from "../types";
 import { FIREBASE_CONFIG } from "./config";
 
 export const firebaseApp = initializeApp(FIREBASE_CONFIG);
@@ -15,25 +16,23 @@ export function isAuth(): boolean {
 	return auth.currentUser != null;
 }
 
-export function signInFirebaseGoogle() {
+export async function signInFirebaseGoogle() {
 	const provider = new GoogleAuthProvider();
-	signInWithPopup(auth, provider)
-		.then((result) => {
-			console.log("success");
+	return await signInWithPopup(auth, provider)
+		.then((res) => {
+			return { success: true } as firebaseResult;
 		})
-		.catch((error) => {
-			const errorMessage = error.message;
-			console.log("error", errorMessage);
+		.catch((err) => {
+			throw { success: false, message: err.message } as firebaseResult;
 		});
 }
 
-export function signOutFirebase() {
-	signOut(auth)
+export async function signOutFirebase() {
+	return await signOut(auth)
 		.then(() => {
-			console.log("success");
+			return { success: true } as firebaseResult;
 		})
-		.catch((error) => {
-			const errorMessage = error.message;
-			console.log("error", errorMessage);
+		.catch((err) => {
+			return { success: false, message: err.message } as firebaseResult;
 		});
 }

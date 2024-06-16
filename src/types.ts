@@ -1,5 +1,4 @@
-export interface MilesRecord {
-	name: string;
-	date: Date;
-	distance: number;
+export interface firebaseResult {
+	success: boolean;
+	message?: string;
 }
