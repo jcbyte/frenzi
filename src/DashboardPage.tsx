@@ -19,7 +19,7 @@ export default function DashboardPage() {
 				test fb
 			</Button>
 
-			<Button onClick={() => toast("Here is your toast.")} color="primary">
+			<Button onClick={() => toast.success("Here is your toast.")} color="primary">
 				test toaster
 			</Button>
 

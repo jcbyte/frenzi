@@ -20,7 +20,16 @@ export default function App() {
 				<Route path="*" element={<NoPage />} />
 			</Routes>
 
-			<Toaster />
+			<Toaster
+				toastOptions={{
+					className: "",
+					style: {
+						padding: "16px",
+						backgroundColor: "#18181b",
+						color: "#ecedee",
+					},
+				}}
+			/>
 		</>
 	);
 }
