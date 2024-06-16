@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
-import { testfb } from "../firestore/db";
+import { getDistanceData } from "../firestore/db";
 import { signOutFirebase } from "../firestore/firebase";
 
 export default function DashboardPage() {
@@ -18,7 +18,7 @@ export default function DashboardPage() {
 				</div>
 			</div>
 
-			<Button onClick={testfb} color="primary">
+			<Button onClick={getDistanceData} color="primary">
 				test fb
 			</Button>
 
