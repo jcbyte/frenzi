@@ -9,10 +9,10 @@ function tryGoogleSignIn(navigate: NavigateFunction) {
 	toast.promise(signInPromise, {
 		loading: "Signing in",
 		success: "Signed in",
-		error: (err) => `Could not sign in, ${err.message}`,
+		error: (err) => `Could not sign in: ${err}`,
 	});
 	signInPromise
-		.then((res) => {
+		.then(() => {
 			navigate("/");
 		})
 		.catch((err) => {});

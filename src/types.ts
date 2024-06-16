@@ -1,14 +1,3 @@
-export interface FirebaseResult {
-	success: boolean;
-	message?: string;
-}
-
-export interface FirebaseDBResult {
-	success: boolean;
-	data?: Object;
-	// TODO ? individual data returns?
-}
-
 export interface DistanceData {
 	[key: string]: number;
 }

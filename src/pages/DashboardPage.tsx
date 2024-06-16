@@ -18,7 +18,18 @@ export default function DashboardPage() {
 				</div>
 			</div>
 
-			<Button onClick={getDistanceData} color="primary">
+			<Button
+				onClick={() => {
+					getDistanceData()
+						.then((data) => {
+							console.log(data);
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+				}}
+				color="primary"
+			>
 				test fb
 			</Button>
 

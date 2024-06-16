@@ -4,26 +4,26 @@ import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
 
-export async function getDistanceData() {
+export async function getDistanceData(): Promise<DistanceData> {
 	if (!isAuth()) {
-		// TODO make this raise
-		console.log("error", "not authenticated");
-		return;
+		throw "Not authenticated";
 	}
 
-	var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid)).then(
-		(res) => res.data() as FirebaseUserResponse
-	);
-	// TODO catch incase of issues
+	var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+		.then((res) => res.data() as FirebaseUserResponse)
+		.catch((err) => {
+			throw err.message;
+		});
 
 	var friendData: DistanceData = {};
 	docData.people.forEach(async (person) => {
-		var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person)).then(
-			(res) => res.data() as FirebaseFriendDataResponse
-		);
+		var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
+			.then((res) => res.data() as FirebaseFriendDataResponse)
+			.catch((err) => {
+				throw err.message;
+			});
 		friendData[person] = docData.distance;
 	});
-	// TODO catch for any of these
 
 	return friendData;
 
