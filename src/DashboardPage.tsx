@@ -1,11 +1,14 @@
 import { Button } from "@nextui-org/button";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 import PeopleList from "./PeopleList";
 import UnpaidCard from "./UnpaidCard";
 import { testfb } from "./firestore/db";
 import { signOutFirebase } from "./firestore/firebase";
 
 export default function DashboardPage() {
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<div className="flex justify-center w-full">
@@ -25,6 +28,15 @@ export default function DashboardPage() {
 
 			<Button onClick={signOutFirebase} color="primary">
 				test logout
+			</Button>
+
+			<Button
+				onClick={() => {
+					navigate("/login");
+				}}
+				color="primary"
+			>
+				goto login
 			</Button>
 		</>
 	);

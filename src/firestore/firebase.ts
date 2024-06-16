@@ -11,6 +11,10 @@ export const firestore = getFirestore(firebaseApp);
 export const auth = getAuth();
 auth.useDeviceLanguage();
 
+export function isAuth(): boolean {
+	return auth.currentUser != null;
+}
+
 export function signInFirebaseGoogle() {
 	const provider = new GoogleAuthProvider();
 	signInWithPopup(auth, provider)
