@@ -2,7 +2,7 @@ import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-
 
 import { IconSettings } from "@tabler/icons-react";
 
-export default function MyNavbar() {
+export default function MyNavbar({ settingsDisabled = false }: { settingsDisabled: boolean }) {
 	return (
 		<Navbar>
 			<NavbarBrand>
@@ -10,7 +10,7 @@ export default function MyNavbar() {
 			</NavbarBrand>
 			<NavbarContent justify="end">
 				<NavbarItem>
-					<Button isIconOnly color="default" aria-label="Settings">
+					<Button isIconOnly color="default" disabled={settingsDisabled} aria-label="Settings">
 						<IconSettings />
 					</Button>
 				</NavbarItem>

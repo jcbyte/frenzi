@@ -1,15 +1,11 @@
-import { Button } from "@nextui-org/react";
 import "./App.css";
-import MyNavbar from "./MyNavbar";
-import PeopleList from "./PeopleList";
-import UnpaidCard from "./UnpaidCard";
-import { testfb } from "./firestore/db";
-import { signInFirebaseGoogle, signOutFirebase } from "./firestore/firebase";
+import LoginPage from "./LoginPage";
 
 export default function App() {
 	return (
 		<>
-			<MyNavbar />
+			<LoginPage />
+			{/* <MyNavbar />
 
 			<div className="flex justify-center w-full">
 				<div className="p-4 flex flex-col gap-2">
@@ -29,7 +25,7 @@ export default function App() {
 			<Button onClick={signOutFirebase} color="primary">
 				test logout
 			</Button>
-			<br />
+			<br /> */}
 		</>
 	);
 }
