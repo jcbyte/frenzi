@@ -3,7 +3,8 @@ import "./App.css";
 import MyNavbar from "./MyNavbar";
 import PeopleList from "./PeopleList";
 import UnpaidCard from "./UnpaidCard";
-import { loginWithGoogle, signOutOfGoogle, testfb } from "./firebase";
+import { testfb } from "./firestore/db";
+import { signInFirebaseGoogle, signOutFirebase } from "./firestore/firebase";
 
 export default function App() {
 	return (
@@ -21,11 +22,11 @@ export default function App() {
 				test fb
 			</Button>
 
-			<Button onClick={loginWithGoogle} color="primary">
+			<Button onClick={signInFirebaseGoogle} color="primary">
 				test login
 			</Button>
 
-			<Button onClick={signOutOfGoogle} color="primary">
+			<Button onClick={signOutFirebase} color="primary">
 				test logout
 			</Button>
 			<br />
