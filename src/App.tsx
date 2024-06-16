@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import PrivateRoute from "./AuthorisedRoute";
-import DashboardPage from "./DashboardPage";
-import Loading from "./Loading";
-import LoginPage from "./LoginPage";
-import MyNavbar from "./MyNavbar";
-import NoPage from "./NoPage";
+import PrivateRoute from "./components/AuthorisedRoute";
+import Loading from "./components/Loading";
+import MyNavbar from "./components/MyNavbar";
 import { auth } from "./firestore/firebase";
+import DashboardPage from "./pages/DashboardPage";
+import LoginPage from "./pages/LoginPage";
+import NoPage from "./pages/NoPage";
 
 export default function App() {
 	const [loadingFirebase, setLoadingFirebase] = useState(true);

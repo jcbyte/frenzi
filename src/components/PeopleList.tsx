@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "./globals";
+import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "../globals";
 
 const rows = [
 	{

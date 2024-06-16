@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { isAuth } from "./firestore/firebase";
+import { isAuth } from "../firestore/firebase";
 
 export default function PrivateRoute({ notAuthed = false, to = "/login" }: { notAuthed?: boolean; to?: string }) {
 	var amAuthed = isAuth();

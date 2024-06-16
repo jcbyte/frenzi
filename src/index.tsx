@@ -6,7 +6,7 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 
 import { NextUIProvider } from "@nextui-org/react";
 import App from "./App";
-import SnazzyBackground from "./SnazzyBackground";
+import SnazzyBackground from "./background/SnazzyBackground";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

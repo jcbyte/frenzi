@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/button";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
-import { signInFirebaseGoogle } from "./firestore/firebase";
+import { signInFirebaseGoogle } from "../firestore/firebase";
 
 export default function LoginPage() {
 	return (

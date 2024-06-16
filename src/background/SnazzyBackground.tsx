@@ -1,5 +1,5 @@
-import leftBackground from "./background/left.png";
-import rightBackground from "./background/right.png";
+import leftBackground from "./left.png";
+import rightBackground from "./right.png";
 
 export default function SnazzyBackground() {
 	return (

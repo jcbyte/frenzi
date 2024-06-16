@@ -1,10 +1,10 @@
 import { Button } from "@nextui-org/button";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
-import PeopleList from "./PeopleList";
-import UnpaidCard from "./UnpaidCard";
-import { testfb } from "./firestore/db";
-import { signOutFirebase } from "./firestore/firebase";
+import PeopleList from "../components/PeopleList";
+import UnpaidCard from "../components/UnpaidCard";
+import { testfb } from "../firestore/db";
+import { signOutFirebase } from "../firestore/firebase";
 
 export default function DashboardPage() {
 	const navigate = useNavigate();

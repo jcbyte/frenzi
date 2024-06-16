@@ -1,5 +1,5 @@
 import { Card } from "@nextui-org/react";
-import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "./globals";
+import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "../globals";
 
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
 	return (
