@@ -3,7 +3,7 @@ import "./App.css";
 import MyNavbar from "./MyNavbar";
 import PeopleList from "./PeopleList";
 import UnpaidCard from "./UnpaidCard";
-import { testfb } from "./firebase";
+import { loginWithGoogle, signOutOfGoogle, testfb } from "./firebase";
 
 export default function App() {
 	return (
@@ -18,7 +18,15 @@ export default function App() {
 			</div>
 
 			<Button onClick={testfb} color="primary">
-				Get data
+				test fb
+			</Button>
+
+			<Button onClick={loginWithGoogle} color="primary">
+				test login
+			</Button>
+
+			<Button onClick={signOutOfGoogle} color="primary">
+				test logout
 			</Button>
 			<br />
 		</>
