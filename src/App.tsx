@@ -9,6 +9,7 @@ import { auth } from "./firestore/firebase";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
+import SettingsPage from "./pages/SettingsPage";
 
 export default function App() {
 	const [loadingFirebase, setLoadingFirebase] = useState(true);
@@ -30,6 +31,9 @@ function AppLayout() {
 			<Routes>
 				<Route path="/" element={<PrivateRoute />}>
 					<Route path="" element={<DashboardPage />} />
+				</Route>
+				<Route path="/settings" element={<PrivateRoute />}>
+					<Route path="" element={<SettingsPage />} />
 				</Route>
 				<Route path="/login" element={<PrivateRoute notAuthed to="/" />}>
 					<Route path="" element={<LoginPage />} />

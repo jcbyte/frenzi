@@ -3,7 +3,7 @@ import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-
 import { IconSettings } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
-export default function MyNavbar({ settingsDisabled = false }: { settingsDisabled?: boolean }) {
+export default function MyNavbar() {
 	const navigate = useNavigate();
 
 	return (
@@ -17,7 +17,13 @@ export default function MyNavbar({ settingsDisabled = false }: { settingsDisable
 			</NavbarBrand>
 			<NavbarContent justify="end">
 				<NavbarItem>
-					<Button isIconOnly color="default" disabled={settingsDisabled} aria-label="Settings">
+					<Button
+						isIconOnly
+						color="default"
+						onClick={() => {
+							navigate("/settings");
+						}}
+					>
 						<IconSettings />
 					</Button>
 				</NavbarItem>
