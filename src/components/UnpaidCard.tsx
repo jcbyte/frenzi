@@ -1,9 +1,9 @@
 import { Card } from "@nextui-org/react";
 import { useContext } from "react";
-import { AppContext } from "../App";
+import { UserSettingsContext } from "../globalContexts";
 
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
-	const { userSettings } = useContext(AppContext);
+	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
 		<Card className="p-4 w-fit min-w-80">

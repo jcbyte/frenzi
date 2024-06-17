@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useContext } from "react";
-import { AppContext } from "../App";
+import { UserSettingsContext } from "../globalContexts";
 
 const rows = [
 	{
@@ -16,7 +16,7 @@ const rows = [
 ];
 
 export default function PeopleList() {
-	const { userSettings } = useContext(AppContext);
+	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
 		<Table

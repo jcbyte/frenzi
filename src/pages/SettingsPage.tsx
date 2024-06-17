@@ -3,7 +3,7 @@ import { IconLogout } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { signOutFirebase } from "../firestore/firebase";
-import { currencies, distances } from "../globals";
+import { currencies, distances } from "../static";
 
 function trySignOut(navigate: NavigateFunction) {
 	var signOutPromise = signOutFirebase();

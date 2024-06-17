@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -6,19 +6,13 @@ import PrivateRoute from "./components/AuthorisedRoute";
 import Loading from "./components/Loading";
 import MyNavbar from "./components/MyNavbar";
 import { auth } from "./firestore/firebase";
-import { DEFAULT_SETTINGS } from "./globals";
+import { DistanceDataContext, UserSettingsContext } from "./globalContexts";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
 import SettingsPage from "./pages/SettingsPage";
-import { DistanceData, IAppContext, UserSettings } from "./types";
-
-export const AppContext = createContext<IAppContext>({
-	userSettings: DEFAULT_SETTINGS,
-	setUserSettings: null,
-	distanceData: {},
-	setDistanceData: null,
-});
+import { DEFAULT_SETTINGS } from "./static";
+import { DistanceData, UserSettings } from "./types";
 
 export default function App() {
 	const [loadingFirebase, setLoadingFirebase] = useState(true);
@@ -34,9 +28,11 @@ export default function App() {
 
 	return (
 		<>
-			<AppContext.Provider value={{ userSettings, setUserSettings, distanceData, setDistanceData }}>
-				{loadingFirebase ? <Loading /> : <AppLayout />}
-			</AppContext.Provider>
+			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
+				<DistanceDataContext.Provider value={{ distanceData, setDistanceData }}>
+					{loadingFirebase ? <Loading /> : <AppLayout />}
+				</DistanceDataContext.Provider>
+			</UserSettingsContext.Provider>
 		</>
 	);
 }

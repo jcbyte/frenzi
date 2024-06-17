@@ -1,15 +1,15 @@
 import { Button } from "@nextui-org/button";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../App";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
 import { getDistanceData } from "../firestore/db";
+import { UserSettingsContext } from "../globalContexts";
 
 export default function DashboardPage() {
 	const navigate = useNavigate();
 
-	const { userSettings, setUserSettings } = useContext(AppContext);
+	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
 
 	return (
 		<>
