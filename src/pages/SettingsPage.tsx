@@ -1,8 +1,26 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { IconLogout } from "@tabler/icons-react";
+import toast from "react-hot-toast";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { signOutFirebase } from "../firestore/firebase";
 import { currencies, distances } from "../globals";
 
+function trySignOut(navigate: NavigateFunction) {
+	var signOutPromise = signOutFirebase();
+	toast.promise(signOutPromise, {
+		loading: "Signing out",
+		success: "Signed out",
+		error: (err) => `Could not sign out: ${err}`,
+	});
+	signOutPromise
+		.then(() => {
+			navigate("/login");
+		})
+		.catch((err) => {});
+}
+
 export default function SettingsPage() {
+	const navigate = useNavigate();
 	return (
 		<>
 			<div className="flex justify-center w-full">
@@ -23,7 +41,15 @@ export default function SettingsPage() {
 
 					<Input label="Distance decimals" type="number" className="w-fit min-w-80" />
 
-					<Button color="danger" variant="flat" className="mt-16 w-fit min-w-80" startContent={<IconLogout />}>
+					<Button
+						color="danger"
+						variant="flat"
+						className="mt-16 w-fit min-w-80"
+						startContent={<IconLogout />}
+						onClick={() => {
+							trySignOut(navigate);
+						}}
+					>
 						Sign out
 					</Button>
 				</div>
