@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { currencySymbol, distanceDecimals, distanceSymbol } from "../globals";
+import { settings } from "../globals";
 
 const rows = [
 	{
@@ -31,12 +31,12 @@ export default function PeopleList() {
 					<TableRow key={i}>
 						<TableCell>{row.name}</TableCell>
 						<TableCell>
-							{currencySymbol}
+							{settings.currencySymbol}
 							{row.balance.toFixed(2)}
 						</TableCell>
 						<TableCell>
-							{row.distance.toFixed(distanceDecimals)}
-							{distanceSymbol}
+							{row.distance.toFixed(settings.distanceDecimals)}
+							{settings.distanceSymbol}
 						</TableCell>
 					</TableRow>
 				))}
