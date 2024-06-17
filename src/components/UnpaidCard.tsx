@@ -6,8 +6,6 @@ import { currencies, distanceUnits } from "../static";
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
-	console.log(userSettings);
-
 	return (
 		<Card className="p-4 w-fit min-w-80">
 			<div className="flex gap-8 items-end">
