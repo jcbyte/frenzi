@@ -4,7 +4,6 @@ export interface DistanceData {
 
 export interface UserSettings {
 	currencySymbol: string;
-	currencyDecimals: number;
 	distanceSymbol: string;
 	distanceDecimals: number;
 }

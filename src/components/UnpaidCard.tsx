@@ -1,5 +1,5 @@
 import { Card } from "@nextui-org/react";
-import { currencyDecimals, currencySymbol, distanceDecimals, distanceSymbol } from "../globals";
+import { currencySymbol, distanceDecimals, distanceSymbol } from "../globals";
 
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
 	return (
@@ -9,7 +9,7 @@ export default function UnpaidCard({ balance, distance }: { balance: number; dis
 					<p className="text-base">Unpaid balance</p>
 					<p className="text-5xl">
 						{currencySymbol}
-						{balance.toFixed(currencyDecimals)}
+						{balance.toFixed(2)}
 					</p>
 				</div>
 				<div>
