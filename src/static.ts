@@ -1,10 +1,10 @@
-import { UserSettings } from "./types";
+import { UserSettings, ValidCurrencies } from "./types";
 
 export const DEFAULT_SETTINGS: UserSettings = {
-	currencySymbol: "£",
-	distanceSymbol: "mi",
+	currency: "GBP",
+	distanceUnit: "Miles",
 	distanceDecimals: 2,
 };
 
-export const currencies = { GBP: "£", USD: "$" };
-export const distances = { Miles: "mi", Kilometers: "km" };
+export const currencies: Record<ValidCurrencies, string> = { GBP: "£", USD: "$", EUR: "€" };
+export const distanceUnits = { Miles: "mi", Kilometers: "km" };

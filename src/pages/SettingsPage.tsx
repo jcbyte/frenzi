@@ -3,7 +3,7 @@ import { IconLogout } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { signOutFirebase } from "../firestore/firebase";
-import { currencies, distances } from "../static";
+import { currencies, distanceUnits } from "../static";
 
 function trySignOut(navigate: NavigateFunction) {
 	var signOutPromise = signOutFirebase();
@@ -34,7 +34,7 @@ export default function SettingsPage() {
 					</Select>
 
 					<Select label="Distance units" className="w-fit min-w-80">
-						{Object.keys(distances).map((distance) => {
+						{Object.keys(distanceUnits).map((distance) => {
 							return <SelectItem key={distance}>{distance}</SelectItem>;
 						})}
 					</Select>

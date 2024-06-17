@@ -3,8 +3,8 @@ export interface DistanceData {
 }
 
 export interface UserSettings {
-	currencySymbol: string;
-	distanceSymbol: string;
+	currency: ValidCurrencies;
+	distanceUnit: ValidDistanceUnits;
 	distanceDecimals: number;
 }
 
@@ -15,3 +15,6 @@ export interface FirebaseUserResponse {
 export interface FirebaseFriendDataResponse {
 	distance: number;
 }
+
+export type ValidCurrencies = "GBP" | "USD" | "EUR";
+export type ValidDistanceUnits = "Miles" | "Kilometers";
