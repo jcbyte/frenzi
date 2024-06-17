@@ -1,5 +1,6 @@
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
-import { settings } from "../globals";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 const rows = [
 	{
@@ -15,6 +16,8 @@ const rows = [
 ];
 
 export default function PeopleList() {
+	const { userSettings } = useContext(AppContext);
+
 	return (
 		<Table
 			selectionMode="single"
@@ -31,12 +34,12 @@ export default function PeopleList() {
 					<TableRow key={i}>
 						<TableCell>{row.name}</TableCell>
 						<TableCell>
-							{settings.currencySymbol}
+							{userSettings.currencySymbol}
 							{row.balance.toFixed(2)}
 						</TableCell>
 						<TableCell>
-							{row.distance.toFixed(settings.distanceDecimals)}
-							{settings.distanceSymbol}
+							{row.distance.toFixed(userSettings.distanceDecimals)}
+							{userSettings.distanceSymbol}
 						</TableCell>
 					</TableRow>
 				))}

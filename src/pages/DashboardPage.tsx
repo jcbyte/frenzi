@@ -1,11 +1,15 @@
 import { Button } from "@nextui-org/button";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../App";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
 import { getDistanceData } from "../firestore/db";
 
 export default function DashboardPage() {
 	const navigate = useNavigate();
+
+	const { userSettings, setUserSettings } = useContext(AppContext);
 
 	return (
 		<>
@@ -29,6 +33,14 @@ export default function DashboardPage() {
 				color="primary"
 			>
 				test fb
+			</Button>
+
+			<Button
+				onClick={() => {
+					setUserSettings({ ...userSettings, distanceDecimals: userSettings.distanceDecimals + 1 });
+				}}
+			>
+				{userSettings.distanceDecimals}
 			</Button>
 		</>
 	);

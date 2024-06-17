@@ -1,6 +1,6 @@
 import { UserSettings } from "./types";
 
-export var settings: UserSettings = {
+export const DEFAULT_SETTINGS: UserSettings = {
 	currencySymbol: "£",
 	distanceSymbol: "mi",
 	distanceDecimals: 2,

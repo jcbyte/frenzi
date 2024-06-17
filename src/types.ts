@@ -15,3 +15,10 @@ export interface FirebaseUserResponse {
 export interface FirebaseFriendDataResponse {
 	distance: number;
 }
+
+export interface IAppContext {
+	userSettings: UserSettings;
+	setUserSettings: any;
+	distanceData: DistanceData;
+	setDistanceData: any;
+}
