@@ -48,22 +48,22 @@ export default function App() {
 		<>
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				<DistanceDataContext.Provider value={{ distanceData, setDistanceData }}>
-					<Loading loaded={firebaseReady} once={<AppLayout />} />
+					<Loading loaded={firebaseReady} once={<AppLayout userDataLoaded={userDataLoaded} />} />
 				</DistanceDataContext.Provider>
 			</UserSettingsContext.Provider>
 		</>
 	);
 }
 
-function AppLayout() {
+function AppLayout({ userDataLoaded }: { userDataLoaded: boolean }) {
 	return (
 		<>
 			<MyNavbar />
 
 			<Routes>
 				<Route path="/" element={<AuthorisedRoute />}>
-					<Route path="" element={<DashboardPage />} />
-					<Route path="settings" element={<SettingsPage />} />
+					<Route path="" element={<Loading loaded={userDataLoaded} once={<DashboardPage />} />} />
+					<Route path="settings" element={<Loading loaded={userDataLoaded} once={<SettingsPage />} />} />
 				</Route>
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="*" element={<NoPage />} />
