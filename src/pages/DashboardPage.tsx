@@ -1,7 +1,14 @@
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
+import { DistanceData } from "../types";
 
-export default function DashboardPage() {
+export default function DashboardPage({
+	distanceData,
+	setDistanceData,
+}: {
+	distanceData: DistanceData;
+	setDistanceData: React.Dispatch<React.SetStateAction<DistanceData>>;
+}) {
 	return (
 		<>
 			<div className="flex justify-center w-full">

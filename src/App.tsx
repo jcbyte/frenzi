@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import { useEffect, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AuthorisedRoute from "./components/AuthorisedRoute";
 import Loading from "./components/Loading";
 import MyNavbar from "./components/MyNavbar";
-import { getDistanceData, getUserSettings } from "./firestore/db";
+import { getDistanceData, getUserSettings, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
-import { DistanceDataContext, UserSettingsContext } from "./globalContexts";
+import { UserSettingsContext } from "./globalContexts";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
@@ -22,6 +22,9 @@ export default function App() {
 	const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
 	const [distanceData, setDistanceData] = useState<DistanceData>({});
 
+	const retrievingUserSettings = useRef<boolean>(true);
+	const retrievingDistanceData = useRef<boolean>(true);
+
 	useEffect(() => {
 		auth.authStateReady().then(() => {
 			setFirebaseReady(true);
@@ -31,6 +34,9 @@ export default function App() {
 			setUserDataLoaded(false);
 
 			if (user) {
+				retrievingUserSettings.current = true;
+				retrievingDistanceData.current = true;
+
 				await getUserSettings().then((res) => {
 					setUserSettings(res);
 				});
@@ -39,30 +45,63 @@ export default function App() {
 				});
 
 				setUserDataLoaded(true);
+
+				retrievingUserSettings.current = false;
+				retrievingDistanceData.current = false;
 			}
 		});
 	}, []);
 
+	useEffect(() => {
+		if (retrievingUserSettings.current) return;
+
+		saveUserSettings(userSettings)
+			.then(() => {
+				toast.success("Saved");
+			})
+			.catch((err) => {
+				toast.error(`Could not save: ${err}`);
+			});
+	}, [userSettings]);
+
 	return (
-		// This means that whenever any of these contexts are updated the entire app will need to be rerendered. // ? Can this be done better?
 		<>
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
-				<DistanceDataContext.Provider value={{ distanceData, setDistanceData }}>
-					<Loading loaded={firebaseReady} once={<AppLayout userDataLoaded={userDataLoaded} />} />
-				</DistanceDataContext.Provider>
+				<Loading
+					loaded={firebaseReady}
+					once={
+						<AppLayout userDataLoaded={userDataLoaded} distanceData={distanceData} setDistanceData={setDistanceData} />
+					}
+				/>
 			</UserSettingsContext.Provider>
 		</>
 	);
 }
 
-function AppLayout({ userDataLoaded }: { userDataLoaded: boolean }) {
+function AppLayout({
+	userDataLoaded,
+	distanceData,
+	setDistanceData,
+}: {
+	userDataLoaded: boolean;
+	distanceData: DistanceData;
+	setDistanceData: React.Dispatch<React.SetStateAction<DistanceData>>;
+}) {
 	return (
 		<>
 			<MyNavbar />
 
 			<Routes>
 				<Route path="/" element={<AuthorisedRoute />}>
-					<Route path="" element={<Loading loaded={userDataLoaded} once={<DashboardPage />} />} />
+					<Route
+						path=""
+						element={
+							<Loading
+								loaded={userDataLoaded}
+								once={<DashboardPage distanceData={distanceData} setDistanceData={setDistanceData} />}
+							/>
+						}
+					/>
 					<Route path="settings" element={<Loading loaded={userDataLoaded} once={<SettingsPage />} />} />
 				</Route>
 				<Route path="/login" element={<LoginPage />} />

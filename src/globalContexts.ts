@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { DEFAULT_SETTINGS } from "./static";
-import { DistanceData, UserSettings } from "./types";
+import { UserSettings } from "./types";
 
 export const UserSettingsContext = createContext<{
 	userSettings: UserSettings;
@@ -8,12 +8,4 @@ export const UserSettingsContext = createContext<{
 }>({
 	userSettings: DEFAULT_SETTINGS,
 	setUserSettings: () => {},
-});
-
-export const DistanceDataContext = createContext<{
-	distanceData: DistanceData;
-	setDistanceData: React.Dispatch<React.SetStateAction<DistanceData>>;
-}>({
-	distanceData: {},
-	setDistanceData: () => {},
 });
