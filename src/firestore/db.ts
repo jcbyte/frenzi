@@ -1,5 +1,5 @@
 import { doc, getDoc } from "@firebase/firestore";
-import { DistanceData, FirebaseFriendDataResponse, FirebaseUserResponse } from "../types";
+import { DistanceData, FirebaseFriendDataResponse, FirebaseUserResponse, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
@@ -31,4 +31,16 @@ export async function getDistanceData(): Promise<DistanceData> {
 	// 	distance: 39,
 	// 	date: Date.now(),
 	// });
+}
+
+export async function getUserSettings(): Promise<UserSettings> {
+	if (!isAuth()) {
+		throw "Not authenticated";
+	}
+
+	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"))
+		.then((res) => res.data() as UserSettings)
+		.catch((err) => {
+			throw err.message;
+		});
 }

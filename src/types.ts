@@ -16,5 +16,11 @@ export interface FirebaseFriendDataResponse {
 	distance: number;
 }
 
+export interface LoadedStatus {
+	firebaseAuth: boolean;
+	userSettings: boolean;
+	distanceData: boolean;
+}
+
 export type ValidCurrencies = "GBP" | "USD" | "EUR";
 export type ValidDistanceUnits = "Miles" | "Kilometers";

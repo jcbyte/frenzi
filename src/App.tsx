@@ -12,17 +12,21 @@ import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
 import SettingsPage from "./pages/SettingsPage";
 import { DEFAULT_SETTINGS } from "./static";
-import { DistanceData, UserSettings } from "./types";
+import { DistanceData, LoadedStatus, UserSettings } from "./types";
 
 export default function App() {
-	const [loadingFirebase, setLoadingFirebase] = useState(true);
+	const [loadingStatus, setLoadingStatus] = useState<LoadedStatus>({
+		firebaseAuth: false,
+		userSettings: false,
+		distanceData: false,
+	});
 
 	const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
 	const [distanceData, setDistanceData] = useState<DistanceData>({});
 
 	useEffect(() => {
 		auth.authStateReady().then(() => {
-			setLoadingFirebase(false);
+			setLoadingStatus({ ...loadingStatus, firebaseAuth: true });
 		});
 	}, []);
 
@@ -30,7 +34,7 @@ export default function App() {
 		<>
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				<DistanceDataContext.Provider value={{ distanceData, setDistanceData }}>
-					{loadingFirebase ? <Loading /> : <AppLayout />}
+					{loadingStatus.firebaseAuth ? <AppLayout /> : <Loading />}
 				</DistanceDataContext.Provider>
 			</UserSettingsContext.Provider>
 		</>

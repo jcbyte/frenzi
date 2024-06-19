@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/button";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
-import { getDistanceData } from "../firestore/db";
+import { getUserSettings } from "../firestore/db";
 
 export default function DashboardPage() {
 	return (
@@ -15,7 +15,7 @@ export default function DashboardPage() {
 
 			<Button
 				onClick={() => {
-					getDistanceData()
+					getUserSettings()
 						.then((data) => {
 							console.log(data);
 						})
