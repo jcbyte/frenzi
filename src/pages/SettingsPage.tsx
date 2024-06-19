@@ -1,9 +1,8 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { IconLogout } from "@tabler/icons-react";
-import { useContext, useEffect, useRef } from "react";
+import { useContext } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { saveUserSettings } from "../firestore/db";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
@@ -26,22 +25,6 @@ function trySignOut(navigate: NavigateFunction) {
 export default function SettingsPage() {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
-
-	const componentMounted = useRef<boolean>(false);
-	useEffect(() => {
-		if (!componentMounted.current) {
-			componentMounted.current = true;
-			return;
-		}
-
-		saveUserSettings(userSettings)
-			.then(() => {
-				toast.success("Saved");
-			})
-			.catch((err) => {
-				toast.error(`Could not save: ${err}`);
-			});
-	}, [userSettings]);
 
 	return (
 		<>
@@ -80,6 +63,19 @@ export default function SettingsPage() {
 					</Select>
 
 					<Input
+						label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
+						type="number"
+						className="w-fit min-w-80"
+						value={String(userSettings.costPerDistance)}
+						startContent={currencies[userSettings.currency]}
+						onValueChange={(newValue) => {
+							setUserSettings((prev) => {
+								return { ...prev, costPerDistance: Number(newValue) };
+							});
+						}}
+					/>
+
+					<Input
 						label="Distance decimals"
 						type="number"
 						className="w-fit min-w-80"
@@ -94,7 +90,7 @@ export default function SettingsPage() {
 					<Button
 						color="danger"
 						variant="flat"
-						className="mt-16 w-fit min-w-80"
+						className="mt-4 w-fit min-w-80"
 						startContent={<IconLogout />}
 						onClick={() => {
 							trySignOut(navigate);

@@ -6,6 +6,7 @@ export interface UserSettings {
 	currency: ValidCurrencies;
 	distanceUnit: ValidDistanceUnits;
 	distanceDecimals: number;
+	costPerDistance: number;
 }
 
 export interface FirebaseUserResponse {
