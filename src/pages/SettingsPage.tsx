@@ -1,6 +1,6 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { IconLogout } from "@tabler/icons-react";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { saveUserSettings } from "../firestore/db";
@@ -27,8 +27,20 @@ export default function SettingsPage() {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
 
+	const componentMounted = useRef<boolean>(false);
 	useEffect(() => {
-		saveUserSettings(userSettings);
+		if (!componentMounted.current) {
+			componentMounted.current = true;
+			return;
+		}
+
+		saveUserSettings(userSettings)
+			.then(() => {
+				toast.success("Saved");
+			})
+			.catch((err) => {
+				toast.error(`Could not save: ${err}`);
+			});
 	}, [userSettings]);
 
 	return (
