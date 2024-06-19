@@ -1,7 +1,5 @@
-import { Button } from "@nextui-org/button";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
-import { getUserSettings } from "../firestore/db";
 
 export default function DashboardPage() {
 	return (
@@ -12,21 +10,6 @@ export default function DashboardPage() {
 					<PeopleList />
 				</div>
 			</div>
-
-			<Button
-				onClick={() => {
-					getUserSettings()
-						.then((data) => {
-							console.log(data);
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				}}
-				color="primary"
-			>
-				test fb
-			</Button>
 		</>
 	);
 }

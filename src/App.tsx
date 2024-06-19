@@ -1,4 +1,3 @@
-import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
@@ -52,18 +51,6 @@ export default function App() {
 					<Loading loaded={firebaseReady} once={<AppLayout />} />
 				</DistanceDataContext.Provider>
 			</UserSettingsContext.Provider>
-
-			<Button
-				onClick={() => {
-					console.log(firebaseReady);
-					console.log(userDataLoaded);
-					console.log(userSettings);
-					console.log(distanceData);
-				}}
-				color="primary"
-			>
-				get data
-			</Button>
 		</>
 	);
 }
