@@ -2,27 +2,15 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from 
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
+import { DistanceData } from "../types";
 
-const rows = [
-	{
-		name: "Test name 1",
-		balance: 2,
-		distance: 10,
-	},
-	{
-		name: "test name 2",
-		balance: 23,
-		distance: 130,
-	},
-];
-
-export default function PeopleList() {
+export default function PeopleList({ distanceData }: { distanceData: DistanceData }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(key) => alert(`Open ${rows[key as number].name}`)}
+			onRowAction={(key) => alert(`Open ${Object.keys(distanceData)[key as number]}`)}
 			className="w-fit min-w-96"
 		>
 			<TableHeader>
@@ -31,15 +19,15 @@ export default function PeopleList() {
 				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
 			<TableBody>
-				{rows.map((row, i) => (
-					<TableRow key={i}>
-						<TableCell>{row.name}</TableCell>
+				{Object.entries(distanceData).map(([name, distance]) => (
+					<TableRow key={name}>
+						<TableCell>{name}</TableCell>
 						<TableCell>
 							{currencies[userSettings.currency]}
-							{row.balance.toFixed(2)}
+							{(distance * userSettings.costPerDistance).toFixed(2)}
 						</TableCell>
 						<TableCell>
-							{row.distance.toFixed(userSettings.distanceDecimals)}
+							{distance.toFixed(userSettings.distanceDecimals)}
 							{distanceUnits[userSettings.distanceUnit]}
 						</TableCell>
 					</TableRow>

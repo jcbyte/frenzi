@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
@@ -107,6 +108,16 @@ function AppLayout({
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="*" element={<NoPage />} />
 			</Routes>
+
+			<Button
+				onClick={() => {
+					setDistanceData((prev) => {
+						return { ...prev, sharlotte: distanceData["sharlotte"] + 1 };
+					});
+				}}
+			>
+				add miles to shalr
+			</Button>
 
 			<Toaster
 				toastOptions={{
