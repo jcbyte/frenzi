@@ -45,7 +45,7 @@ export default function App() {
 	}, []);
 
 	return (
-		// This means that whenever any of these contexts are updated the entire app will need to be rerendered. can this be done better?
+		// This means that whenever any of these contexts are updated the entire app will need to be rerendered. // ? Can this be done better?
 		<>
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				<DistanceDataContext.Provider value={{ distanceData, setDistanceData }}>

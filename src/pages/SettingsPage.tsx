@@ -1,8 +1,9 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { IconLogout } from "@tabler/icons-react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import { saveUserSettings } from "../firestore/db";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
@@ -26,6 +27,10 @@ export default function SettingsPage() {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
 
+	useEffect(() => {
+		saveUserSettings(userSettings);
+	}, [userSettings]);
+
 	return (
 		<>
 			<div className="flex justify-center w-full">
@@ -37,7 +42,9 @@ export default function SettingsPage() {
 						className="w-fit min-w-80"
 						selectedKeys={[userSettings.currency]}
 						onChange={(newValue): any => {
-							setUserSettings({ ...userSettings, currency: newValue.target.value as ValidCurrencies });
+							setUserSettings((prev) => {
+								return { ...prev, currency: newValue.target.value as ValidCurrencies };
+							});
 						}}
 					>
 						{Object.keys(currencies).map((currency) => {
@@ -50,7 +57,9 @@ export default function SettingsPage() {
 						className="w-fit min-w-80"
 						selectedKeys={[userSettings.distanceUnit]}
 						onChange={(newValue): any => {
-							setUserSettings({ ...userSettings, distanceUnit: newValue.target.value as ValidDistanceUnits });
+							setUserSettings((prev) => {
+								return { ...prev, distanceUnit: newValue.target.value as ValidDistanceUnits };
+							});
 						}}
 					>
 						{Object.keys(distanceUnits).map((distance) => {
@@ -64,7 +73,9 @@ export default function SettingsPage() {
 						className="w-fit min-w-80"
 						value={String(userSettings.distanceDecimals)}
 						onValueChange={(newValue) => {
-							setUserSettings({ ...userSettings, distanceDecimals: Number(newValue) });
+							setUserSettings((prev) => {
+								return { ...prev, distanceDecimals: Number(newValue) };
+							});
 						}}
 					/>
 
