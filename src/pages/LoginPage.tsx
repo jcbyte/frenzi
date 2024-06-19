@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/button";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { signInFirebaseGoogle } from "../firestore/firebase";
+import { isAuth, signInFirebaseGoogle } from "../firestore/firebase";
 
 function tryGoogleSignIn(navigate: NavigateFunction) {
 	var signInPromise = signInFirebaseGoogle();
@@ -24,18 +24,30 @@ export default function LoginPage() {
 	return (
 		<>
 			<div className="w-full flex justify-center p-10">
-				<Button
-					color="primary"
-					variant="flat"
-					startContent={<IconBrandGoogleFilled />}
-					onClick={() => {
-						tryGoogleSignIn(navigate);
-					}}
-					size="lg"
-					radius="full"
-				>
-					Sign in with Google
-				</Button>
+				{!isAuth() ? (
+					<Button
+						color="primary"
+						variant="flat"
+						startContent={<IconBrandGoogleFilled />}
+						onClick={() => {
+							tryGoogleSignIn(navigate);
+						}}
+						size="lg"
+						radius="full"
+					>
+						Sign in with Google
+					</Button>
+				) : (
+					<Button
+						color="primary"
+						onClick={() => {
+							navigate("/");
+						}}
+						size="lg"
+					>
+						Continue to app
+					</Button>
+				)}
 			</div>
 		</>
 	);
