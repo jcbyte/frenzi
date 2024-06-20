@@ -39,16 +39,25 @@ export default function App() {
 				retrievingUserSettings.current = true;
 				retrievingFriendData.current = true;
 
-				// Wait for both of our firestore calls to finish and set the results
-				await getUserSettings().then((res) => {
-					setUserSettings(res);
-				}); // ? Should probably catch this and show toast feedback
-				await getFriendData().then((res) => {
-					setFriendData(res);
-				}); // ? Should probably catch this and show toast feedback
+				// Retrieve and set data from firestore
+				var getDataPromises = [
+					getUserSettings().then((res) => {
+						setUserSettings(res);
+					}),
+					getFriendData().then((res) => {
+						setFriendData(res);
+					}),
+				];
 
-				// Once finished then our local data is correct so set the flag
-				setDataLoaded(true);
+				await Promise.all(getDataPromises)
+					.then((res) => {
+						// Once finished then our local data is correct so set the flag
+						setDataLoaded(true);
+					})
+					.catch((err) => {
+						// If there is an error then show toast feedback to the user
+						toast.error(`Could not load user data: ${err.message}`);
+					});
 
 				// Data is now loaded so we un set our retrieving data flags
 				retrievingUserSettings.current = false;
