@@ -11,7 +11,7 @@ export default function PeopleList({ friendData }: { friendData: FriendData[] })
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(key) => alert(`Open ${key}`) /* // ! This needs to be implemented*/}
+			onRowAction={(key) => alert(`Open ${key}`) /* // TODO This needs to be implemented*/}
 			className="w-fit min-w-96"
 			aria-label="People's Miles"
 		>
