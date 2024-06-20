@@ -1,6 +1,7 @@
 import leftBackground from "./left.png";
 import rightBackground from "./right.png";
 
+// Component which loads the background images onto the app
 export default function SnazzyBackground() {
 	return (
 		<div className="absolute w-screen h-screen overflow-hidden">

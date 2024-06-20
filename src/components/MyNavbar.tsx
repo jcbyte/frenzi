@@ -3,11 +3,9 @@ import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem } from "@nextui-
 import { IconSettings } from "@tabler/icons-react";
 import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 
-interface LS {
-	pathname: string;
-}
-
-function navigateOrBack(to: string, location: any, navigate: NavigateFunction) {
+// Function to navigate to the given url, however will return back to the pervious page
+// if you are already on the page your wanting to navigate too
+function navigateOrBack(to: string, location: any, navigate: NavigateFunction): void {
 	if (location.pathname != to) {
 		navigate(to);
 	} else {

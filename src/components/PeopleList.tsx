@@ -4,13 +4,14 @@ import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { FriendData } from "../types";
 
+// Component displaying the list of friends with there respective unpaid balance and distance
 export default function PeopleList({ friendData }: { friendData: FriendData[] }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(key) => alert(`Open ${key}`)}
+			onRowAction={(key) => alert(`Open ${key}`) /* // ! This needs to be implemented*/}
 			className="w-fit min-w-96"
 			aria-label="People's Miles"
 		>
@@ -20,8 +21,9 @@ export default function PeopleList({ friendData }: { friendData: FriendData[] })
 				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
 			<TableBody>
-				{friendData.map(({ name, distance }) => (
-					<TableRow key={name}>
+				{/* For each friend add a record to the row */}
+				{friendData.map(({ name, distance }, i) => (
+					<TableRow key={i}>
 						<TableCell>{name}</TableCell>
 						<TableCell>
 							{currencies[userSettings.currency]}

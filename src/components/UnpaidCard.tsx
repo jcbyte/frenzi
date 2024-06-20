@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 
+// Component displaying an unpaid balance and distance
 export default function UnpaidCard({ balance, distance }: { balance: number; distance: number }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
