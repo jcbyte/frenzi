@@ -12,6 +12,7 @@ export default function PeopleList({ distanceData }: { distanceData: DistanceDat
 			selectionMode="single"
 			onRowAction={(key) => alert(`Open ${Object.keys(distanceData)[key as number]}`)}
 			className="w-fit min-w-96"
+			aria-label="People's Miles"
 		>
 			<TableHeader>
 				<TableColumn key={"name"}>Name</TableColumn>
