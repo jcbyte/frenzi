@@ -1,37 +1,45 @@
 import { doc, getDoc } from "@firebase/firestore";
 import { setDoc } from "firebase/firestore";
-import { FriendData, UserSettings } from "../types";
+import { FriendData, FriendInternalData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
 
+// Retrieve a singular friends data from to firestore
 async function getOneFriendData(person: string): Promise<FriendData> {
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
 		.then((res) => {
-			return { name: person, distance: res.data()?.distance };
+			return { ...(res.data() as FriendInternalData), name: person };
 		})
 		.catch((err) => {
 			throw err.message;
 		});
 }
 
+// Retrieve all friend data from to firestore
 export async function getFriendData(): Promise<FriendData[]> {
+	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw "Not authenticated";
 	}
 
+	// Get a list of all friends names from an array on users profile
 	var friends = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
-		.then((res) => res.data()?.people)
+		.then((res) => res.data()!.people)
 		.catch((err) => {
 			throw err.message;
 		});
 
+	// Create an array of promises to return the friend data
 	var friendDataPromises: Promise<FriendData>[] = friends.map((person: string) => getOneFriendData(person));
 
+	// Once all promises have returned then return the array of FriendData which has been retrieved
 	return await Promise.all(friendDataPromises);
 }
 
+// Retrieve the settings from to firestore
 export async function getUserSettings(): Promise<UserSettings> {
+	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw "Not authenticated";
 	}
@@ -43,7 +51,9 @@ export async function getUserSettings(): Promise<UserSettings> {
 		});
 }
 
-export async function saveUserSettings(userSettings: UserSettings) {
+// Save the settings back to firestore
+export async function saveUserSettings(userSettings: UserSettings): Promise<void> {
+	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw "Not authenticated";
 	}

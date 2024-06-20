@@ -1,7 +1,9 @@
 // Type definition for a friends data, the app will store a FriendData[]
-export interface FriendData {
-	name: string;
+export interface FriendInternalData {
 	distance: number;
+}
+export interface FriendData extends FriendInternalData {
+	name: string;
 }
 
 // Type definition for user settings

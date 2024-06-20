@@ -11,10 +11,12 @@ export const firestore = getFirestore(firebaseApp);
 export const auth = getAuth();
 auth.useDeviceLanguage();
 
+// Returns whether the user is logged in
 export function isAuth(): boolean {
 	return auth.currentUser != null;
 }
 
+// Use firebase to sign in using google
 export async function signInFirebaseGoogle(): Promise<void> {
 	const provider = new GoogleAuthProvider();
 	return await signInWithPopup(auth, provider)
@@ -26,6 +28,7 @@ export async function signInFirebaseGoogle(): Promise<void> {
 		});
 }
 
+// Use firebase to sign out
 export async function signOutFirebase(): Promise<void> {
 	return await signOut(auth)
 		.then(() => {
