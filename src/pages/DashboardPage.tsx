@@ -4,17 +4,12 @@ import UnpaidCard from "../components/UnpaidCard";
 import { UserSettingsContext } from "../globalContexts";
 import { FriendData } from "../types";
 
+// Function to calculate the total distance by adding up each friends distance
 function getTotalDistance(friendData: FriendData[]): number {
 	return friendData.length > 0 ? friendData.map((friend) => friend.distance).reduce((acc, x) => acc + x) : 0;
 }
 
-export default function DashboardPage({
-	friendData,
-	setFriendData,
-}: {
-	friendData: FriendData[];
-	setFriendData: React.Dispatch<React.SetStateAction<FriendData[]>>;
-}) {
+export default function DashboardPage({ friendData }: { friendData: FriendData[] }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	return (

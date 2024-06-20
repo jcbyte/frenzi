@@ -77,10 +77,7 @@ export default function App() {
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
-				<Loading
-					loaded={firebaseReady}
-					once={<AppRoutes dataLoaded={dataLoaded} friendData={friendData} setFriendData={setFriendData} />}
-				/>
+				<Loading loaded={firebaseReady} once={<AppRoutes dataLoaded={dataLoaded} friendData={friendData} />} />
 			</UserSettingsContext.Provider>
 
 			<Toaster

@@ -8,15 +8,7 @@ import NoPage from "./pages/NoPage";
 import SettingsPage from "./pages/SettingsPage";
 import { FriendData } from "./types";
 
-export default function AppRoutes({
-	dataLoaded,
-	friendData,
-	setFriendData,
-}: {
-	dataLoaded: boolean;
-	friendData: FriendData[];
-	setFriendData: React.Dispatch<React.SetStateAction<FriendData[]>>;
-}) {
+export default function AppRoutes({ dataLoaded, friendData }: { dataLoaded: boolean; friendData: FriendData[] }) {
 	return (
 		<>
 			<MyNavbar />
@@ -26,15 +18,7 @@ export default function AppRoutes({
 				<Route path="/" element={<AuthorisedRoute redirect="/login" />}>
 					{/* Waits until the data is loaded before showing the page */}
 					{/* // ? this could/should show skeleton instead of loading circle */}
-					<Route
-						path=""
-						element={
-							<Loading
-								loaded={dataLoaded}
-								once={<DashboardPage friendData={friendData} setFriendData={setFriendData} />}
-							/>
-						}
-					/>
+					<Route path="" element={<Loading loaded={dataLoaded} once={<DashboardPage friendData={friendData} />} />} />
 					{/* Waits until the data is loaded before showing the page */}
 					{/* // ? this could/should show skeleton instead of loading circle */}
 					<Route path="settings" element={<Loading loaded={dataLoaded} once={<SettingsPage />} />} />
