@@ -2,15 +2,15 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from 
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
-import { DistanceData } from "../types";
+import { FriendData } from "../types";
 
-export default function PeopleList({ distanceData }: { distanceData: DistanceData }) {
+export default function PeopleList({ friendData }: { friendData: FriendData[] }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(key) => alert(`Open ${Object.keys(distanceData)[key as number]}`)}
+			onRowAction={(key) => alert(`Open ${key}`)}
 			className="w-fit min-w-96"
 			aria-label="People's Miles"
 		>
@@ -20,7 +20,7 @@ export default function PeopleList({ distanceData }: { distanceData: DistanceDat
 				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
 			<TableBody>
-				{Object.entries(distanceData).map(([name, distance]) => (
+				{friendData.map(({ name, distance }) => (
 					<TableRow key={name}>
 						<TableCell>{name}</TableCell>
 						<TableCell>

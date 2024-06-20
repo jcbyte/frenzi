@@ -1,4 +1,3 @@
-import { Button } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
@@ -6,7 +5,7 @@ import "./App.css";
 import AuthorisedRoute from "./components/AuthorisedRoute";
 import Loading from "./components/Loading";
 import MyNavbar from "./components/MyNavbar";
-import { getDistanceData, getUserSettings, saveUserSettings } from "./firestore/db";
+import { getFriendData, getUserSettings, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
 import { UserSettingsContext } from "./globalContexts";
 import DashboardPage from "./pages/DashboardPage";
@@ -14,17 +13,17 @@ import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
 import SettingsPage from "./pages/SettingsPage";
 import { DEFAULT_SETTINGS } from "./static";
-import { DistanceData, UserSettings } from "./types";
+import { FriendData, UserSettings } from "./types";
 
 export default function App() {
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
-	const [userDataLoaded, setUserDataLoaded] = useState<boolean>(false);
+	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 
 	const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
-	const [distanceData, setDistanceData] = useState<DistanceData>({});
+	const [friendData, setFriendData] = useState<FriendData[]>([]);
 
 	const retrievingUserSettings = useRef<boolean>(true);
-	const retrievingDistanceData = useRef<boolean>(true);
+	const retrievingFriendData = useRef<boolean>(true);
 
 	useEffect(() => {
 		auth.authStateReady().then(() => {
@@ -32,23 +31,23 @@ export default function App() {
 		});
 
 		auth.onAuthStateChanged(async (user) => {
-			setUserDataLoaded(false);
+			setDataLoaded(false);
 
 			if (user) {
 				retrievingUserSettings.current = true;
-				retrievingDistanceData.current = true;
+				retrievingFriendData.current = true;
 
 				await getUserSettings().then((res) => {
 					setUserSettings(res);
 				});
-				await getDistanceData().then((res) => {
-					setDistanceData(res);
+				await getFriendData().then((res) => {
+					setFriendData(res);
 				});
 
-				setUserDataLoaded(true);
+				setDataLoaded(true);
 
 				retrievingUserSettings.current = false;
-				retrievingDistanceData.current = false;
+				retrievingFriendData.current = false;
 			}
 		});
 	}, []);
@@ -65,14 +64,16 @@ export default function App() {
 			});
 	}, [userSettings]);
 
+	useEffect(() => {
+		console.log(friendData);
+	}, [friendData]);
+
 	return (
 		<>
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				<Loading
 					loaded={firebaseReady}
-					once={
-						<AppLayout userDataLoaded={userDataLoaded} distanceData={distanceData} setDistanceData={setDistanceData} />
-					}
+					once={<AppLayout dataLoaded={dataLoaded} friendData={friendData} setFriendData={setFriendData} />}
 				/>
 			</UserSettingsContext.Provider>
 		</>
@@ -80,13 +81,13 @@ export default function App() {
 }
 
 function AppLayout({
-	userDataLoaded,
-	distanceData,
-	setDistanceData,
+	dataLoaded,
+	friendData,
+	setFriendData,
 }: {
-	userDataLoaded: boolean;
-	distanceData: DistanceData;
-	setDistanceData: React.Dispatch<React.SetStateAction<DistanceData>>;
+	dataLoaded: boolean;
+	friendData: FriendData[];
+	setFriendData: React.Dispatch<React.SetStateAction<FriendData[]>>;
 }) {
 	return (
 		<>
@@ -98,26 +99,16 @@ function AppLayout({
 						path=""
 						element={
 							<Loading
-								loaded={userDataLoaded}
-								once={<DashboardPage distanceData={distanceData} setDistanceData={setDistanceData} />}
+								loaded={dataLoaded}
+								once={<DashboardPage friendData={friendData} setFriendData={setFriendData} />}
 							/>
 						}
 					/>
-					<Route path="settings" element={<Loading loaded={userDataLoaded} once={<SettingsPage />} />} />
+					<Route path="settings" element={<Loading loaded={dataLoaded} once={<SettingsPage />} />} />
 				</Route>
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="*" element={<NoPage />} />
 			</Routes>
-
-			<Button
-				onClick={() => {
-					setDistanceData((prev) => {
-						return { ...prev, sharlotte: distanceData["sharlotte"] + 1 };
-					});
-				}}
-			>
-				add miles to shalr
-			</Button>
 
 			<Toaster
 				toastOptions={{

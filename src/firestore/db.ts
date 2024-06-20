@@ -1,32 +1,34 @@
 import { doc, getDoc } from "@firebase/firestore";
 import { setDoc } from "firebase/firestore";
-import { DistanceData, FirebaseFriendDataResponse, FirebaseUserResponse, UserSettings } from "../types";
+import { FriendData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
 
-export async function getDistanceData(): Promise<DistanceData> {
+async function getOneFriendData(person: string): Promise<FriendData> {
+	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
+		.then((res) => {
+			return { name: person, distance: res.data()?.distance };
+		})
+		.catch((err) => {
+			throw err.message;
+		});
+}
+
+export async function getFriendData(): Promise<FriendData[]> {
 	if (!isAuth()) {
 		throw "Not authenticated";
 	}
 
-	var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
-		.then((res) => res.data() as FirebaseUserResponse)
+	var friends = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+		.then((res) => res.data()?.people)
 		.catch((err) => {
 			throw err.message;
 		});
 
-	var friendData: DistanceData = {};
-	docData.people.forEach(async (person) => {
-		var docData = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
-			.then((res) => res.data() as FirebaseFriendDataResponse)
-			.catch((err) => {
-				throw err.message;
-			});
-		friendData[person] = docData.distance;
-	});
+	var friendDataPromises: Promise<FriendData>[] = friends.map((person: string) => getOneFriendData(person));
 
-	return friendData;
+	return await Promise.all(friendDataPromises);
 }
 
 export async function getUserSettings(): Promise<UserSettings> {
