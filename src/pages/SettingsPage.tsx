@@ -8,6 +8,7 @@ import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
 
+// Function to try and sign out with toast feedback
 function trySignOut(navigate: NavigateFunction) {
 	var signOutPromise = signOutFirebase();
 	toast.promise(signOutPromise, {
@@ -15,6 +16,7 @@ function trySignOut(navigate: NavigateFunction) {
 		success: "Signed out",
 		error: (err) => `Could not sign out: ${err}`,
 	});
+	// Once logged out then redirect to login page
 	signOutPromise
 		.then(() => {
 			navigate("/login");
@@ -26,6 +28,8 @@ export default function SettingsPage() {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
 
+	// Show all modifiable settings in with a component that makes sense
+	// These are all controlled using the `userSettings` state
 	return (
 		<>
 			<div className="flex justify-center w-full">
@@ -42,6 +46,7 @@ export default function SettingsPage() {
 							});
 						}}
 					>
+						{/* List out the valid currencies defined in `static.ts` */}
 						{Object.keys(currencies).map((currency) => {
 							return <SelectItem key={currency}>{currency}</SelectItem>;
 						})}
@@ -57,6 +62,7 @@ export default function SettingsPage() {
 							});
 						}}
 					>
+						{/* List out the valid distance units defined in `static.ts` */}
 						{Object.keys(distanceUnits).map((distance) => {
 							return <SelectItem key={distance}>{distance}</SelectItem>;
 						})}

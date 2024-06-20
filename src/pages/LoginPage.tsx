@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { isAuth, signInFirebaseGoogle } from "../firestore/firebase";
 
+// Function to try and sign in using google with toast feedback
 function tryGoogleSignIn(navigate: NavigateFunction) {
 	var signInPromise = signInFirebaseGoogle();
 	toast.promise(signInPromise, {
@@ -11,6 +12,7 @@ function tryGoogleSignIn(navigate: NavigateFunction) {
 		success: "Signed in",
 		error: (err) => `Could not sign in: ${err}`,
 	});
+	// Once logged in then redirect to dashboard
 	signInPromise
 		.then(() => {
 			navigate("/");
@@ -24,7 +26,19 @@ export default function LoginPage() {
 	return (
 		<>
 			<div className="w-full flex justify-center p-10">
-				{!isAuth() ? (
+				{isAuth() ? (
+					// If the user is already signed in then show a continue to app button
+					<Button
+						color="primary"
+						onClick={() => {
+							navigate("/");
+						}}
+						size="lg"
+					>
+						Continue to app
+					</Button>
+				) : (
+					// If the user is not signed in show a sign in button
 					<Button
 						color="primary"
 						variant="flat"
@@ -36,16 +50,6 @@ export default function LoginPage() {
 						radius="full"
 					>
 						Sign in with Google
-					</Button>
-				) : (
-					<Button
-						color="primary"
-						onClick={() => {
-							navigate("/");
-						}}
-						size="lg"
-					>
-						Continue to app
 					</Button>
 				)}
 			</div>
