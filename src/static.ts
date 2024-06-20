@@ -1,5 +1,6 @@
-import { UserSettings, ValidCurrencies } from "./types";
+import { UserSettings, ValidCurrencies, ValidDistanceUnits } from "./types";
 
+// The default user settings when no user logged in or for new users
 export const DEFAULT_SETTINGS: UserSettings = {
 	currency: "GBP",
 	distanceUnit: "Miles",
@@ -7,5 +8,6 @@ export const DEFAULT_SETTINGS: UserSettings = {
 	costPerDistance: 0.15,
 };
 
+// Records for extra data linked to valid settings
 export const currencies: Record<ValidCurrencies, string> = { GBP: "£", USD: "$", EUR: "€" };
-export const distanceUnits = { Miles: "mi", Kilometers: "km" };
+export const distanceUnits: Record<ValidDistanceUnits, string> = { Miles: "mi", Kilometers: "km" };
