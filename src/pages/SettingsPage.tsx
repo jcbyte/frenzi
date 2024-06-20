@@ -14,7 +14,7 @@ function trySignOut(navigate: NavigateFunction) {
 	toast.promise(signOutPromise, {
 		loading: "Signing out",
 		success: "Signed out",
-		error: (err) => `Could not sign out: ${err}`,
+		error: (err) => `Could not sign out: ${err.message}`,
 	});
 	// Once logged out then redirect to login page
 	signOutPromise

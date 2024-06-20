@@ -12,7 +12,7 @@ async function getOneFriendData(person: string): Promise<FriendData> {
 			return { ...(res.data() as FriendInternalData), name: person };
 		})
 		.catch((err) => {
-			throw err.message;
+			throw new Error(err.message);
 		});
 }
 
@@ -20,34 +20,36 @@ async function getOneFriendData(person: string): Promise<FriendData> {
 export async function getFriendData(): Promise<FriendData[]> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
-		throw "Not authenticated";
+		throw new Error("Not authenticated");
 	}
 
 	// Get a list of all friends names from an array on users profile
 	var friends = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
 		.then((res) => res.data()!.people)
 		.catch((err) => {
-			throw err.message;
+			throw new Error(err.message);
 		});
 
 	// Create an array of promises to return the friend data
 	var friendDataPromises: Promise<FriendData>[] = friends.map((person: string) => getOneFriendData(person));
 
 	// Once all promises have returned then return the array of FriendData which has been retrieved
-	return await Promise.all(friendDataPromises);
+	return await Promise.all(friendDataPromises).catch((err) => {
+		throw new Error(err.message);
+	});
 }
 
 // Retrieve the settings from to firestore
 export async function getUserSettings(): Promise<UserSettings> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
-		throw "Not authenticated";
+		throw new Error("Not authenticated");
 	}
 
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"))
 		.then((res) => res.data() as UserSettings)
 		.catch((err) => {
-			throw err.message;
+			throw new Error(err.message);
 		});
 }
 
@@ -55,7 +57,7 @@ export async function getUserSettings(): Promise<UserSettings> {
 export async function saveUserSettings(userSettings: UserSettings): Promise<void> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
-		throw "Not authenticated";
+		throw new Error("Not authenticated");
 	}
 
 	return await setDoc(doc(firestore, "frenzi", auth.currentUser!.uid, "settings", "data"), userSettings);

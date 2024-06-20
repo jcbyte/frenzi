@@ -24,7 +24,7 @@ export async function signInFirebaseGoogle(): Promise<void> {
 			return;
 		})
 		.catch((err) => {
-			throw err.message;
+			throw new Error(err.message);
 		});
 }
 
@@ -35,6 +35,6 @@ export async function signOutFirebase(): Promise<void> {
 			return;
 		})
 		.catch((err) => {
-			return err.message;
+			throw new Error(err.message);
 		});
 }

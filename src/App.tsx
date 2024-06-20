@@ -42,10 +42,10 @@ export default function App() {
 				// Wait for both of our firestore calls to finish and set the results
 				await getUserSettings().then((res) => {
 					setUserSettings(res);
-				});
+				}); // ? Should probably catch this and show toast feedback
 				await getFriendData().then((res) => {
 					setFriendData(res);
-				});
+				}); // ? Should probably catch this and show toast feedback
 
 				// Once finished then our local data is correct so set the flag
 				setDataLoaded(true);
@@ -68,7 +68,7 @@ export default function App() {
 				toast.success("Saved");
 			})
 			.catch((err) => {
-				toast.error(`Could not save: ${err}`);
+				toast.error(`Could not save: ${err.message}`);
 			});
 	}, [userSettings]);
 
