@@ -19,9 +19,8 @@ export default function UnpaidCard({
 		<Card className="p-4 w-fit min-w-80">
 			<div className="flex gap-8 items-end">
 				<div>
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<p className="text-base">Unpaid balance</p>
-					</Skeleton>
+					<p className="text-base mb-1">Unpaid balance</p>
+
 					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 						<p className="text-5xl">
 							{currencies[userSettings.currency]}
@@ -30,9 +29,7 @@ export default function UnpaidCard({
 					</Skeleton>
 				</div>
 				<div>
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<p className="text-base">Unpaid distance</p>
-					</Skeleton>
+					<p className="text-base mb-1">Unpaid distance</p>
 					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 						<p className="text-2xl">
 							{distance.toFixed(userSettings.distanceDecimals)}
