@@ -1,3 +1,13 @@
+import {
+	Button,
+	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	useDisclosure,
+} from "@nextui-org/react";
 import { useContext } from "react";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
@@ -18,6 +28,9 @@ export default function DashboardPage({
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
+	// const [addFriendModalOpen, setAddFriendModalOpen] = useState<boolean>(false);
+	const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
+
 	return (
 		<>
 			<div className="flex justify-center w-full">
@@ -28,6 +41,27 @@ export default function DashboardPage({
 						distance={getTotalDistance(friendData)}
 					/>
 					<PeopleList asSkeleton={asSkeleton} friendData={friendData} />
+					<Button color="default" variant="flat" className="w-fit min-w-40" onClick={onOpen}>
+						Add
+					</Button>
+
+					<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" className="dark text-foreground">
+						<ModalContent>
+							<ModalHeader>Add</ModalHeader>
+							<ModalBody>
+								<Input label="Name" />
+							</ModalBody>
+							<ModalFooter>
+								<Button color="danger" variant="flat" onPress={onClose}>
+									Close
+								</Button>
+								<Button color="primary" variant="flat" onPress={onClose}>
+									{/* // TODO need to implement this */}
+									Add
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
 				</div>
 			</div>
 		</>

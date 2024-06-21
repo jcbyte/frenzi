@@ -30,6 +30,7 @@ export default function LoginPage() {
 					// If the user is already signed in then show a continue to app button
 					<Button
 						color="primary"
+						variant="flat"
 						onClick={() => {
 							navigate("/");
 						}}
