@@ -67,7 +67,6 @@ export async function getFriendData(): Promise<FriendData[]> {
 }
 
 // ! UNTESTED
-// TODO throw exceptions where needed
 // Update friend data in firestore
 export async function _updateFriendData(friendData: FriendData) {
 	// If not logged in then throw an exception
@@ -75,7 +74,11 @@ export async function _updateFriendData(friendData: FriendData) {
 		throw new Error("Not authenticated");
 	}
 
-	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friendData.name), { friendData });
+	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friendData.name), { friendData }).catch(
+		(err) => {
+			throw new Error(err.message);
+		}
+	);
 }
 
 // Add new friend to firestore
@@ -97,7 +100,7 @@ export async function addFriendData(friend: string) {
 		throw new Error("Name already exists");
 	}
 	friends.push(friend);
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends }).catch((err) => {
+	setDoc(doc(firestore, DB_NAME + "Jk", auth.currentUser!.uid), { people: friends }).catch((err) => {
 		throw new Error(err.message);
 	});
 
@@ -108,10 +111,12 @@ export async function addFriendData(friend: string) {
 	}).catch((err) => {
 		throw new Error(err.message);
 	});
+
+	// TODO uncaught errors possibly as we are not awaiting for some promises?
+	// TODO this could be the same in `_removeFriendData`
 }
 
 // ! UNTESTED
-// TODO throw exceptions where needed
 // Delete friend from firestore
 export async function _removeFriendData(friend: string) {
 	// If not logged in then throw an exception
@@ -131,10 +136,14 @@ export async function _removeFriendData(friend: string) {
 		throw new Error("Name does not exists");
 	}
 	friends.splice(friends.indexOf(friend), 1);
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends });
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends }).catch((err) => {
+		throw new Error(err.message);
+	});
 
 	// Remove this friends data
-	deleteDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend));
+	deleteDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend)).catch((err) => {
+		throw new Error(err.message);
+	});
 }
 
 // Retrieve the settings from to firestore
