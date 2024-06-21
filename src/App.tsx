@@ -97,7 +97,7 @@ export default function App() {
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
 				{firebaseReady ? (
-					<AppRoutes dataLoaded={dataLoaded} friendData={friendData} />
+					<AppRoutes dataLoaded={dataLoaded} friendData={friendData} setFriendData={setFriendData} />
 				) : (
 					<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
 				)}

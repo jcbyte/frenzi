@@ -78,10 +78,8 @@ export async function _updateFriendData(friendData: FriendData) {
 	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friendData.name), { friendData });
 }
 
-// ! UNTESTED
-// TODO throw exceptions where needed
 // Add new friend to firestore
-export async function _addFriendData(friend: string) {
+export async function addFriendData(friend: string) {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw new Error("Not authenticated");
@@ -99,10 +97,17 @@ export async function _addFriendData(friend: string) {
 		throw new Error("Name already exists");
 	}
 	friends.push(friend);
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends });
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends }).catch((err) => {
+		throw new Error(err.message);
+	});
 
 	// Update the new friend to have the given data
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend), { ...DEFAULT_FRIEND_DATA, name: friend });
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend), {
+		...DEFAULT_FRIEND_DATA,
+		name: friend,
+	}).catch((err) => {
+		throw new Error(err.message);
+	});
 }
 
 // ! UNTESTED
