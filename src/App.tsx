@@ -39,6 +39,8 @@ export default function App() {
 				retrievingUserSettings.current = true;
 				retrievingFriendData.current = true;
 
+				// TODO if user is new we need to create initial files on firestore
+
 				// Retrieve and set data from firestore
 				var getDataPromises = [
 					getUserSettings().then((res) => {
