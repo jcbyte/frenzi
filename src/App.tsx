@@ -1,8 +1,9 @@
+import { Spinner } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
-import LoadingSpinner from "./components/LoadingSpinner";
+import MyNavbar from "./components/MyNavbar";
 import { getFriendData, getUserSettings, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
 import { UserSettingsContext } from "./globalContexts";
@@ -85,10 +86,16 @@ export default function App() {
 
 	return (
 		<>
+			<MyNavbar />
+
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
-				{firebaseReady ? <AppRoutes dataLoaded={dataLoaded} friendData={friendData} /> : <LoadingSpinner />}
+				{firebaseReady ? (
+					<AppRoutes dataLoaded={dataLoaded} friendData={friendData} />
+				) : (
+					<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
+				)}
 			</UserSettingsContext.Provider>
 
 			<Toaster

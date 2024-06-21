@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import AuthorisedRoute from "./components/AuthorisedRoute";
-import MyNavbar from "./components/MyNavbar";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
@@ -10,8 +9,6 @@ import { FriendData } from "./types";
 export default function AppRoutes({ dataLoaded, friendData }: { dataLoaded: boolean; friendData: FriendData[] }) {
 	return (
 		<>
-			<MyNavbar />
-
 			<div className="flex justify-center w-full">
 				<div className="p-4 flex flex-col gap-2">
 					<Routes>
