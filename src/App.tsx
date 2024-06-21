@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
-import Loading from "./components/Loading";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { getFriendData, getUserSettings, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
@@ -87,11 +86,7 @@ export default function App() {
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
-				<Loading
-					loaded={firebaseReady}
-					before={<LoadingSpinner />}
-					after={<AppRoutes dataLoaded={dataLoaded} friendData={friendData} />}
-				/>
+				{firebaseReady ? <AppRoutes dataLoaded={dataLoaded} friendData={friendData} /> : <LoadingSpinner />}
 			</UserSettingsContext.Provider>
 
 			<Toaster
