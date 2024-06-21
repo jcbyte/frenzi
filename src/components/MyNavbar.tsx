@@ -31,7 +31,7 @@ export default function MyNavbar() {
 					<Button
 						isIconOnly
 						color="default"
-						onClick={() => {
+						onPress={() => {
 							navigateOrBack("/settings", location, navigate);
 						}}
 					>

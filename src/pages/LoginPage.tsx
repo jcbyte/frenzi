@@ -31,7 +31,7 @@ export default function LoginPage() {
 					<Button
 						color="primary"
 						variant="flat"
-						onClick={() => {
+						onPress={() => {
 							navigate("/");
 						}}
 						size="lg"
@@ -44,7 +44,7 @@ export default function LoginPage() {
 						color="primary"
 						variant="flat"
 						startContent={<IconBrandGoogleFilled />}
-						onClick={() => {
+						onPress={() => {
 							tryGoogleSignIn(navigate);
 						}}
 						size="lg"

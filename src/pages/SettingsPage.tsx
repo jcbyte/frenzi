@@ -106,7 +106,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 						variant="flat"
 						className="mt-4 w-fit min-w-80"
 						startContent={<IconLogout />}
-						onClick={() => {
+						onPress={() => {
 							trySignOut(navigate);
 						}}
 					>
