@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
 import MyNavbar from "./components/MyNavbar";
-import { getFriendData, getUserSettings, saveUserSettings } from "./firestore/db";
+import { getFriendData, getUserSettings, initialiseNewUser, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
 import { UserSettingsContext } from "./globalContexts";
 import { DEFAULT_SETTINGS } from "./static";
@@ -40,27 +40,32 @@ export default function App() {
 				retrievingUserSettings.current = true;
 				retrievingFriendData.current = true;
 
-				// TODO if user is new we need to create initial files on firestore
+				// If this is the first time the user has logged on then setup there files on firestore
+				if (await initialiseNewUser()) {
+					setUserSettings(DEFAULT_SETTINGS);
+					setFriendData([]);
+					setDataLoaded(true);
+				} else {
+					// Retrieve and set data from firestore
+					var getDataPromises = [
+						getUserSettings().then((res) => {
+							setUserSettings(res);
+						}),
+						getFriendData().then((res) => {
+							setFriendData(res);
+						}),
+					];
 
-				// Retrieve and set data from firestore
-				var getDataPromises = [
-					getUserSettings().then((res) => {
-						setUserSettings(res);
-					}),
-					getFriendData().then((res) => {
-						setFriendData(res);
-					}),
-				];
-
-				await Promise.all(getDataPromises)
-					.then((res) => {
-						// Once finished then our local data is correct so set the flag
-						setDataLoaded(true);
-					})
-					.catch((err) => {
-						// If there is an error then show toast feedback to the user
-						toast.error(`Could not load user data: ${err.message}`);
-					});
+					await Promise.all(getDataPromises)
+						.then((res) => {
+							// Once finished then our local data is correct so set the flag
+							setDataLoaded(true);
+						})
+						.catch((err) => {
+							// If there is an error then show toast feedback to the user
+							toast.error(`Could not load user data: ${err.message}`);
+						});
+				}
 
 				// Data is now loaded so we un set our retrieving data flags
 				retrievingUserSettings.current = false;
