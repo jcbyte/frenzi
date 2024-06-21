@@ -33,44 +33,39 @@ export default function DashboardPage({
 
 	return (
 		<>
-			{/* // TODO might be able to put this general flex center col in the main app if its used on every page */}
-			<div className="flex justify-center w-full">
-				<div className="p-4 flex flex-col gap-2">
-					<UnpaidCard
-						asSkeleton={asSkeleton}
-						balance={getTotalDistance(friendData) * userSettings.costPerDistance}
-						distance={getTotalDistance(friendData)}
-					/>
-					<PeopleList asSkeleton={asSkeleton} friendData={friendData} />
-					<Button color="default" variant="flat" className="w-fit min-w-40" onClick={onOpen}>
-						Add
-					</Button>
+			<UnpaidCard
+				asSkeleton={asSkeleton}
+				balance={getTotalDistance(friendData) * userSettings.costPerDistance}
+				distance={getTotalDistance(friendData)}
+			/>
+			<PeopleList asSkeleton={asSkeleton} friendData={friendData} />
+			<Button color="default" variant="flat" className="w-fit min-w-40" onClick={onOpen}>
+				Add
+			</Button>
 
-					<Modal
-						isOpen={isOpen}
-						onOpenChange={onOpenChange}
-						placement="center"
-						backdrop="blur"
-						className="dark text-foreground"
-					>
-						<ModalContent>
-							<ModalHeader>Add</ModalHeader>
-							<ModalBody>
-								<Input label="Name" />
-							</ModalBody>
-							<ModalFooter>
-								<Button color="danger" variant="flat" onPress={onClose}>
-									Close
-								</Button>
-								<Button color="primary" variant="flat" onPress={onClose}>
-									{/* // TODO need to implement this */}
-									Add
-								</Button>
-							</ModalFooter>
-						</ModalContent>
-					</Modal>
-				</div>
-			</div>
+			<Modal
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+				placement="center"
+				backdrop="blur"
+				className="dark text-foreground"
+			>
+				<ModalContent>
+					<ModalHeader>Add</ModalHeader>
+					<ModalBody>
+						<Input label="Name" />
+					</ModalBody>
+					<ModalFooter>
+						<Button color="danger" variant="flat" onPress={onClose}>
+							Close
+						</Button>
+						<Button color="primary" variant="flat" onPress={onClose}>
+							{/* // TODO need to implement this */}
+							Add
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
 		</>
 	);
 }

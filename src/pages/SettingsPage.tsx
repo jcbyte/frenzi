@@ -32,88 +32,84 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 	// These are all controlled using the `userSettings` state
 	return (
 		<>
-			<div className="flex justify-center w-full">
-				<div className="p-4 flex flex-col gap-2">
-					<p className="text text-2xl font-thin mb-4">User Settings</p>
+			<p className="text text-2xl font-thin mb-4">User Settings</p>
 
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<Select
-							label="Currency"
-							className="w-fit min-w-80"
-							selectedKeys={[userSettings.currency]}
-							onChange={(newValue): any => {
-								setUserSettings((prev) => {
-									return { ...prev, currency: newValue.target.value as ValidCurrencies };
-								});
-							}}
-						>
-							{/* List out the valid currencies defined in `static.ts` */}
-							{Object.keys(currencies).map((currency) => {
-								return <SelectItem key={currency}>{currency}</SelectItem>;
-							})}
-						</Select>
-					</Skeleton>
+			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+				<Select
+					label="Currency"
+					className="w-fit min-w-80"
+					selectedKeys={[userSettings.currency]}
+					onChange={(newValue): any => {
+						setUserSettings((prev) => {
+							return { ...prev, currency: newValue.target.value as ValidCurrencies };
+						});
+					}}
+				>
+					{/* List out the valid currencies defined in `static.ts` */}
+					{Object.keys(currencies).map((currency) => {
+						return <SelectItem key={currency}>{currency}</SelectItem>;
+					})}
+				</Select>
+			</Skeleton>
 
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<Select
-							label="Distance units"
-							className="w-fit min-w-80"
-							selectedKeys={[userSettings.distanceUnit]}
-							onChange={(newValue): any => {
-								setUserSettings((prev) => {
-									return { ...prev, distanceUnit: newValue.target.value as ValidDistanceUnits };
-								});
-							}}
-						>
-							{/* List out the valid distance units defined in `static.ts` */}
-							{Object.keys(distanceUnits).map((distance) => {
-								return <SelectItem key={distance}>{distance}</SelectItem>;
-							})}
-						</Select>
-					</Skeleton>
+			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+				<Select
+					label="Distance units"
+					className="w-fit min-w-80"
+					selectedKeys={[userSettings.distanceUnit]}
+					onChange={(newValue): any => {
+						setUserSettings((prev) => {
+							return { ...prev, distanceUnit: newValue.target.value as ValidDistanceUnits };
+						});
+					}}
+				>
+					{/* List out the valid distance units defined in `static.ts` */}
+					{Object.keys(distanceUnits).map((distance) => {
+						return <SelectItem key={distance}>{distance}</SelectItem>;
+					})}
+				</Select>
+			</Skeleton>
 
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<Input
-							label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
-							type="number"
-							className="w-fit min-w-80"
-							value={String(userSettings.costPerDistance)}
-							startContent={currencies[userSettings.currency]}
-							onValueChange={(newValue) => {
-								setUserSettings((prev) => {
-									return { ...prev, costPerDistance: Number(newValue) };
-								});
-							}}
-						/>
-					</Skeleton>
+			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+				<Input
+					label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
+					type="number"
+					className="w-fit min-w-80"
+					value={String(userSettings.costPerDistance)}
+					startContent={currencies[userSettings.currency]}
+					onValueChange={(newValue) => {
+						setUserSettings((prev) => {
+							return { ...prev, costPerDistance: Number(newValue) };
+						});
+					}}
+				/>
+			</Skeleton>
 
-					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<Input
-							label="Distance decimals"
-							type="number"
-							className="w-fit min-w-80"
-							value={String(userSettings.distanceDecimals)}
-							onValueChange={(newValue) => {
-								setUserSettings((prev) => {
-									return { ...prev, distanceDecimals: Number(newValue) };
-								});
-							}}
-						/>
-					</Skeleton>
+			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+				<Input
+					label="Distance decimals"
+					type="number"
+					className="w-fit min-w-80"
+					value={String(userSettings.distanceDecimals)}
+					onValueChange={(newValue) => {
+						setUserSettings((prev) => {
+							return { ...prev, distanceDecimals: Number(newValue) };
+						});
+					}}
+				/>
+			</Skeleton>
 
-					<Button
-						color="danger"
-						variant="flat"
-						className="mt-4 w-fit min-w-80"
-						startContent={<IconLogout />}
-						onPress={() => {
-							trySignOut(navigate);
-						}}
-					>
-						Sign out
-					</Button>
-				</div>
-			</div>
+			<Button
+				color="danger"
+				variant="flat"
+				className="mt-4 w-fit min-w-80"
+				startContent={<IconLogout />}
+				onPress={() => {
+					trySignOut(navigate);
+				}}
+			>
+				Sign out
+			</Button>
 		</>
 	);
 }

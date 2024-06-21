@@ -25,35 +25,33 @@ export default function LoginPage() {
 
 	return (
 		<>
-			<div className="w-full flex justify-center p-10">
-				{isAuth() ? (
-					// If the user is already signed in then show a continue to app button
-					<Button
-						color="primary"
-						variant="flat"
-						onPress={() => {
-							navigate("/");
-						}}
-						size="lg"
-					>
-						Continue to app
-					</Button>
-				) : (
-					// If the user is not signed in show a sign in button
-					<Button
-						color="primary"
-						variant="flat"
-						startContent={<IconBrandGoogleFilled />}
-						onPress={() => {
-							tryGoogleSignIn(navigate);
-						}}
-						size="lg"
-						radius="full"
-					>
-						Sign in with Google
-					</Button>
-				)}
-			</div>
+			{isAuth() ? (
+				// If the user is already signed in then show a continue to app button
+				<Button
+					color="primary"
+					variant="flat"
+					onPress={() => {
+						navigate("/");
+					}}
+					size="lg"
+				>
+					Continue to app
+				</Button>
+			) : (
+				// If the user is not signed in show a sign in button
+				<Button
+					color="primary"
+					variant="flat"
+					startContent={<IconBrandGoogleFilled />}
+					onPress={() => {
+						tryGoogleSignIn(navigate);
+					}}
+					size="lg"
+					radius="full"
+				>
+					Sign in with Google
+				</Button>
+			)}
 		</>
 	);
 }
