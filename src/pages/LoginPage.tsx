@@ -6,7 +6,7 @@ import { isAuth, signInFirebaseGoogle } from "../firestore/firebase";
 
 // Function to try and sign in using google with toast feedback
 function tryGoogleSignIn(navigate: NavigateFunction) {
-	var signInPromise = signInFirebaseGoogle();
+	var signInPromise: Promise<void> = signInFirebaseGoogle();
 	toast.promise(signInPromise, {
 		loading: "Signing in",
 		success: "Signed in",

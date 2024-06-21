@@ -47,7 +47,7 @@ export default function App() {
 					setDataLoaded(true);
 				} else {
 					// Retrieve and set data from firestore
-					var getDataPromises = [
+					var getDataPromises: Promise<void>[] = [
 						getUserSettings().then((res) => {
 							setUserSettings(res);
 						}),
