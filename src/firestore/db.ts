@@ -1,6 +1,6 @@
-import { doc, getDoc } from "@firebase/firestore";
-import { setDoc } from "firebase/firestore";
-import { DEFAULT_SETTINGS } from "../static";
+import { doc, getDoc, setDoc } from "@firebase/firestore";
+import { deleteDoc } from "firebase/firestore";
+import { DEFAULT_FRIEND_DATA, DEFAULT_SETTINGS } from "../static";
 import { FriendData, FriendInternalData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
@@ -31,10 +31,10 @@ export async function initialiseNewUser(): Promise<boolean> {
 }
 
 // Retrieve a singular friends data from to firestore
-async function getOneFriendData(person: string): Promise<FriendData> {
-	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
+async function getOneFriendData(friend: string): Promise<FriendData> {
+	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend))
 		.then((res) => {
-			return { ...(res.data() as FriendInternalData), name: person };
+			return { ...(res.data() as FriendInternalData), name: friend };
 		})
 		.catch((err) => {
 			throw new Error(err.message);
@@ -49,7 +49,7 @@ export async function getFriendData(): Promise<FriendData[]> {
 	}
 
 	// Get a list of all friends names from an array on users profile
-	var friends = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+	var friends: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
 		.then((res) => res.data()!.people)
 		.catch((err) => {
 			throw new Error(err.message);
@@ -64,6 +64,72 @@ export async function getFriendData(): Promise<FriendData[]> {
 	return await Promise.all(friendDataPromises).catch((err) => {
 		throw new Error(err.message);
 	});
+}
+
+// ! UNTESTED
+// TODO throw exceptions where needed
+// Update friend data in firestore
+export async function _updateFriendData(friendData: FriendData) {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friendData.name), { friendData });
+}
+
+// ! UNTESTED
+// TODO throw exceptions where needed
+// Add new friend to firestore
+export async function _addFriendData(friend: string) {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	// Get a list of the current friends in firestore
+	var friends: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+		.then((res) => res.data()!.people)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	// If the friend already exists then throw an exception otherwise add the new one and save it
+	if (friends.includes(friend)) {
+		throw new Error("Name already exists");
+	}
+	friends.push(friend);
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends });
+
+	// Update the new friend to have the given data
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend), { ...DEFAULT_FRIEND_DATA, name: friend });
+}
+
+// ! UNTESTED
+// TODO throw exceptions where needed
+// Delete friend from firestore
+export async function _removeFriendData(friend: string) {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	// Get a list of the current friends in firestore
+	var friends: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+		.then((res) => res.data()!.people)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	// If the friend doesn't exists then throw an exception otherwise remove this one and save it
+	if (!friends.includes(friend)) {
+		throw new Error("Name does not exists");
+	}
+	friends.splice(friends.indexOf(friend), 1);
+	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: friends });
+
+	// Remove this friends data
+	deleteDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", friend));
 }
 
 // Retrieve the settings from to firestore
