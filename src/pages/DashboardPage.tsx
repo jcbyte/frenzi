@@ -9,7 +9,13 @@ function getTotalDistance(friendData: FriendData[]): number {
 	return friendData.length > 0 ? friendData.map((friend) => friend.distance).reduce((acc, x) => acc + x) : 0;
 }
 
-export default function DashboardPage({ friendData }: { friendData: FriendData[] }) {
+export default function DashboardPage({
+	asSkeleton = false,
+	friendData,
+}: {
+	asSkeleton: boolean;
+	friendData: FriendData[];
+}) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	return (
@@ -17,10 +23,11 @@ export default function DashboardPage({ friendData }: { friendData: FriendData[]
 			<div className="flex justify-center w-full">
 				<div className="p-4 flex flex-col gap-2">
 					<UnpaidCard
+						asSkeleton={asSkeleton}
 						balance={getTotalDistance(friendData) * userSettings.costPerDistance}
 						distance={getTotalDistance(friendData)}
 					/>
-					<PeopleList friendData={friendData} />
+					<PeopleList asSkeleton={asSkeleton} friendData={friendData} />
 				</div>
 			</div>
 		</>

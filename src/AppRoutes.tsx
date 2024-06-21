@@ -18,17 +18,7 @@ export default function AppRoutes({ dataLoaded, friendData }: { dataLoaded: bool
 				{/* These pages can only be viewed if you are logged in otherwise user will be redirected to login page */}
 				<Route path="/" element={<AuthorisedRoute redirect="/login" />}>
 					{/* Waits until the data is loaded before showing the page */}
-					{/* // ? this could/should show skeleton instead of loading circle */}
-					<Route
-						path=""
-						element={
-							<Loading
-								loaded={dataLoaded}
-								before={<LoadingSpinner />}
-								after={<DashboardPage friendData={friendData} />}
-							/>
-						}
-					/>
+					<Route path="" element={<DashboardPage asSkeleton={!dataLoaded} friendData={friendData} />} />
 					{/* Waits until the data is loaded before showing the page */}
 					{/* // ? this could/should show skeleton instead of loading circle */}
 					<Route
