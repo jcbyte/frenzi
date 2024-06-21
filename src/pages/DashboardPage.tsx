@@ -46,7 +46,13 @@ export default function DashboardPage({
 						Add
 					</Button>
 
-					<Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center" className="dark text-foreground">
+					<Modal
+						isOpen={isOpen}
+						onOpenChange={onOpenChange}
+						placement="center"
+						backdrop="blur"
+						className="dark text-foreground"
+					>
 						<ModalContent>
 							<ModalHeader>Add</ModalHeader>
 							<ModalBody>

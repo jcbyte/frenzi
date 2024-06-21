@@ -26,8 +26,7 @@ export default function PeopleList({
 				<TableColumn key={"balance"}>Balance</TableColumn>
 				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
-			{/* // TODO Show no data message if this is empty  */}
-			<TableBody>
+			<TableBody emptyContent={"No data"}>
 				{/* For each friend add a record to the row */}
 				{(!asSkeleton ? friendData : Array(3).fill({ name: "*", distance: 0 } as FriendData)).map(
 					({ name, distance }: FriendData, i) => (
