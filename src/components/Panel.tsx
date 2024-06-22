@@ -24,10 +24,10 @@ export default function Panel({
 			let sign: boolean = (config.value ?? 0) >= 0;
 			let value: number = Math.abs(config.value ?? 0);
 
-			if (config.type == "currency") {
+			if (config.type === "currency") {
 				buttonText = `${sign ? "+" : "-"}${currencies[userSettings.currency]}${value.toFixed(2)}`;
 				colour = sign ? "success" : "danger";
-			} else if (config.type == "distance") {
+			} else if (config.type === "distance") {
 				buttonText = `${sign ? "+" : "-"}${value.toFixed(userSettings.distanceDecimals)}${
 					distanceUnits[userSettings.distanceUnit]
 				}`;
@@ -35,7 +35,7 @@ export default function Panel({
 			}
 		} else {
 			buttonText = `Other ${
-				config.type == "currency" ? currencies[userSettings.currency] : distanceUnits[userSettings.distanceUnit]
+				config.type === "currency" ? currencies[userSettings.currency] : distanceUnits[userSettings.distanceUnit]
 			}`;
 			colour = "primary";
 		}

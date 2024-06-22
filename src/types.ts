@@ -18,5 +18,6 @@ export type ValidDistanceUnits = "Miles" | "Kilometers";
 
 // The configuration for a panel, if defined then a value must be provided
 export type PanelConfig = {
-	type: "currency" | "distance";
+	type: PanelConfigType;
 } & ({ defined: true; value: number } | { defined: false });
+export type PanelConfigType = "currency" | "distance";
