@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, Skeleton } from "@nextui-org/react";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -49,6 +49,9 @@ export default function PersonPage({
 
 	return (
 		<>
+			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+				<p className="text-xl">{personData.name}</p>
+			</Skeleton>
 			<UnpaidCard
 				asSkeleton={asSkeleton}
 				balance={personData.distance * userSettings.costPerDistance}
