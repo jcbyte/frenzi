@@ -19,8 +19,8 @@ export default function PeopleList({
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(person) => {
-				navigate(`/person/${person}`);
+			onRowAction={(personIndex) => {
+				navigate(`/person/${personIndex}`);
 			}}
 			className="w-fit min-w-96"
 			aria-label="People's Miles"

@@ -10,8 +10,9 @@ export default function PersonPage({
 	peopleData: PersonData[];
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
-	const { person } = useParams();
+	const { personIndex: personIndexStr } = useParams();
+	var personIndex: number = Number(personIndexStr);
 
 	// TODO this page
-	return <div>PersonPage for {person}</div>;
+	return <div>PersonPage for {!asSkeleton ? peopleData[personIndex].name : "a skele is loading"}</div>;
 }

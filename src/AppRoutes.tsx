@@ -31,7 +31,7 @@ export default function AppRoutes({
 								}
 							/>
 							<Route
-								path="person/:person"
+								path="person/:personIndex"
 								element={<PersonPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />}
 							/>
 							<Route path="settings" element={<SettingsPage asSkeleton={!dataLoaded} />} />
