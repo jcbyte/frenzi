@@ -64,7 +64,7 @@ export default function PersonPage({
 				balance={personData.distance * userSettings.costPerDistance}
 				distance={personData.distance}
 			/>
-			<PanelGrid />
+			<PanelGrid asSkeleton={asSkeleton} person={personData} setPeopleData={setPeopleData} />
 			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
 				Remove
 			</Button>

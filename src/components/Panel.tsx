@@ -4,9 +4,10 @@ import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { PanelConfig } from "../types";
 
-export default function Panel({ config }: { config: PanelConfig }) {
+export default function Panel({ config, onPress }: { config: PanelConfig; onPress: (config: PanelConfig) => void }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
+	// Create the button text and colour from the config provided
 	let buttonText: string = "";
 	let colour: "primary" | "success" | "danger" = "primary";
 
@@ -32,7 +33,14 @@ export default function Panel({ config }: { config: PanelConfig }) {
 
 	return (
 		<div className="relative w-full aspect-square">
-			<Button className="h-full w-full" color={colour} variant="flat">
+			<Button
+				className="h-full w-full"
+				color={colour}
+				variant="flat"
+				onPress={() => {
+					onPress(config);
+				}}
+			>
 				<p className="text-2xl">{buttonText}</p>
 			</Button>
 		</div>
