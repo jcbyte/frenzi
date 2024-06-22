@@ -75,7 +75,7 @@ export default function PersonPage({
 		onOpenChange: onOpenChangeRemoveModal,
 	} = useDisclosure();
 
-	const [setModalValue, setSetModalValue] = useState<number>(0);
+	const [setModalValue, setSetModalValue] = useState<number | undefined>();
 	const {
 		isOpen: isSetModalOpen,
 		onOpen: onOpenSetModal,
@@ -127,10 +127,12 @@ export default function PersonPage({
 							type="number"
 							min={0}
 							className="w-fit min-w-80"
-							value={String(setModalValue)}
+							value={setModalValue ? String(setModalValue.toFixed(userSettings.distanceDecimals)) : ""}
 							endContent={distanceUnits[userSettings.distanceUnit]}
 							onValueChange={(newValue) => {
-								setSetModalValue(Number(newValue));
+								setSetModalValue(
+									newValue ? Number(Number(newValue).toFixed(userSettings.distanceDecimals)) : undefined
+								);
 							}}
 						/>
 						<Input
@@ -138,10 +140,12 @@ export default function PersonPage({
 							type="number"
 							min={0}
 							className="w-fit min-w-80"
-							value={String(setModalValue * userSettings.costPerDistance)}
+							value={setModalValue ? ((setModalValue ?? 0) * userSettings.costPerDistance).toFixed(2) : ""}
 							startContent={currencies[userSettings.currency]}
 							onValueChange={(newValue) => {
-								setSetModalValue(Number(newValue) / userSettings.costPerDistance);
+								setSetModalValue(
+									newValue ? Number((Number(newValue) / userSettings.costPerDistance).toFixed(2)) : undefined
+								);
 							}}
 						/>
 					</ModalBody>
@@ -154,7 +158,7 @@ export default function PersonPage({
 							variant="flat"
 							onPress={() => {
 								// Try and set the persons data
-								trySetPersonData({ ...personData, distance: setModalValue }, setPeopleData)
+								trySetPersonData({ ...personData, distance: setModalValue ?? 0 }, setPeopleData)
 									.then((res) => {
 										// No need for toast feedback as this can be seen directly on card
 										onCloseSetModal();

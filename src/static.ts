@@ -17,5 +17,3 @@ export const DEFAULT_PERSON_DATA: PersonData = {
 // Records for extra data linked to valid settings
 export const currencies: Record<ValidCurrencies, string> = { GBP: "£", USD: "$", EUR: "€" };
 export const distanceUnits: Record<ValidDistanceUnits, string> = { Miles: "mi", Kilometers: "km" };
-
-// TODO make global rounding

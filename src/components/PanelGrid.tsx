@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 import { updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
-import { PanelConfig, PanelConfigType, PersonData } from "../types";
+import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
 import Panel from "./Panel";
 
 // TODO user configure panels
@@ -35,15 +35,18 @@ async function tryApplyPanel(
 	config: PanelConfig,
 	person: PersonData,
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
-	costPerDistance: number
+	userSettings: UserSettings
 ) {
 	if (!config.defined) {
 		throw new Error("Change not defined");
 	}
 
 	// Try and update firestore if accepted then update the local variable
-	let distanceChange: number = config.type == "currency" ? -config.value / costPerDistance : config.value;
-	let newPersonData: PersonData = { ...person, distance: person.distance + distanceChange };
+	let distanceChange: number = config.type == "currency" ? -config.value / userSettings.costPerDistance : config.value;
+	let newPersonData: PersonData = {
+		...person,
+		distance: Number((person.distance + distanceChange).toFixed(userSettings.distanceDecimals)),
+	};
 	return await updatePersonData(newPersonData)
 		.then((res) => {
 			setPeopleData((prev) => {
@@ -60,10 +63,10 @@ function handleTryApplyPanel(
 	config: PanelConfig,
 	person: PersonData,
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
-	costPerDistance: number,
+	userSettings: UserSettings,
 	onCloseOtherModal?: () => void | undefined
 ) {
-	tryApplyPanel(config, person, setPeopleData, costPerDistance)
+	tryApplyPanel(config, person, setPeopleData, userSettings)
 		.then((res) => {
 			// No need for toast feedback as this can be seen directly on card
 			if (onCloseOtherModal) onCloseOtherModal();
@@ -118,7 +121,7 @@ export default function PanelGrid({
 						asSkeleton={asSkeleton}
 						config={config}
 						onPress={(config) => {
-							handleTryApplyPanel(config, person, setPeopleData, userSettings.costPerDistance);
+							handleTryApplyPanel(config, person, setPeopleData, userSettings);
 						}}
 					/>
 				))}
@@ -168,7 +171,13 @@ export default function PanelGrid({
 								startContent={otherModalType === "currency" ? currencies[userSettings.currency] : undefined}
 								endContent={otherModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
 								onValueChange={(newValue) => {
-									setOtherModalValue(newValue ? Number(newValue) : undefined);
+									setOtherModalValue(
+										newValue
+											? Number(
+													Number(newValue).toFixed(otherModalType === "currency" ? 2 : userSettings.distanceDecimals)
+											  )
+											: undefined
+									);
 								}}
 							/>
 						</div>
@@ -190,7 +199,7 @@ export default function PanelGrid({
 									},
 									person,
 									setPeopleData,
-									userSettings.costPerDistance,
+									userSettings,
 									onCloseOtherModal
 								);
 							}}

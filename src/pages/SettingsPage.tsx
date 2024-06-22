@@ -81,7 +81,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					startContent={currencies[userSettings.currency]}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
-							return { ...prev, costPerDistance: Number(newValue) };
+							return { ...prev, costPerDistance: Number(Number(newValue).toFixed(2)) };
 						});
 					}}
 				/>
@@ -98,7 +98,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					value={String(userSettings.distanceDecimals)}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
-							return { ...prev, distanceDecimals: Number(newValue) };
+							return { ...prev, distanceDecimals: Number(Number(newValue).toFixed(0)) };
 						});
 					}}
 				/>
