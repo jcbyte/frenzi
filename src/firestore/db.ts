@@ -163,7 +163,7 @@ export async function addPerson(person: string): Promise<void> {
 }
 
 // Delete person from firestore
-export async function _removePerson(person: string): Promise<void> {
+export async function removePerson(person: string): Promise<void> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw new Error("Not authenticated");

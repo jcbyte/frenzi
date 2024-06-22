@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import PanelGrid from "../components/PanelGrid";
 import UnpaidCard from "../components/UnpaidCard";
-import { _removePerson } from "../firestore/db";
+import { removePerson } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA } from "../static";
 import { PersonData } from "../types";
@@ -20,7 +20,7 @@ async function tryRemovePerson(
 	}
 
 	// Try and remove the person to firestore if accepted then remove them from the local variable
-	return await _removePerson(person)
+	return await removePerson(person)
 		.then((res) => {
 			setPeopleData((prev) => {
 				return prev.filter((personData: PersonData) => personData.name !== person);
