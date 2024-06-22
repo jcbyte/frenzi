@@ -65,7 +65,7 @@ export async function checkRepairFirestore(): Promise<boolean> {
 			throw new Error(err.message);
 		});
 
-	if (nonExistingPeople.length == 0) return false;
+	if (nonExistingPeople.length === 0) return false;
 
 	// Add the document to all these people
 	let peopleRepairedPromise: Promise<void>[] = nonExistingPeople.map(async (person: string) => {
@@ -185,7 +185,7 @@ export async function _removePerson(person: string) {
 	if (!people.includes(person)) {
 		throw new Error("Person does not exists");
 	}
-	people = people.filter((personName: string) => personName != person);
+	people = people.filter((personName: string) => personName !== person);
 
 	// Remove this person and there respective data
 	await Promise.all([

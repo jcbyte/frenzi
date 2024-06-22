@@ -22,7 +22,7 @@ async function tryRemovePerson(
 	return await _removePerson(person)
 		.then((res) => {
 			setPeopleData((prev) => {
-				return prev.filter((personData: PersonData) => personData.name != person);
+				return prev.filter((personData: PersonData) => personData.name !== person);
 			});
 		})
 		.catch((err) => {
