@@ -42,7 +42,6 @@ async function tryApplyPanel(
 	}
 
 	// Try and update firestore if accepted then update the local variable
-	// TODO make sure +/- is correct way round
 	let distanceChange: number = config.type == "currency" ? -config.value / costPerDistance : config.value;
 	let newPersonData: PersonData = { ...person, distance: person.distance + distanceChange };
 	return await updatePersonData(newPersonData)
@@ -187,7 +186,7 @@ export default function PanelGrid({
 									{
 										defined: true,
 										type: otherModalType,
-										value: (otherModalValue ? Number(otherModalValue) : 0) * (otherModalSign ? 1 : -1),
+										value: (otherModalValue ?? 0) * (otherModalSign ? 1 : -1),
 									},
 									person,
 									setPeopleData,
