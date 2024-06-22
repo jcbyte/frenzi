@@ -60,7 +60,7 @@ export default function DashboardPage({
 	} = useDisclosure();
 
 	// Total distance by adding up each persons distance (derived state)
-	var totalDistance: number =
+	let totalDistance: number =
 		peopleData.length > 0 ? peopleData.map((person) => person.distance).reduce((acc, x) => acc + x) : 0;
 
 	return (

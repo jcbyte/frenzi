@@ -49,14 +49,14 @@ export async function getPeopleData(): Promise<PersonData[]> {
 	}
 
 	// Get a list of all peoples names from an array on users profile
-	var people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+	let people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
 		.then((res) => res.data()!.people)
 		.catch((err) => {
 			throw new Error(err.message);
 		});
 
 	// Create an array of promises to return the people data
-	var peopleDataPromises: Promise<PersonData>[] = people.map((person: string) => getPersonData(person));
+	let peopleDataPromises: Promise<PersonData>[] = people.map((person: string) => getPersonData(person));
 
 	// Once all promises have returned then return the array of PersonData which has been retrieved
 	return await Promise.all(peopleDataPromises).catch((err) => {
@@ -87,7 +87,7 @@ export async function addPerson(person: string) {
 	}
 
 	// Get a list of the current people in firestore
-	var people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+	let people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
 		.then((res) => res.data()!.people)
 		.catch((err) => {
 			throw new Error(err.message);
@@ -122,7 +122,7 @@ export async function _removePerson(person: string) {
 	}
 
 	// Get a list of the current people in firestore
-	var people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+	let people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
 		.then((res) => res.data()!.people)
 		.catch((err) => {
 			throw new Error(err.message);

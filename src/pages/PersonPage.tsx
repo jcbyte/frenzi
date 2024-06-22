@@ -12,7 +12,7 @@ export default function PersonPage({
 }) {
 	const { personIndex: personIndexStr } = useParams();
 	// (derived state)
-	var personIndex: number = Number(personIndexStr);
+	let personIndex: number = Number(personIndexStr);
 
 	// TODO this page
 	return <div>PersonPage for {!asSkeleton ? peopleData[personIndex].name : "a skele is loading"}</div>;

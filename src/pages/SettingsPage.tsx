@@ -10,7 +10,7 @@ import { ValidCurrencies, ValidDistanceUnits } from "../types";
 
 // Function to try and sign out with toast feedback
 function trySignOut(navigate: NavigateFunction) {
-	var signOutPromise: Promise<void> = signOutFirebase();
+	let signOutPromise: Promise<void> = signOutFirebase();
 	toast.promise(signOutPromise, {
 		loading: "Signing out",
 		success: "Signed out",
