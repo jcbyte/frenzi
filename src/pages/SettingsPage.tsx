@@ -74,6 +74,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 				<Input
 					label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
 					type="number"
+					min={0}
 					step={0.01}
 					className="w-fit min-w-80"
 					value={String(userSettings.costPerDistance)}
@@ -91,6 +92,9 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					label="Distance decimals"
 					type="number"
 					className="w-fit min-w-80"
+					min={0}
+					max={4}
+					step={1}
 					value={String(userSettings.distanceDecimals)}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
