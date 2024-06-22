@@ -1,4 +1,4 @@
-import { FriendData, UserSettings, ValidCurrencies, ValidDistanceUnits } from "./types";
+import { PersonData, UserSettings, ValidCurrencies, ValidDistanceUnits } from "./types";
 
 // The default user settings when no user logged in or for new users
 export const DEFAULT_SETTINGS: UserSettings = {
@@ -8,8 +8,8 @@ export const DEFAULT_SETTINGS: UserSettings = {
 	costPerDistance: 0.15,
 };
 
-// The default friend data when adding friends
-export const DEFAULT_FRIEND_DATA: FriendData = {
+// The default person data when adding people
+export const DEFAULT_PERSON_DATA: PersonData = {
 	name: "", // This must be set
 	distance: 0,
 };

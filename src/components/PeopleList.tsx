@@ -2,15 +2,15 @@ import { Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableR
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
-import { FriendData } from "../types";
+import { PersonData } from "../types";
 
-// Component displaying the list of friends with there respective unpaid balance and distance
+// Component displaying the list of people with there respective unpaid balance and distance
 export default function PeopleList({
 	asSkeleton = false,
-	friendData,
+	peopleData,
 }: {
 	asSkeleton: boolean;
-	friendData: FriendData[];
+	peopleData: PersonData[];
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
@@ -27,9 +27,9 @@ export default function PeopleList({
 				<TableColumn key={"distance"}>Distance</TableColumn>
 			</TableHeader>
 			<TableBody emptyContent={"No data"}>
-				{/* For each friend add a record to the row */}
-				{(!asSkeleton ? friendData : Array(3).fill({ name: "*", distance: 0 } as FriendData)).map(
-					({ name, distance }: FriendData, i) => (
+				{/* For each person add a record to the row */}
+				{(!asSkeleton ? peopleData : Array(3).fill({ name: "*", distance: 0 } as PersonData)).map(
+					({ name, distance }: PersonData, i) => (
 						<TableRow key={i}>
 							<TableCell>
 								<Skeleton isLoaded={!asSkeleton} className="rounded-lg">

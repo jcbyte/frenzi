@@ -4,16 +4,16 @@ import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
 import SettingsPage from "./pages/SettingsPage";
-import { FriendData } from "./types";
+import { PersonData } from "./types";
 
 export default function AppRoutes({
 	dataLoaded,
-	friendData,
-	setFriendData,
+	peopleData,
+	setPeopleData,
 }: {
 	dataLoaded: boolean;
-	friendData: FriendData[];
-	setFriendData: React.Dispatch<React.SetStateAction<FriendData[]>>;
+	peopleData: PersonData[];
+	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
 	return (
 		<>
@@ -26,7 +26,7 @@ export default function AppRoutes({
 							<Route
 								path=""
 								element={
-									<DashboardPage asSkeleton={!dataLoaded} friendData={friendData} setFriendData={setFriendData} />
+									<DashboardPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
 								}
 							/>
 							<Route path="settings" element={<SettingsPage asSkeleton={!dataLoaded} />} />

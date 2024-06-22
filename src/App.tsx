@@ -4,11 +4,11 @@ import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
 import MyNavbar from "./components/MyNavbar";
-import { getFriendData, getUserSettings, initialiseNewUser, saveUserSettings } from "./firestore/db";
+import { getPeopleData, getUserSettings, initialiseNewUser, saveUserSettings } from "./firestore/db";
 import { auth } from "./firestore/firebase";
 import { UserSettingsContext } from "./globalContexts";
 import { DEFAULT_SETTINGS } from "./static";
-import { FriendData, UserSettings } from "./types";
+import { PersonData, UserSettings } from "./types";
 
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
@@ -16,11 +16,11 @@ export default function App() {
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 	// Flags describing if we are currently getting data from firestore to prevent re saving them on update
 	const retrievingUserSettings = useRef<boolean>(true);
-	const retrievingFriendData = useRef<boolean>(true);
+	const retrievingPeopleData = useRef<boolean>(true);
 
 	// The local copy of data retrieved from firestore
 	const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
-	const [friendData, setFriendData] = useState<FriendData[]>([]);
+	const [peopleData, setPeopleData] = useState<PersonData[]>([]);
 
 	// On mount
 	useEffect(() => {
@@ -38,12 +38,12 @@ export default function App() {
 				// If the user has signed in then we need to load the data from firestore
 				// so set our retrieving data flags
 				retrievingUserSettings.current = true;
-				retrievingFriendData.current = true;
+				retrievingPeopleData.current = true;
 
 				// If this is the first time the user has logged on then setup there files on firestore
 				if (await initialiseNewUser()) {
 					setUserSettings(DEFAULT_SETTINGS);
-					setFriendData([]);
+					setPeopleData([]);
 					setDataLoaded(true);
 				} else {
 					// Retrieve and set data from firestore
@@ -51,8 +51,8 @@ export default function App() {
 						getUserSettings().then((res) => {
 							setUserSettings(res);
 						}),
-						getFriendData().then((res) => {
-							setFriendData(res);
+						getPeopleData().then((res) => {
+							setPeopleData(res);
 						}),
 					];
 
@@ -69,7 +69,7 @@ export default function App() {
 
 				// Data is now loaded so we un set our retrieving data flags
 				retrievingUserSettings.current = false;
-				retrievingFriendData.current = false;
+				retrievingPeopleData.current = false;
 			}
 		});
 	}, []);
@@ -97,7 +97,7 @@ export default function App() {
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
 				{firebaseReady ? (
-					<AppRoutes dataLoaded={dataLoaded} friendData={friendData} setFriendData={setFriendData} />
+					<AppRoutes dataLoaded={dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
 				) : (
 					<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
 				)}
