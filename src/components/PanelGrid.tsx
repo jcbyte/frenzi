@@ -30,8 +30,6 @@ function prepareOtherPanel(config: PanelConfig) {
 	console.log("other modal");
 }
 
-// TODO skeleton layout
-
 export default function PanelGrid({
 	asSkeleton = false,
 	person,
@@ -44,17 +42,19 @@ export default function PanelGrid({
 	// Place each custom panel then place each mandatory panel
 	return (
 		<Card className="min-w-96 grid grid-cols-3 p-1 gap-1">
-			{panels.map((config) => (
+			{panels.map((config, i) => (
 				<Panel
-					asSkeleton={true}
+					key={i}
+					asSkeleton={asSkeleton}
 					config={config}
 					onPress={(config) => {
 						tryApplyPanel(config, person, setPeopleData);
 					}}
 				/>
 			))}
-			{otherPanels.map((config) => (
+			{otherPanels.map((config, i) => (
 				<Panel
+					key={panels.length + i}
 					config={config}
 					onPress={(config) => {
 						prepareOtherPanel(config);
