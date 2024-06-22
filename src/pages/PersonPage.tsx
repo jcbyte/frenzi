@@ -1,4 +1,4 @@
-import { Button, Skeleton } from "@nextui-org/react";
+import { Button, Modal, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -43,6 +43,13 @@ export default function PersonPage({
 	const { personIndex: personIndexStr } = useParams();
 	const navigate = useNavigate();
 
+	const {
+		isOpen: isRemoveModalOpen,
+		onOpen: onOpenRemoveModal,
+		onClose: onCloseRemoveModal,
+		onOpenChange: onOpenChangeRemoveModal,
+	} = useDisclosure();
+
 	// (derived state)
 	let personIndex: number = Number(personIndexStr);
 	let personData: PersonData = !asSkeleton ? peopleData[personIndex] : DEFAULT_PERSON_DATA;
@@ -59,24 +66,44 @@ export default function PersonPage({
 			/>
 			{/* // TODO change distances/balance panel */}
 			{/* // TODO edit button */}
-			<Button
-				color="danger"
-				variant="flat"
-				className="w-fit min-w-40"
-				onClick={() => {
-					// Try and remove the person and give the user a toast response
-					tryRemovePerson(personData.name, peopleData, setPeopleData)
-						.then((res) => {
-							toast.success("Removed");
-							navigate("/");
-						})
-						.catch((err) => {
-							toast.error(`Could not remove: ${err.message}`);
-						});
-				}}
-			>
-				Delete
+			{/* // TODO confirm delete modal */}
+			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
+				Remove
 			</Button>
+
+			<Modal
+				isOpen={isRemoveModalOpen}
+				onOpenChange={onOpenChangeRemoveModal}
+				placement="center"
+				backdrop="blur"
+				className="dark text-foreground"
+			>
+				<ModalContent>
+					<ModalHeader>Remove {personData.name}</ModalHeader>
+					<ModalFooter>
+						<Button color="danger" variant="flat" onPress={onCloseRemoveModal}>
+							Cancel
+						</Button>
+						<Button
+							color="primary"
+							variant="flat"
+							onPress={() => {
+								// Try and remove the person and give the user a toast response
+								tryRemovePerson(personData.name, peopleData, setPeopleData)
+									.then((res) => {
+										toast.success("Removed");
+										navigate("/");
+									})
+									.catch((err) => {
+										toast.error(`Could not remove: ${err.message}`);
+									});
+							}}
+						>
+							Remove
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
 		</>
 	);
 }
