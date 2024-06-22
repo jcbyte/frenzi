@@ -30,6 +30,8 @@ export async function initialiseNewUser(): Promise<boolean> {
 	return false;
 }
 
+// TODO make check/repair firestore function
+
 // Retrieve a singular persons data from to firestore
 async function getPersonData(person: string): Promise<PersonData> {
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
@@ -113,7 +115,6 @@ export async function addPerson(person: string) {
 	]);
 }
 
-// ! UNTESTED
 // Delete person from firestore
 export async function _removePerson(person: string) {
 	// If not logged in then throw an exception
@@ -130,9 +131,9 @@ export async function _removePerson(person: string) {
 
 	// If the person doesn't exists then throw an exception otherwise remove this one and save it
 	if (!people.includes(person)) {
-		throw new Error("Name does not exists");
+		throw new Error("Person does not exists");
 	}
-	people.splice(people.indexOf(person), 1);
+	people = people.filter((personName: string) => personName != person);
 
 	// Remove this person and there respective data
 	await Promise.all([

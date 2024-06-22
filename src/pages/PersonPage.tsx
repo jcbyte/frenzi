@@ -1,10 +1,34 @@
 import { Button } from "@nextui-org/react";
 import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 import UnpaidCard from "../components/UnpaidCard";
+import { _removePerson } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA } from "../static";
 import { PersonData } from "../types";
+
+async function tryRemovePerson(
+	person: string,
+	peopleData: PersonData[],
+	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>
+): Promise<void> {
+	// If this person doesn't exists locally then throw an exception
+	if (!peopleData.map((personData: PersonData) => personData.name).includes(person)) {
+		throw new Error("Person does not exists");
+	}
+
+	// Try and remove the person to firestore if accepted then remove them from the local variable
+	return await _removePerson(person)
+		.then((res) => {
+			setPeopleData((prev) => {
+				return prev.filter((personData: PersonData) => personData.name != person);
+			});
+		})
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+}
 
 export default function PersonPage({
 	asSkeleton = false,
@@ -17,6 +41,7 @@ export default function PersonPage({
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 	const { personIndex: personIndexStr } = useParams();
+	const navigate = useNavigate();
 
 	// (derived state)
 	let personIndex: number = Number(personIndexStr);
@@ -36,8 +61,15 @@ export default function PersonPage({
 				variant="flat"
 				className="w-fit min-w-40"
 				onClick={() => {
-					// TODO delete
-					console.log("delete");
+					// Try and remove the person and give the user a toast response
+					tryRemovePerson(personData.name, peopleData, setPeopleData)
+						.then((res) => {
+							toast.success("Removed");
+							navigate("/");
+						})
+						.catch((err) => {
+							toast.error(`Could not remove: ${err.message}`);
+						});
 				}}
 			>
 				Delete
