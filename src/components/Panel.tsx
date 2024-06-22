@@ -42,19 +42,24 @@ export default function Panel({
 	}
 
 	return (
-		<Skeleton isLoaded={!asSkeleton} className=" rounded-xl">
-			<div className="relative w-full aspect-square">
-				<Button
-					className="h-full w-full"
-					color={colour}
-					variant="flat"
-					onPress={() => {
-						onPress(config);
-					}}
-				>
-					<p className="text-2xl">{buttonText}</p>
-				</Button>
-			</div>{" "}
-		</Skeleton>
+		<>
+			{asSkeleton ? (
+				// Skeleton around the button can cause issues so instead we make a standalone skeleton
+				<Skeleton className="w-full aspect-square rounded-xl" />
+			) : (
+				<div className="relative w-full aspect-square">
+					<Button
+						className="h-full w-full"
+						color={colour}
+						variant="flat"
+						onPress={() => {
+							onPress(config);
+						}}
+					>
+						<p className="text-2xl">{buttonText}</p>
+					</Button>
+				</div>
+			)}
+		</>
 	);
 }
