@@ -74,6 +74,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 				<Input
 					label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
 					type="number"
+					step={0.01}
 					className="w-fit min-w-80"
 					value={String(userSettings.costPerDistance)}
 					startContent={currencies[userSettings.currency]}
