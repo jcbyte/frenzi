@@ -2,6 +2,7 @@ import { Button, Modal, ModalContent, ModalFooter, ModalHeader, Skeleton, useDis
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import PanelGrid from "../components/PanelGrid";
 import UnpaidCard from "../components/UnpaidCard";
 import { _removePerson } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
@@ -63,7 +64,7 @@ export default function PersonPage({
 				balance={personData.distance * userSettings.costPerDistance}
 				distance={personData.distance}
 			/>
-			{/* // TODO change distances/balance panel */}
+			<PanelGrid />
 			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
 				Remove
 			</Button>

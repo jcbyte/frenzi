@@ -15,3 +15,8 @@ export interface UserSettings {
 // List of valid settings (the records for these are in `static.ts`)
 export type ValidCurrencies = "GBP" | "USD" | "EUR";
 export type ValidDistanceUnits = "Miles" | "Kilometers";
+
+// The configuration for a panel, if defined then a value must be provided
+export type PanelConfig = {
+	type: "currency" | "distance";
+} & ({ defined: true; value: number } | { defined: false });
