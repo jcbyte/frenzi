@@ -51,8 +51,7 @@ export default function PersonPage({
 	} = useDisclosure();
 
 	// (derived state)
-	let personIndex: number = Number(personIndexStr);
-	let personData: PersonData = !asSkeleton ? peopleData[personIndex] : DEFAULT_PERSON_DATA;
+	let personData: PersonData = !asSkeleton ? peopleData[Number(personIndexStr)] : DEFAULT_PERSON_DATA;
 
 	return (
 		<>
@@ -66,7 +65,6 @@ export default function PersonPage({
 			/>
 			{/* // TODO change distances/balance panel */}
 			{/* // TODO edit button */}
-			{/* // TODO confirm delete modal */}
 			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
 				Remove
 			</Button>
