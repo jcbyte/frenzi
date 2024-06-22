@@ -26,15 +26,15 @@ export default function PeopleList({
 			aria-label="People's Miles"
 		>
 			<TableHeader>
-				<TableColumn key={"name"}>Name</TableColumn>
-				<TableColumn key={"balance"}>Balance</TableColumn>
-				<TableColumn key={"distance"}>Distance</TableColumn>
+				<TableColumn key="header-name">Name</TableColumn>
+				<TableColumn key="header-balance">Balance</TableColumn>
+				<TableColumn key="header-distance">Distance</TableColumn>
 			</TableHeader>
 			<TableBody emptyContent={"No data"}>
 				{/* For each person add a record to the row */}
 				{(!asSkeleton ? peopleData : Array(3).fill({ name: "*", distance: 0 } as PersonData)).map(
-					({ name, distance }: PersonData) => (
-						<TableRow key={name}>
+					({ name, distance }: PersonData, i) => (
+						<TableRow key={i}>
 							<TableCell>
 								<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 									{name}
