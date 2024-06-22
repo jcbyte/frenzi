@@ -64,7 +64,6 @@ export default function PersonPage({
 				distance={personData.distance}
 			/>
 			{/* // TODO change distances/balance panel */}
-			{/* // TODO edit button */}
 			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
 				Remove
 			</Button>

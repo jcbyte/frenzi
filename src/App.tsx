@@ -4,7 +4,13 @@ import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 import AppRoutes from "./AppRoutes";
 import MyNavbar from "./components/MyNavbar";
-import { getPeopleData, getUserSettings, initialiseNewUser, saveUserSettings } from "./firestore/db";
+import {
+	checkRepairFirestore,
+	getPeopleData,
+	getUserSettings,
+	initialiseNewUser,
+	saveUserSettings,
+} from "./firestore/db";
 import { auth } from "./firestore/firebase";
 import { UserSettingsContext } from "./globalContexts";
 import { DEFAULT_SETTINGS } from "./static";
@@ -35,6 +41,14 @@ export default function App() {
 			setDataLoaded(false);
 
 			if (user) {
+				await checkRepairFirestore()
+					.then((res: boolean) => {
+						if (res) toast.success("Repaired firestore");
+					})
+					.catch((err) => {
+						toast.error(`Error validating and repairing firestore: ${err.message}`);
+					});
+
 				// If the user has signed in then we need to load the data from firestore
 				// so set our retrieving data flags
 				retrievingUserSettings.current = true;

@@ -30,7 +30,59 @@ export async function initialiseNewUser(): Promise<boolean> {
 	return false;
 }
 
-// TODO make check/repair firestore function
+// Check that the firestore database is as expected and repair it if is not
+// returns true if a repair had to be done
+export async function checkRepairFirestore(): Promise<boolean> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	// Get a list of all peoples names from an array on users profile
+	let people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
+		.then((res) => res.data()!.people)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	// Create an array of promises to return the person and if there document exists
+	let peopleExistPromise: Promise<{ name: string; exists: boolean }>[] = people.map(async (person: string) => {
+		return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
+			.then((res) => {
+				return { name: person, exists: res.exists() };
+			})
+			.catch((err) => {
+				throw new Error(err.message);
+			});
+	});
+
+	// Get an array of names of people which are on users profile but do not have a document
+	let nonExistingPeople = await Promise.all(peopleExistPromise)
+		.then((peopleExist) =>
+			peopleExist.filter((personExists) => !personExists.exists).map((personExists) => personExists.name)
+		)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	if (nonExistingPeople.length == 0) return false;
+
+	// Add the document to all these people
+	let peopleRepairedPromise: Promise<void>[] = nonExistingPeople.map(async (person: string) => {
+		await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
+			...DEFAULT_PERSON_DATA,
+			name: person,
+		}).catch((err) => {
+			throw new Error(err.message);
+		});
+	});
+
+	await Promise.all(peopleRepairedPromise).catch((err) => {
+		throw new Error(err.message);
+	});
+
+	return true;
+}
 
 // Retrieve a singular persons data from to firestore
 async function getPersonData(person: string): Promise<PersonData> {
