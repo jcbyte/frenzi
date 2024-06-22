@@ -10,7 +10,7 @@ export default function PeopleList({
 	asSkeleton = false,
 	peopleData,
 }: {
-	asSkeleton: boolean;
+	asSkeleton?: boolean;
 	peopleData: PersonData[];
 }) {
 	const { userSettings } = useContext(UserSettingsContext);

@@ -45,7 +45,7 @@ export default function DashboardPage({
 	peopleData,
 	setPeopleData,
 }: {
-	asSkeleton: boolean;
+	asSkeleton?: boolean;
 	peopleData: PersonData[];
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {

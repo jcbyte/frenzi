@@ -9,7 +9,7 @@ export default function UnpaidCard({
 	balance,
 	distance,
 }: {
-	asSkeleton: boolean;
+	asSkeleton?: boolean;
 	balance: number;
 	distance: number;
 }) {

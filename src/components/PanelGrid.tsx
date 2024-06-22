@@ -37,7 +37,7 @@ export default function PanelGrid({
 	person,
 	setPeopleData,
 }: {
-	asSkeleton: boolean;
+	asSkeleton?: boolean;
 	person: PersonData;
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
@@ -46,6 +46,7 @@ export default function PanelGrid({
 		<Card className="min-w-96 grid grid-cols-3 p-1 gap-1">
 			{panels.map((config) => (
 				<Panel
+					asSkeleton={true}
 					config={config}
 					onPress={(config) => {
 						tryApplyPanel(config, person, setPeopleData);
