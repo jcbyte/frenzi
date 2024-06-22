@@ -1,5 +1,6 @@
 import { Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { PersonData } from "../types";
@@ -13,11 +14,14 @@ export default function PeopleList({
 	peopleData: PersonData[];
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
+	const navigate = useNavigate();
 
 	return (
 		<Table
 			selectionMode="single"
-			onRowAction={(key) => alert(`Open ${key}`) /* // TODO This needs to be implemented*/}
+			onRowAction={(person) => {
+				navigate(`/person/${person}`);
+			}}
 			className="w-fit min-w-96"
 			aria-label="People's Miles"
 		>
@@ -29,8 +33,8 @@ export default function PeopleList({
 			<TableBody emptyContent={"No data"}>
 				{/* For each person add a record to the row */}
 				{(!asSkeleton ? peopleData : Array(3).fill({ name: "*", distance: 0 } as PersonData)).map(
-					({ name, distance }: PersonData, i) => (
-						<TableRow key={i}>
+					({ name, distance }: PersonData) => (
+						<TableRow key={name}>
 							<TableCell>
 								<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 									{name}

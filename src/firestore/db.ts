@@ -55,8 +55,6 @@ export async function getPeopleData(): Promise<PersonData[]> {
 			throw new Error(err.message);
 		});
 
-	// TODO uncaught error when people array has person who does not have a document
-
 	// Create an array of promises to return the people data
 	var peopleDataPromises: Promise<PersonData>[] = people.map((person: string) => getPersonData(person));
 

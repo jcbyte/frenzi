@@ -3,6 +3,7 @@ import AuthorisedRoute from "./components/AuthorisedRoute";
 import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
+import PersonPage from "./pages/PersonPage";
 import SettingsPage from "./pages/SettingsPage";
 import { PersonData } from "./types";
 
@@ -28,6 +29,10 @@ export default function AppRoutes({
 								element={
 									<DashboardPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
 								}
+							/>
+							<Route
+								path="person/:person"
+								element={<PersonPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />}
 							/>
 							<Route path="settings" element={<SettingsPage asSkeleton={!dataLoaded} />} />
 						</Route>
