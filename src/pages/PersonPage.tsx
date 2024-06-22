@@ -1,4 +1,14 @@
-import { Button, Modal, ModalContent, ModalFooter, ModalHeader, Skeleton, useDisclosure } from "@nextui-org/react";
+import {
+	Button,
+	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	Skeleton,
+	useDisclosure,
+} from "@nextui-org/react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,7 +16,7 @@ import PanelGrid from "../components/PanelGrid";
 import UnpaidCard from "../components/UnpaidCard";
 import { removePerson, updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
-import { DEFAULT_PERSON_DATA } from "../static";
+import { DEFAULT_PERSON_DATA, currencies, distanceUnits } from "../static";
 import { PersonData } from "../types";
 
 async function tryRemovePerson(
@@ -111,6 +121,30 @@ export default function PersonPage({
 			>
 				<ModalContent>
 					<ModalHeader>Set {personData.name} Distance</ModalHeader>
+					<ModalBody>
+						<Input
+							label="Distance"
+							type="number"
+							min={0}
+							className="w-fit min-w-80"
+							value={String(setModalValue)}
+							endContent={distanceUnits[userSettings.distanceUnit]}
+							onValueChange={(newValue) => {
+								setSetModalValue(Number(newValue));
+							}}
+						/>
+						<Input
+							label="Balance"
+							type="number"
+							min={0}
+							className="w-fit min-w-80"
+							value={String(setModalValue * userSettings.costPerDistance)}
+							startContent={currencies[userSettings.currency]}
+							onValueChange={(newValue) => {
+								setSetModalValue(Number(newValue) / userSettings.costPerDistance);
+							}}
+						/>
+					</ModalBody>
 					<ModalFooter>
 						<Button color="danger" variant="flat" onPress={onCloseSetModal}>
 							Cancel
