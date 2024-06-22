@@ -100,7 +100,7 @@ export default function PersonPage({
 			<Button
 				color="primary"
 				variant="flat"
-				className="w-fit min-w-40"
+				className="w-fit min-w-80"
 				onClick={() => {
 					setSetModalValue(0);
 					onOpenSetModal();
@@ -108,7 +108,7 @@ export default function PersonPage({
 			>
 				Set Distance
 			</Button>
-			<Button color="danger" variant="flat" className="w-fit min-w-40" onClick={onOpenRemoveModal}>
+			<Button color="danger" variant="flat" className="mt-4 w-fit min-w-40" onClick={onOpenRemoveModal}>
 				Remove
 			</Button>
 
