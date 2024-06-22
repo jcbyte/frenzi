@@ -101,7 +101,7 @@ export async function addPerson(person: string) {
 
 	// Add the person with default data
 	await Promise.all([
-		setDoc(doc(firestore, DB_NAME + "Jk", auth.currentUser!.uid), { people: people }).catch((err) => {
+		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: people }).catch((err) => {
 			throw new Error(err.message);
 		}),
 		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
