@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
-import { PersonData, PersonInternalData, UserSettings } from "../types";
+import { PersonData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
@@ -87,9 +87,7 @@ export async function checkRepairFirestore(): Promise<boolean> {
 // Retrieve a singular persons data from to firestore
 async function getPersonData(person: string): Promise<PersonData> {
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
-		.then((res) => {
-			return { ...(res.data() as PersonInternalData), name: person };
-		})
+		.then((res) => res.data() as PersonData)
 		.catch((err) => {
 			throw new Error(err.message);
 		});

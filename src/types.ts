@@ -1,9 +1,7 @@
 // Type definition for a persons data, the app will store a PersonData[]
-export interface PersonInternalData {
-	distance: number;
-}
-export interface PersonData extends PersonInternalData {
+export interface PersonData {
 	name: string;
+	distance: number;
 }
 
 // Type definition for user settings
