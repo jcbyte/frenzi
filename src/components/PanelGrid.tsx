@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import { updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { PanelConfig, PanelConfigType, PersonData } from "../types";
@@ -33,12 +34,47 @@ const otherPanels: PanelConfig[] = [
 async function tryApplyPanel(
 	config: PanelConfig,
 	person: PersonData,
-	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>
+	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
+	costPerDistance: number
 ) {
-	// TODO apply panel
-	console.log("apply ", config);
+	if (!config.defined) {
+		throw new Error("Change not defined");
+	}
+
+	// Try and update firestore if accepted then update the local variable
+	// TODO make sure +/- is correct way round
+	let distanceChange: number = config.type == "currency" ? -config.value / costPerDistance : config.value;
+	let newPersonData: PersonData = { ...person, distance: person.distance + distanceChange };
+	return await updatePersonData(newPersonData)
+		.then((res) => {
+			setPeopleData((prev) => {
+				return prev.map((personData: PersonData) => (personData.name !== person.name ? personData : newPersonData));
+			});
+		})
+		.catch((err) => {
+			throw new Error(err.message);
+		});
 }
 
+// Call `tryApplyPanel` with toast user feedback
+function handleTryApplyPanel(
+	config: PanelConfig,
+	person: PersonData,
+	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
+	costPerDistance: number,
+	onCloseOtherModal?: () => void | undefined
+) {
+	tryApplyPanel(config, person, setPeopleData, costPerDistance)
+		.then((res) => {
+			// No need for toast feedback as this can be seen directly on card
+			if (onCloseOtherModal) onCloseOtherModal();
+		})
+		.catch((err) => {
+			toast.error(`Could not update: ${err.message}`);
+		});
+}
+
+// Prepare the modal by resetting and set settings for it
 function prepareOtherPanel(
 	config: PanelConfig,
 	setOtherModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
@@ -83,7 +119,7 @@ export default function PanelGrid({
 						asSkeleton={asSkeleton}
 						config={config}
 						onPress={(config) => {
-							tryApplyPanel(config, person, setPeopleData);
+							handleTryApplyPanel(config, person, setPeopleData, userSettings.costPerDistance);
 						}}
 					/>
 				))}
@@ -147,18 +183,17 @@ export default function PanelGrid({
 							variant="flat"
 							onPress={() => {
 								// Try to update the person
-								tryApplyPanel(
-									{ defined: true, type: otherModalType, value: Number(otherModalValue) * (otherModalSign ? 1 : -1) },
+								handleTryApplyPanel(
+									{
+										defined: true,
+										type: otherModalType,
+										value: (otherModalValue ? Number(otherModalValue) : 0) * (otherModalSign ? 1 : -1),
+									},
 									person,
-									setPeopleData
-								)
-									.then((res) => {
-										// No need for toast feedback as this can be seen directly on card
-										onCloseOtherModal();
-									})
-									.catch((err) => {
-										toast.error(`Could not update: ${err.message}`);
-									});
+									setPeopleData,
+									userSettings.costPerDistance,
+									onCloseOtherModal
+								);
 							}}
 						>
 							Save

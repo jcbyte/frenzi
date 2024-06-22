@@ -116,23 +116,20 @@ export async function getPeopleData(): Promise<PersonData[]> {
 	});
 }
 
-// ! UNTESTED
 // Update person data in firestore
-export async function _updatePersonData(personData: PersonData) {
+export async function updatePersonData(personData: PersonData): Promise<void> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw new Error("Not authenticated");
 	}
 
-	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", personData.name), personData).catch(
-		(err) => {
-			throw new Error(err.message);
-		}
-	);
+	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", personData.name), personData).catch((err) => {
+		throw new Error(err.message);
+	});
 }
 
 // Add new person to firestore
-export async function addPerson(person: string) {
+export async function addPerson(person: string): Promise<void> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw new Error("Not authenticated");
@@ -166,7 +163,7 @@ export async function addPerson(person: string) {
 }
 
 // Delete person from firestore
-export async function _removePerson(person: string) {
+export async function _removePerson(person: string): Promise<void> {
 	// If not logged in then throw an exception
 	if (!isAuth()) {
 		throw new Error("Not authenticated");
@@ -217,5 +214,7 @@ export async function saveUserSettings(userSettings: UserSettings): Promise<void
 		throw new Error("Not authenticated");
 	}
 
-	return await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"), userSettings);
+	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"), userSettings).catch((err) => {
+		throw new Error(err.message);
+	});
 }

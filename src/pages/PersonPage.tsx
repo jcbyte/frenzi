@@ -31,6 +31,8 @@ async function tryRemovePerson(
 		});
 }
 
+// TODO set exact value
+
 export default function PersonPage({
 	asSkeleton = false,
 	peopleData,
