@@ -95,25 +95,24 @@ export async function addPerson(person: string) {
 			throw new Error(err.message);
 		});
 
-	// If the person already exists then throw an exception otherwise add the new one and save it
+	// If the person already exists then throw an exception
 	if (people.includes(person)) {
 		throw new Error("Name already exists");
 	}
 	people.push(person);
-	setDoc(doc(firestore, DB_NAME + "Jk", auth.currentUser!.uid), { people: people }).catch((err) => {
-		throw new Error(err.message);
-	});
 
-	// Update the new person to have the given data
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
-		...DEFAULT_PERSON_DATA,
-		name: person,
-	}).catch((err) => {
-		throw new Error(err.message);
-	});
-
-	// TODO uncaught errors possibly as we are not awaiting for some promises?
-	// TODO this could be the same in `_removePerson`
+	// Add the person with default data
+	await Promise.all([
+		setDoc(doc(firestore, DB_NAME + "Jk", auth.currentUser!.uid), { people: people }).catch((err) => {
+			throw new Error(err.message);
+		}),
+		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
+			...DEFAULT_PERSON_DATA,
+			name: person,
+		}).catch((err) => {
+			throw new Error(err.message);
+		}),
+	]);
 }
 
 // ! UNTESTED
@@ -136,14 +135,16 @@ export async function _removePerson(person: string) {
 		throw new Error("Name does not exists");
 	}
 	people.splice(people.indexOf(person), 1);
-	setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: people }).catch((err) => {
-		throw new Error(err.message);
-	});
 
-	// Remove this persons data
-	deleteDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person)).catch((err) => {
-		throw new Error(err.message);
-	});
+	// Remove this person and there respective data
+	await Promise.all([
+		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: people }).catch((err) => {
+			throw new Error(err.message);
+		}),
+		deleteDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person)).catch((err) => {
+			throw new Error(err.message);
+		}),
+	]);
 }
 
 // Retrieve the settings from to firestore
