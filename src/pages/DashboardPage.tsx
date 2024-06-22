@@ -17,11 +17,6 @@ import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA } from "../static";
 import { PersonData } from "../types";
 
-// Function to calculate the total distance by adding up each persons distance
-function getTotalDistance(peopleData: PersonData[]): number {
-	return peopleData.length > 0 ? peopleData.map((person) => person.distance).reduce((acc, x) => acc + x) : 0;
-}
-
 // Function to try and add the new person to firestore
 async function tryAddPerson(
 	person: string,
@@ -64,12 +59,16 @@ export default function DashboardPage({
 		onOpenChange: onOpenChangeAddModal,
 	} = useDisclosure();
 
+	// Total distance by adding up each persons distance (derived state)
+	var totalDistance: number =
+		peopleData.length > 0 ? peopleData.map((person) => person.distance).reduce((acc, x) => acc + x) : 0;
+
 	return (
 		<>
 			<UnpaidCard
 				asSkeleton={asSkeleton}
-				balance={getTotalDistance(peopleData) * userSettings.costPerDistance}
-				distance={getTotalDistance(peopleData)}
+				balance={totalDistance * userSettings.costPerDistance}
+				distance={totalDistance}
 			/>
 			<PeopleList asSkeleton={asSkeleton} peopleData={peopleData} />
 			<Button

@@ -11,6 +11,7 @@ export default function PersonPage({
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
 	const { personIndex: personIndexStr } = useParams();
+	// (derived state)
 	var personIndex: number = Number(personIndexStr);
 
 	// TODO this page
