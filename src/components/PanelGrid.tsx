@@ -43,10 +43,12 @@ function prepareOtherPanel(
 	config: PanelConfig,
 	setOtherModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
 	setOtherModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
+	setOtherModalSign: React.Dispatch<React.SetStateAction<boolean>>,
 	onOpenOtherModal: () => void
 ) {
 	setOtherModalType(config.type);
 	setOtherModalValue(undefined);
+	setOtherModalSign(true);
 	onOpenOtherModal();
 }
 
@@ -63,6 +65,7 @@ export default function PanelGrid({
 
 	const [otherModalType, setOtherModalType] = useState<PanelConfigType>("currency");
 	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);
+	const [otherModalSign, setOtherModalSign] = useState<boolean>(true);
 	const {
 		isOpen: isOtherModalOpen,
 		onOpen: onOpenOtherModal,
@@ -89,7 +92,7 @@ export default function PanelGrid({
 						key={panels.length + i}
 						config={config}
 						onPress={(config) => {
-							prepareOtherPanel(config, setOtherModalType, setOtherModalValue, onOpenOtherModal);
+							prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
 						}}
 					/>
 				))}
@@ -105,18 +108,35 @@ export default function PanelGrid({
 				<ModalContent>
 					<ModalHeader>Other {otherModalType === "currency" ? "Balance" : "Distance"}</ModalHeader>
 					<ModalBody>
-						{/* // TODO Need +- here */}
-						<Input
-							// label="need to set"
-							type="number"
-							className="w-fit min-w-80"
-							value={otherModalValue ? String(otherModalValue) : ""}
-							startContent={otherModalType === "currency" ? currencies[userSettings.currency] : undefined}
-							endContent={otherModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
-							onValueChange={(newValue) => {
-								setOtherModalValue(newValue ? Number(newValue) : undefined);
-							}}
-						/>
+						<div className="flex items-center gap-1">
+							<Button
+								className="min-w-0 aspect-square"
+								variant="flat"
+								color={
+									(otherModalType === "currency" && otherModalSign) ||
+									(otherModalType === "distance" && !otherModalSign)
+										? "success"
+										: "danger"
+								}
+								onClick={() => {
+									setOtherModalSign((prev) => !prev);
+								}}
+							>
+								<p className="text-lg">{otherModalSign ? "+" : "-"}</p>
+							</Button>
+							<Input
+								label={otherModalType === "currency" ? "Balance" : "Distance"}
+								type="number"
+								min={0}
+								className="w-fit min-w-80"
+								value={otherModalValue ? String(otherModalValue) : ""}
+								startContent={otherModalType === "currency" ? currencies[userSettings.currency] : undefined}
+								endContent={otherModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
+								onValueChange={(newValue) => {
+									setOtherModalValue(newValue ? Number(newValue) : undefined);
+								}}
+							/>
+						</div>
 					</ModalBody>
 					<ModalFooter>
 						<Button color="danger" variant="flat" onPress={onCloseOtherModal}>
@@ -128,7 +148,7 @@ export default function PanelGrid({
 							onPress={() => {
 								// Try to update the person
 								tryApplyPanel(
-									{ defined: true, type: otherModalType, value: Number(otherModalValue) },
+									{ defined: true, type: otherModalType, value: Number(otherModalValue) * (otherModalSign ? 1 : -1) },
 									person,
 									setPeopleData
 								)
