@@ -13,7 +13,7 @@ export function readableSignedBalance(
 	digits: number = 2,
 	showPositive: boolean = false
 ): string {
-	return (balance > 0 ? (showPositive ? "+" : "") : "-") + currencies[currency] + Math.abs(balance).toFixed(digits);
+	return (balance >= 0 ? (showPositive ? "+" : "") : "-") + currencies[currency] + Math.abs(balance).toFixed(digits);
 }
 
 // Helper function to show a signed distance number in a nice format
@@ -24,6 +24,6 @@ export function readableSignedDistance(
 	showPositive: boolean = false
 ): string {
 	return (
-		(distance > 0 ? (showPositive ? "+" : "") : "-") + Math.abs(distance).toFixed(digits) + distanceUnits[distanceUnit]
+		(distance >= 0 ? (showPositive ? "+" : "") : "-") + Math.abs(distance).toFixed(digits) + distanceUnits[distanceUnit]
 	);
 }
