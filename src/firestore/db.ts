@@ -1,6 +1,6 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
-import { DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
+import { DEFAULT_PANELS, DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
 import { PanelConfig, PersonData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
@@ -22,7 +22,8 @@ export async function initialiseNewUser(): Promise<boolean> {
 
 	// If it is a new user then set up there firestore
 	if (await isNewUser()) {
-		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"), DEFAULT_SETTINGS);
+		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"), DEFAULT_SETTINGS);
+		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), { data: DEFAULT_PANELS });
 		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: [] });
 		return true;
 	}
@@ -30,6 +31,7 @@ export async function initialiseNewUser(): Promise<boolean> {
 	return false;
 }
 
+// TODO Check settings exist
 // Check that the firestore database is as expected and repair it if is not
 // returns true if a repair had to be done
 export async function checkRepairFirestore(): Promise<boolean> {
