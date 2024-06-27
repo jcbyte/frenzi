@@ -26,7 +26,7 @@ const panels: PanelConfig[] = [
 	{ defined: true, type: "distance", value: -4 },
 ];
 
-const otherPanels: PanelConfig[] = [
+const permanentPanels: PanelConfig[] = [
 	{ defined: false, type: "distance" },
 	{ defined: false, type: "currency" },
 ];
@@ -104,7 +104,7 @@ export default function PanelGrid({
 
 	const [otherModalType, setOtherModalType] = useState<PanelConfigType>("currency");
 	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);
-	const [otherModalSign, setOtherModalSign] = useState<boolean>(true);
+	const [otherModalPositive, setOtherModalSign] = useState<boolean>(true);
 	const {
 		isOpen: isOtherModalOpen,
 		onOpen: onOpenOtherModal,
@@ -112,7 +112,7 @@ export default function PanelGrid({
 		onOpenChange: onOpenChangeOtherModal,
 	} = useDisclosure();
 
-	// Place each custom panel then place each mandatory panel
+	// Place each custom panel then place each permanent panel
 	return (
 		<>
 			<Card className="min-w-96 grid grid-cols-3 p-1 gap-1">
@@ -126,7 +126,7 @@ export default function PanelGrid({
 						}}
 					/>
 				))}
-				{otherPanels.map((config, i) => (
+				{permanentPanels.map((config, i) => (
 					<Panel
 						key={panels.length + i}
 						config={config}
@@ -152,8 +152,8 @@ export default function PanelGrid({
 								className="min-w-0 aspect-square"
 								variant="flat"
 								color={
-									(otherModalType === "currency" && otherModalSign) ||
-									(otherModalType === "distance" && !otherModalSign)
+									(otherModalType === "currency" && otherModalPositive) ||
+									(otherModalType === "distance" && !otherModalPositive)
 										? "success"
 										: "danger"
 								}
@@ -161,7 +161,7 @@ export default function PanelGrid({
 									setOtherModalSign((prev) => !prev);
 								}}
 							>
-								<p className="text-lg">{otherModalSign ? "+" : "-"}</p>
+								<p className="text-lg">{otherModalPositive ? "+" : "-"}</p>
 							</Button>
 							<Input
 								label={otherModalType === "currency" ? "Balance" : "Distance"}
@@ -172,11 +172,18 @@ export default function PanelGrid({
 								startContent={otherModalType === "currency" ? currencies[userSettings.currency] : undefined}
 								endContent={otherModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
 								onValueChange={(newValue) => {
-									setOtherModalValue(
-										newValue
-											? roundTo(newValue, otherModalType === "currency" ? 2 : userSettings.distanceDecimals)
-											: undefined
-									);
+									if (newValue) {
+										let roundedValue = roundTo(
+											newValue,
+											otherModalType === "currency" ? 2 : userSettings.distanceDecimals
+										);
+										if (roundedValue < 0) {
+											setOtherModalSign(false);
+										}
+										setOtherModalValue(Math.abs(roundedValue));
+									} else {
+										setOtherModalValue(undefined);
+									}
 								}}
 							/>
 						</div>
@@ -194,7 +201,7 @@ export default function PanelGrid({
 									{
 										defined: true,
 										type: otherModalType,
-										value: (otherModalValue ?? 0) * (otherModalSign ? 1 : -1),
+										value: (otherModalValue ?? 0) * (otherModalPositive ? 1 : -1),
 									},
 									person,
 									setPeopleData,
