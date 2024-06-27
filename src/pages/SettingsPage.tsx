@@ -9,8 +9,6 @@ import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
 
-// TODO selects are light theme
-
 // Function to try and sign out with toast feedback
 function trySignOut(navigate: NavigateFunction) {
 	let signOutPromise: Promise<void> = signOutFirebase();
@@ -40,7 +38,8 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Select
 					label="Currency"
-					className="w-fit min-w-80"
+					className="dark text-foreground w-fit min-w-80"
+					popoverProps={{ className: "dark text-foreground" }}
 					selectedKeys={[userSettings.currency]}
 					onChange={(newValue): any => {
 						setUserSettings((prev) => {
@@ -59,6 +58,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 				<Select
 					label="Distance units"
 					className="w-fit min-w-80"
+					popoverProps={{ className: "dark text-foreground" }}
 					selectedKeys={[userSettings.distanceUnit]}
 					onChange={(newValue): any => {
 						setUserSettings((prev) => {
