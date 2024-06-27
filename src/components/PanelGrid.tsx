@@ -12,19 +12,11 @@ import {
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { updatePersonData } from "../firestore/db";
-import { UserSettingsContext } from "../globalContexts";
+import { UserPanelsContext, UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
 import Panel from "./Panel";
-
-// TODO user configure panels
-const panels: PanelConfig[] = [
-	{ defined: true, type: "currency", value: 10 },
-	{ defined: true, type: "currency", value: -100 },
-	{ defined: true, type: "distance", value: 6.6 },
-	{ defined: true, type: "distance", value: -4 },
-];
 
 const permanentPanels: PanelConfig[] = [
 	{ defined: false, type: "distance" },
@@ -101,6 +93,7 @@ export default function PanelGrid({
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
+	const { userPanels } = useContext(UserPanelsContext);
 
 	const [otherModalType, setOtherModalType] = useState<PanelConfigType>("currency");
 	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);
@@ -116,7 +109,7 @@ export default function PanelGrid({
 	return (
 		<>
 			<Card className="min-w-96 grid grid-cols-3 p-1 gap-1">
-				{panels.map((config, i) => (
+				{userPanels.map((config, i) => (
 					<Panel
 						key={i}
 						asSkeleton={asSkeleton}
@@ -128,7 +121,7 @@ export default function PanelGrid({
 				))}
 				{permanentPanels.map((config, i) => (
 					<Panel
-						key={panels.length + i}
+						key={userPanels.length + i}
 						config={config}
 						onPress={(config) => {
 							prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);

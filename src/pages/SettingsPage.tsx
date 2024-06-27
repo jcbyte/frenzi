@@ -9,6 +9,8 @@ import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
 
+// TODO modify panels
+
 // Function to try and sign out with toast feedback
 function trySignOut(navigate: NavigateFunction) {
 	let signOutPromise: Promise<void> = signOutFirebase();

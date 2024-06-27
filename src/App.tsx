@@ -1,4 +1,4 @@
-import { Spinner } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
@@ -7,14 +7,15 @@ import MyNavbar from "./components/MyNavbar";
 import {
 	checkRepairFirestore,
 	getPeopleData,
+	getUserPanels,
 	getUserSettings,
 	initialiseNewUser,
 	saveUserSettings,
 } from "./firestore/db";
 import { auth } from "./firestore/firebase";
-import { UserSettingsContext } from "./globalContexts";
-import { DEFAULT_SETTINGS } from "./static";
-import { PersonData, UserSettings } from "./types";
+import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
+import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
+import { PanelConfig, PersonData, UserSettings } from "./types";
 
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
@@ -26,6 +27,7 @@ export default function App() {
 
 	// The local copy of data retrieved from firestore
 	const [userSettings, setUserSettings] = useState<UserSettings>(DEFAULT_SETTINGS);
+	const [userPanels, setUserPanels] = useState<PanelConfig[]>(DEFAULT_PANELS);
 	const [peopleData, setPeopleData] = useState<PersonData[]>([]);
 
 	// On mount
@@ -109,12 +111,14 @@ export default function App() {
 
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
-				{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
-				{firebaseReady ? (
-					<AppRoutes dataLoaded={dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
-				) : (
-					<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
-				)}
+				<UserPanelsContext.Provider value={{ userPanels, setUserPanels }}>
+					{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
+					{firebaseReady ? (
+						<AppRoutes dataLoaded={dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
+					) : (
+						<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
+					)}
+				</UserPanelsContext.Provider>
 			</UserSettingsContext.Provider>
 
 			<Toaster
@@ -125,6 +129,12 @@ export default function App() {
 						backgroundColor: "#18181b",
 						color: "#ecedee",
 					},
+				}}
+			/>
+
+			<Button
+				onClick={async () => {
+					console.log(await getUserPanels());
 				}}
 			/>
 		</>
