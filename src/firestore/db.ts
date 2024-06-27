@@ -200,7 +200,7 @@ export async function getUserSettings(): Promise<UserSettings> {
 		throw new Error("Not authenticated");
 	}
 
-	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"))
+	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"))
 		.then((res) => res.data() as UserSettings)
 		.catch((err) => {
 			throw new Error(err.message);
@@ -214,7 +214,7 @@ export async function saveUserSettings(userSettings: UserSettings): Promise<void
 		throw new Error("Not authenticated");
 	}
 
-	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "data"), userSettings).catch((err) => {
+	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"), userSettings).catch((err) => {
 		throw new Error(err.message);
 	});
 }
