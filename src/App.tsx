@@ -16,6 +16,8 @@ import { UserSettingsContext } from "./globalContexts";
 import { DEFAULT_SETTINGS } from "./static";
 import { PersonData, UserSettings } from "./types";
 
+// TODO utils functions (+/-£X.XX, rounding, etc)
+
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);

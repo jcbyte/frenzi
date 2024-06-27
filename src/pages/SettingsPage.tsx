@@ -6,6 +6,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
+import { roundTo } from "../tools/utils";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
 
 // Function to try and sign out with toast feedback
@@ -81,7 +82,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					startContent={currencies[userSettings.currency]}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
-							return { ...prev, costPerDistance: Number(Number(newValue).toFixed(2)) };
+							return { ...prev, costPerDistance: roundTo(newValue, 2) };
 						});
 					}}
 				/>
@@ -98,7 +99,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					value={String(userSettings.distanceDecimals)}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
-							return { ...prev, distanceDecimals: Number(Number(newValue).toFixed(0)) };
+							return { ...prev, distanceDecimals: roundTo(newValue, 0) };
 						});
 					}}
 				/>

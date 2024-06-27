@@ -17,6 +17,7 @@ import UnpaidCard from "../components/UnpaidCard";
 import { removePerson, updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA, currencies, distanceUnits } from "../static";
+import { roundTo } from "../tools/utils";
 import { PersonData } from "../types";
 
 async function tryRemovePerson(
@@ -127,12 +128,10 @@ export default function PersonPage({
 							type="number"
 							min={0}
 							className="w-fit min-w-80"
-							value={setModalValue ? String(setModalValue.toFixed(userSettings.distanceDecimals)) : ""}
+							value={setModalValue ? setModalValue.toFixed(userSettings.distanceDecimals) : ""}
 							endContent={distanceUnits[userSettings.distanceUnit]}
 							onValueChange={(newValue) => {
-								setSetModalValue(
-									newValue ? Number(Number(newValue).toFixed(userSettings.distanceDecimals)) : undefined
-								);
+								setSetModalValue(newValue ? roundTo(newValue, userSettings.distanceDecimals) : undefined);
 							}}
 						/>
 						<Input
@@ -143,9 +142,7 @@ export default function PersonPage({
 							value={setModalValue ? ((setModalValue ?? 0) * userSettings.costPerDistance).toFixed(2) : ""}
 							startContent={currencies[userSettings.currency]}
 							onValueChange={(newValue) => {
-								setSetModalValue(
-									newValue ? Number((Number(newValue) / userSettings.costPerDistance).toFixed(2)) : undefined
-								);
+								setSetModalValue(newValue ? roundTo(Number(newValue) / userSettings.costPerDistance, 2) : undefined);
 							}}
 						/>
 					</ModalBody>

@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
+import { roundTo } from "../tools/utils";
 import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
 import Panel from "./Panel";
 
@@ -45,7 +46,7 @@ async function tryApplyPanel(
 	let distanceChange: number = config.type == "currency" ? -config.value / userSettings.costPerDistance : config.value;
 	let newPersonData: PersonData = {
 		...person,
-		distance: Number((person.distance + distanceChange).toFixed(userSettings.distanceDecimals)),
+		distance: roundTo(person.distance + distanceChange, userSettings.distanceDecimals),
 	};
 	return await updatePersonData(newPersonData)
 		.then((res) => {
@@ -173,9 +174,7 @@ export default function PanelGrid({
 								onValueChange={(newValue) => {
 									setOtherModalValue(
 										newValue
-											? Number(
-													Number(newValue).toFixed(otherModalType === "currency" ? 2 : userSettings.distanceDecimals)
-											  )
+											? roundTo(newValue, otherModalType === "currency" ? 2 : userSettings.distanceDecimals)
 											: undefined
 									);
 								}}

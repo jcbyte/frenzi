@@ -15,6 +15,7 @@ import UnpaidCard from "../components/UnpaidCard";
 import { addPerson } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA } from "../static";
+import { roundTo } from "../tools/utils";
 import { PersonData } from "../types";
 
 // Function to try and add the new person to firestore
@@ -60,10 +61,9 @@ export default function DashboardPage({
 	} = useDisclosure();
 
 	// Total distance by adding up each persons distance (derived state)
-	let totalDistance: number = Number(
-		(peopleData.length > 0 ? peopleData.map((person) => person.distance).reduce((acc, x) => acc + x) : 0).toFixed(
-			userSettings.distanceDecimals
-		)
+	let totalDistance: number = roundTo(
+		peopleData.length > 0 ? peopleData.map((person) => person.distance).reduce((acc, x) => acc + x) : 0,
+		userSettings.distanceDecimals
 	);
 
 	return (
