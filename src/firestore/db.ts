@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from "@firebase/firestore";
 import { deleteDoc } from "firebase/firestore";
 import { DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
-import { PersonData, UserSettings } from "../types";
+import { PanelConfig, PersonData, UserSettings } from "../types";
 import { auth, firestore, isAuth } from "./firebase";
 
 const DB_NAME = "frenzi";
@@ -217,4 +217,32 @@ export async function saveUserSettings(userSettings: UserSettings): Promise<void
 	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"), userSettings).catch((err) => {
 		throw new Error(err.message);
 	});
+}
+
+// Retrieve the panels from to firestore
+export async function getUserPanels(): Promise<PanelConfig[]> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"))
+		.then((res) => res.data()!.data as PanelConfig[])
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+}
+
+// Save the panels back to firestore
+export async function saveUserPanels(userPanels: PanelConfig[]): Promise<void> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
+	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), { data: userPanels }).catch(
+		(err) => {
+			throw new Error(err.message);
+		}
+	);
 }
