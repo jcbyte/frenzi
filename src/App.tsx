@@ -1,4 +1,4 @@
-import { Button, Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
@@ -16,6 +16,8 @@ import { auth } from "./firestore/firebase";
 import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
+
+// TODO load panels from firebase
 
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
@@ -59,6 +61,7 @@ export default function App() {
 				// If this is the first time the user has logged on then setup there files on firestore
 				if (await initialiseNewUser()) {
 					setUserSettings(DEFAULT_SETTINGS);
+					setUserPanels(DEFAULT_PANELS);
 					setPeopleData([]);
 					setDataLoaded(true);
 				} else {
@@ -66,6 +69,9 @@ export default function App() {
 					let getDataPromises: Promise<void>[] = [
 						getUserSettings().then((res) => {
 							setUserSettings(res);
+						}),
+						getUserPanels().then((res) => {
+							setUserPanels(res);
 						}),
 						getPeopleData().then((res) => {
 							setPeopleData(res);
@@ -129,12 +135,6 @@ export default function App() {
 						backgroundColor: "#18181b",
 						color: "#ecedee",
 					},
-				}}
-			/>
-
-			<Button
-				onClick={async () => {
-					console.log(await getUserPanels());
 				}}
 			/>
 		</>
