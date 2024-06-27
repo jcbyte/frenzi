@@ -8,10 +8,12 @@ import { PanelConfig } from "../types";
 export default function Panel({
 	asSkeleton = false,
 	config,
+	defined = true,
 	onPress,
 }: {
 	asSkeleton?: boolean;
 	config: PanelConfig;
+	defined?: boolean;
 	onPress: (config: PanelConfig) => void;
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
@@ -21,8 +23,8 @@ export default function Panel({
 	let colour: "primary" | "success" | "danger" | "default" = "default";
 
 	if (!asSkeleton) {
-		if (config.defined) {
-			let sign: boolean = (config.value ?? 0) >= 0;
+		if (defined) {
+			let sign: boolean = config.value >= 0;
 
 			if (config.type === "currency") {
 				buttonText = readableSignedBalance(config.value, userSettings.currency, undefined, true);

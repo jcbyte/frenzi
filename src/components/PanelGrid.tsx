@@ -19,8 +19,8 @@ import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types
 import Panel from "./Panel";
 
 const permanentPanels: PanelConfig[] = [
-	{ defined: false, type: "distance" },
-	{ defined: false, type: "currency" },
+	{ type: "distance", value: 0 },
+	{ type: "currency", value: 0 },
 ];
 
 // Function to try and update the person in firestore with the updated values
@@ -30,10 +30,6 @@ async function tryApplyPanel(
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
 	userSettings: UserSettings
 ) {
-	if (!config.defined) {
-		throw new Error("Change not defined");
-	}
-
 	// Try and update firestore if accepted then update the local variable
 	let distanceChange: number = config.type == "currency" ? -config.value / userSettings.costPerDistance : config.value;
 	let newPersonData: PersonData = {
@@ -123,6 +119,7 @@ export default function PanelGrid({
 					<Panel
 						key={userPanels.length + i}
 						config={config}
+						defined={false}
 						onPress={(config) => {
 							prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
 						}}
@@ -192,7 +189,6 @@ export default function PanelGrid({
 								// Try to update the person
 								handleTryApplyPanel(
 									{
-										defined: true,
 										type: otherModalType,
 										value: (otherModalValue ?? 0) * (otherModalPositive ? 1 : -1),
 									},

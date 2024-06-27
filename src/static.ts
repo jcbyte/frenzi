@@ -14,13 +14,12 @@ export const DEFAULT_PERSON_DATA: PersonData = {
 	distance: 0,
 };
 
-// TODO do not need defined as we can specify this within the page with permanent panels
 // The default panels to show on the panel page
 export const DEFAULT_PANELS: PanelConfig[] = [
-	{ defined: true, type: "distance", value: 5 },
-	{ defined: true, type: "distance", value: 10 },
-	{ defined: true, type: "distance", value: 20 },
-	{ defined: true, type: "currency", value: 10 },
+	{ type: "distance", value: 5 },
+	{ type: "distance", value: 10 },
+	{ type: "distance", value: 20 },
+	{ type: "currency", value: 10 },
 ];
 
 // Records for extra data linked to valid settings
