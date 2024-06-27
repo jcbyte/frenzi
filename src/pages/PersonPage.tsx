@@ -76,7 +76,8 @@ export default function PersonPage({
 		onOpenChange: onOpenChangeRemoveModal,
 	} = useDisclosure();
 
-	const [setModalValue, setSetModalValue] = useState<number | undefined>();
+	const [setModalDistance, setSetModalDistance] = useState<number | undefined>();
+	const [setModalBalance, setSetModalBalance] = useState<number | undefined>();
 	const {
 		isOpen: isSetModalOpen,
 		onOpen: onOpenSetModal,
@@ -103,7 +104,8 @@ export default function PersonPage({
 				variant="flat"
 				className="w-fit min-w-80"
 				onClick={() => {
-					setSetModalValue(0);
+					setSetModalDistance(undefined);
+					setSetModalBalance(undefined);
 					onOpenSetModal();
 				}}
 			>
@@ -128,10 +130,11 @@ export default function PersonPage({
 							type="number"
 							min={0}
 							className="w-fit min-w-80"
-							value={setModalValue ? setModalValue.toFixed(userSettings.distanceDecimals) : ""}
+							value={setModalDistance ? String(setModalDistance) : ""}
 							endContent={distanceUnits[userSettings.distanceUnit]}
 							onValueChange={(newValue) => {
-								setSetModalValue(newValue ? roundTo(newValue, userSettings.distanceDecimals) : undefined);
+								setSetModalDistance(newValue ? roundTo(newValue, userSettings.distanceDecimals) : undefined);
+								setSetModalBalance(newValue ? roundTo(Number(newValue) / userSettings.costPerDistance, 2) : undefined);
 							}}
 						/>
 						<Input
@@ -139,10 +142,15 @@ export default function PersonPage({
 							type="number"
 							min={0}
 							className="w-fit min-w-80"
-							value={setModalValue ? ((setModalValue ?? 0) * userSettings.costPerDistance).toFixed(2) : ""}
+							value={setModalBalance ? String(setModalBalance) : ""}
 							startContent={currencies[userSettings.currency]}
 							onValueChange={(newValue) => {
-								setSetModalValue(newValue ? roundTo(Number(newValue) / userSettings.costPerDistance, 2) : undefined);
+								setSetModalBalance(newValue ? roundTo(newValue, 2) : undefined);
+								setSetModalDistance(
+									newValue
+										? roundTo(Number(newValue) * userSettings.costPerDistance, userSettings.distanceDecimals)
+										: undefined
+								);
 							}}
 						/>
 					</ModalBody>
@@ -155,7 +163,7 @@ export default function PersonPage({
 							variant="flat"
 							onPress={() => {
 								// Try and set the persons data
-								trySetPersonData({ ...personData, distance: setModalValue ?? 0 }, setPeopleData)
+								trySetPersonData({ ...personData, distance: setModalDistance ?? 0 }, setPeopleData)
 									.then((res) => {
 										// No need for toast feedback as this can be seen directly on card
 										onCloseSetModal();
