@@ -75,7 +75,7 @@ export default function DashboardPage({
 			/>
 			<PeopleList asSkeleton={asSkeleton} peopleData={peopleData} />
 			<Button
-				color="default"
+				color="primary"
 				variant="flat"
 				className="w-fit min-w-40"
 				onClick={() => {

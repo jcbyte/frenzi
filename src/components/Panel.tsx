@@ -2,6 +2,7 @@ import { Button, Skeleton } from "@nextui-org/react";
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
+import { readableSignedBalance, readableSignedDistance } from "../tools/utils";
 import { PanelConfig } from "../types";
 
 export default function Panel({
@@ -22,15 +23,17 @@ export default function Panel({
 	if (!asSkeleton) {
 		if (config.defined) {
 			let sign: boolean = (config.value ?? 0) >= 0;
-			let value: number = Math.abs(config.value ?? 0);
 
 			if (config.type === "currency") {
-				buttonText = `${sign ? "+" : "-"}${currencies[userSettings.currency]}${value.toFixed(2)}`;
+				buttonText = readableSignedBalance(config.value, userSettings.currency, undefined, true);
 				colour = sign ? "success" : "danger";
 			} else if (config.type === "distance") {
-				buttonText = `${sign ? "+" : "-"}${value.toFixed(userSettings.distanceDecimals)}${
-					distanceUnits[userSettings.distanceUnit]
-				}`;
+				buttonText = readableSignedDistance(
+					config.value,
+					userSettings.distanceUnit,
+					userSettings.distanceDecimals,
+					true
+				);
 				colour = sign ? "danger" : "success";
 			}
 		} else {

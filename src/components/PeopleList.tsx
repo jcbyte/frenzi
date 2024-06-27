@@ -2,7 +2,7 @@ import { Skeleton, Table, TableBody, TableCell, TableColumn, TableHeader, TableR
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserSettingsContext } from "../globalContexts";
-import { currencies, distanceUnits } from "../static";
+import { readableSignedBalance, readableSignedDistance } from "../tools/utils";
 import { PersonData } from "../types";
 
 // Component displaying the list of people with there respective unpaid balance and distance
@@ -42,14 +42,12 @@ export default function PeopleList({
 							</TableCell>
 							<TableCell>
 								<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-									{currencies[userSettings.currency]}
-									{(distance * userSettings.costPerDistance).toFixed(2)}
+									{readableSignedBalance(distance * userSettings.costPerDistance, userSettings.currency)}
 								</Skeleton>
 							</TableCell>
 							<TableCell>
 								<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-									{distance.toFixed(userSettings.distanceDecimals)}
-									{distanceUnits[userSettings.distanceUnit]}
+									{readableSignedDistance(distance, userSettings.distanceUnit, userSettings.distanceDecimals)}
 								</Skeleton>
 							</TableCell>
 						</TableRow>

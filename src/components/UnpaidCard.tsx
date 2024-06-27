@@ -1,7 +1,7 @@
 import { Card, Skeleton } from "@nextui-org/react";
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
-import { currencies, distanceUnits } from "../static";
+import { readableSignedBalance, readableSignedDistance } from "../tools/utils";
 
 // Component displaying an unpaid balance and distance
 export default function UnpaidCard({
@@ -22,18 +22,14 @@ export default function UnpaidCard({
 					<p className="text-base mb-1">Unpaid balance</p>
 
 					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-						<p className="text-5xl">
-							{currencies[userSettings.currency]}
-							{balance.toFixed(2)}
-						</p>
+						<p className="text-5xl">{readableSignedBalance(balance, userSettings.currency)}</p>
 					</Skeleton>
 				</div>
 				<div>
 					<p className="text-base mb-1">Unpaid distance</p>
 					<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 						<p className="text-2xl">
-							{distance.toFixed(userSettings.distanceDecimals)}
-							{distanceUnits[userSettings.distanceUnit]}
+							{readableSignedDistance(distance, userSettings.distanceUnit, userSettings.distanceDecimals)}
 						</p>
 					</Skeleton>
 				</div>
