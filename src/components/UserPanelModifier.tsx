@@ -1,6 +1,17 @@
-import { Select, SelectItem, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import {
+	Input,
+	Select,
+	SelectItem,
+	Table,
+	TableBody,
+	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
+} from "@nextui-org/react";
 import { Key, useCallback, useContext } from "react";
 import { UserPanelsContext } from "../globalContexts";
+import { roundTo } from "../tools/utils";
 import { PanelConfig, PanelConfigType } from "../types";
 
 export default function UserPanelModifier({ asSkeleton }: { asSkeleton?: boolean }) {
@@ -27,10 +38,28 @@ export default function UserPanelModifier({ asSkeleton }: { asSkeleton?: boolean
 						<SelectItem key={"currency"}>Balance</SelectItem>
 						<SelectItem key={"distance"}>Distance</SelectItem>
 					</Select>
+					// TODO Change this from a select to a button we can toggle?
 				);
 			case "value":
-				// TODO set value
-				return <>b</>;
+				return (
+					<Input
+						label={`Value`}
+						type="number"
+						min={0}
+						// step={0.01}
+						value={String(panelConfig.value)}
+						// startContent={currencies[userSettings.currency]}
+						onValueChange={(newValue) => {
+							setUserPanels((prev) => {
+								let newUserPanels: PanelConfig[] = prev.map((panelConfig, i) => {
+									return i != rowNum ? panelConfig : { ...panelConfig, value: roundTo(newValue, 2) };
+								});
+								return newUserPanels;
+							});
+						}}
+					/>
+					// TODO make this properly
+				);
 		}
 	}, []);
 
