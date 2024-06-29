@@ -17,8 +17,6 @@ import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
 
-// TODO load panels from firebase
-
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
@@ -110,6 +108,8 @@ export default function App() {
 				toast.error(`Could not save: ${err.message}`);
 			});
 	}, [userSettings]);
+
+	// TODO update userPanels
 
 	return (
 		<>

@@ -3,13 +3,12 @@ import { IconLogout } from "@tabler/icons-react";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import UserPanelModifier from "../components/UserPanelModifier";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
-
-// TODO modify panels
 
 // Function to try and sign out with toast feedback
 function trySignOut(navigate: NavigateFunction) {
@@ -27,7 +26,7 @@ function trySignOut(navigate: NavigateFunction) {
 		.catch((err) => {});
 }
 
-export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
+export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
 
@@ -108,6 +107,8 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton: boolean }) {
 					}}
 				/>
 			</Skeleton>
+
+			<UserPanelModifier asSkeleton={asSkeleton} />
 
 			<Button
 				color="danger"
