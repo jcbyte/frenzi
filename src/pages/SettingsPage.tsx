@@ -3,7 +3,6 @@ import { IconLogout } from "@tabler/icons-react";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import UserPanelModifier from "../components/UserPanelModifier";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
@@ -107,8 +106,6 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					}}
 				/>
 			</Skeleton>
-
-			<UserPanelModifier asSkeleton={asSkeleton} />
 
 			<Button
 				color="danger"

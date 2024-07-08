@@ -79,6 +79,8 @@ function prepareOtherPanel(
 	onOpenOtherModal();
 }
 
+// TODO create an editable version of this grid to show in settings, or perhaps when an edit button is pressed (this could mean we can have different panels for different users)
+
 export default function PanelGrid({
 	asSkeleton = false,
 	person,
