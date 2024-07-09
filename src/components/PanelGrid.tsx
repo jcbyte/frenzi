@@ -4,20 +4,16 @@ import { UserPanelsContext } from "../globalContexts";
 import { PanelConfig } from "../types";
 import Panel from "./Panel";
 
-const permanentPanels: PanelConfig[] = [
-	{ type: "distance", value: 0 },
-	{ type: "currency", value: 0 },
-];
-// TODO these permanent panels are specific only to main panel grid
-
 export default function PanelGrid({
 	asSkeleton = false,
 	handleTryApplyPanel,
-	handleOpenOtherPanel,
+	extraPanels,
+	handleOpenExtraPanel,
 }: {
 	asSkeleton?: boolean;
 	handleTryApplyPanel: (config: PanelConfig) => void;
-	handleOpenOtherPanel: (config: PanelConfig) => void;
+	extraPanels: PanelConfig[];
+	handleOpenExtraPanel: (config: PanelConfig) => void;
 }) {
 	const { userPanels } = useContext(UserPanelsContext);
 
@@ -35,13 +31,12 @@ export default function PanelGrid({
 						}}
 					/>
 				))}
-				{permanentPanels.map((config, i) => (
+				{extraPanels.map((config, i) => (
 					<Panel
 						key={userPanels.length + i}
 						config={config}
-						defined={false}
 						onPress={(config) => {
-							handleOpenOtherPanel(config);
+							handleOpenExtraPanel(config);
 						}}
 					/>
 				))}

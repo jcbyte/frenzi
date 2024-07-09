@@ -1,10 +1,8 @@
-import { PanelConfig } from "../types";
-import PanelGrid from "./PanelGrid";
-
 export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?: boolean }) {
 	return (
 		<>
-			<PanelGrid
+			// TODO this
+			{/* <PanelGrid
 				asSkeleton={asSkeleton}
 				handleTryApplyPanel={(config: PanelConfig) => {
 					console.log("s");
@@ -14,7 +12,7 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 					console.log("d");
 					//prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
 				}}
-			/>
+			/> */}
 		</>
 	);
 }

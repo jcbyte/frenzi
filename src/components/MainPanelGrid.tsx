@@ -14,8 +14,10 @@ import { updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
-import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
+import { ExtraPanelType, PanelConfig, PersonData, UserSettings } from "../types";
 import PanelGrid from "./PanelGrid";
+
+const extraPanels: ExtraPanelType[] = ["distance", "currency"];
 
 // Function to try and update the person in firestore with the updated values
 async function tryApplyPanel(
@@ -24,6 +26,10 @@ async function tryApplyPanel(
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
 	userSettings: UserSettings
 ) {
+	if (config.extra) {
+		throw new Error("Cannot apply `extra` panel");
+	}
+
 	// Try and update firestore if accepted then update the local variable
 	let distanceChange: number = config.type == "currency" ? -config.value / userSettings.costPerDistance : config.value;
 	let newPersonData: PersonData = {
@@ -60,13 +66,17 @@ function handleTryApplyPanel(
 }
 
 // Prepare the modal by resetting and set settings for it
-function prepareOtherPanel(
+function prepareExtraPanel(
 	config: PanelConfig,
-	setOtherModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
+	setOtherModalType: React.Dispatch<React.SetStateAction<ExtraPanelType>>,
 	setOtherModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
 	setOtherModalSign: React.Dispatch<React.SetStateAction<boolean>>,
 	onOpenOtherModal: () => void
 ) {
+	if (!config.extra) {
+		throw new Error("Cannot prepare a not `extra` panel");
+	}
+
 	setOtherModalType(config.type);
 	setOtherModalValue(undefined);
 	setOtherModalSign(true);
@@ -84,7 +94,7 @@ export default function MainPanelGrid({
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
-	const [otherModalType, setOtherModalType] = useState<PanelConfigType>("currency");
+	const [otherModalType, setOtherModalType] = useState<ExtraPanelType>("currency");
 	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);
 	const [otherModalPositive, setOtherModalSign] = useState<boolean>(true);
 	const {
@@ -102,8 +112,11 @@ export default function MainPanelGrid({
 				handleTryApplyPanel={(config: PanelConfig) => {
 					handleTryApplyPanel(config, person, setPeopleData, userSettings);
 				}}
-				handleOpenOtherPanel={(config: PanelConfig) => {
-					prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
+				extraPanels={extraPanels.map((type: ExtraPanelType) => {
+					return { extra: true, type: type };
+				})}
+				handleOpenExtraPanel={(config: PanelConfig) => {
+					prepareExtraPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
 				}}
 			/>
 
@@ -169,9 +182,10 @@ export default function MainPanelGrid({
 								// Try to update the person
 								handleTryApplyPanel(
 									{
+										extra: false,
 										type: otherModalType,
 										value: (otherModalValue ?? 0) * (otherModalPositive ? 1 : -1),
-									},
+									} as PanelConfig,
 									person,
 									setPeopleData,
 									userSettings,

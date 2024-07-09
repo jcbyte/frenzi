@@ -229,7 +229,11 @@ export async function getUserPanels(): Promise<PanelConfig[]> {
 	}
 
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"))
-		.then((res) => res.data()!.data as PanelConfig[])
+		.then((res) => {
+			return res.data()!.data.map((data: any) => {
+				return { extra: false, ...data };
+			}) as PanelConfig[];
+		})
 		.catch((err) => {
 			throw new Error(err.message);
 		});

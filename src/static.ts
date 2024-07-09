@@ -16,10 +16,10 @@ export const DEFAULT_PERSON_DATA: PersonData = {
 
 // The default panels to show on the panel page
 export const DEFAULT_PANELS: PanelConfig[] = [
-	{ type: "distance", value: 5 },
-	{ type: "distance", value: 10 },
-	{ type: "distance", value: 20 },
-	{ type: "currency", value: 10 },
+	{ extra: false, type: "distance", value: 5 },
+	{ extra: false, type: "distance", value: 10 },
+	{ extra: false, type: "distance", value: 20 },
+	{ extra: false, type: "currency", value: 10 },
 ];
 
 // Records for extra data linked to valid settings

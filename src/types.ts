@@ -17,8 +17,15 @@ export type ValidCurrencies = "GBP" | "USD" | "EUR";
 export type ValidDistanceUnits = "Miles" | "Kilometers";
 
 // The configuration for a panel
-export interface PanelConfig {
-	type: PanelConfigType;
-	value: number;
-}
+export type PanelConfig =
+	| {
+			extra: false;
+			type: PanelConfigType;
+			value: number;
+	  }
+	| {
+			extra: true;
+			type: ExtraPanelType;
+	  };
 export type PanelConfigType = "currency" | "distance";
+export type ExtraPanelType = PanelConfigType | "new";
