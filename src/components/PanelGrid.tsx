@@ -8,6 +8,7 @@ const permanentPanels: PanelConfig[] = [
 	{ type: "distance", value: 0 },
 	{ type: "currency", value: 0 },
 ];
+// TODO these permanent panels are specific only to main panel grid
 
 export default function PanelGrid({
 	asSkeleton = false,

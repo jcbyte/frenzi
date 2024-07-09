@@ -11,7 +11,7 @@ import {
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { updatePersonData } from "../firestore/db";
-import { UserPanelsContext, UserSettingsContext } from "../globalContexts";
+import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
@@ -73,21 +73,16 @@ function prepareOtherPanel(
 	onOpenOtherModal();
 }
 
-// TODO create an editable version of this grid to show in settings, or perhaps when an edit button is pressed (this could mean we can have different panels for different users)
-
 export default function MainPanelGrid({
 	asSkeleton = false,
 	person,
 	setPeopleData,
-	editMode = false,
 }: {
 	asSkeleton?: boolean;
 	person: PersonData;
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
-	editMode?: boolean;
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
-	const { userPanels } = useContext(UserPanelsContext);
 
 	const [otherModalType, setOtherModalType] = useState<PanelConfigType>("currency");
 	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);

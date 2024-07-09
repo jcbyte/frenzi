@@ -3,6 +3,7 @@ import { IconLogout } from "@tabler/icons-react";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import EditablePanelGrid from "../components/EditablePanelGrid";
 import { signOutFirebase } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
@@ -52,6 +53,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					})}
 				</Select>
 			</Skeleton>
+
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Select
 					label="Distance units"
@@ -70,6 +72,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					})}
 				</Select>
 			</Skeleton>
+
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Input
 					label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
@@ -86,6 +89,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					}}
 				/>
 			</Skeleton>
+
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Input
 					label="Distance decimals"
@@ -102,7 +106,9 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					}}
 				/>
 			</Skeleton>
-			// TODO editable panelgrid
+
+			<EditablePanelGrid />
+
 			<Button
 				color="danger"
 				variant="flat"
