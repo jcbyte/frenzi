@@ -22,6 +22,7 @@ export default function Panel({
 
 	if (!asSkeleton) {
 		if (config.extra) {
+			// TODO work this out more nicely
 			buttonText = `Other ${
 				config.type === "currency" ? currencies[userSettings.currency] : distanceUnits[userSettings.distanceUnit]
 			}`;

@@ -1,18 +1,25 @@
+import { ExtraPanelType, PanelConfig } from "../types";
+import PanelGrid from "./PanelGrid";
+
+const extraPanels: ExtraPanelType[] = ["new"];
+
 export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?: boolean }) {
 	return (
 		<>
-			// TODO this
-			{/* <PanelGrid
+			<PanelGrid
 				asSkeleton={asSkeleton}
 				handleTryApplyPanel={(config: PanelConfig) => {
-					console.log("s");
-					//handleTryApplyPanel(config, person, setPeopleData, userSettings);
+					console.log(config);
+					// handleTryApplyPanel(config, person, setPeopleData, userSettings);
 				}}
-				handleOpenOtherPanel={(config: PanelConfig) => {
-					console.log("d");
-					//prepareOtherPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
+				extraPanels={extraPanels.map((type: ExtraPanelType) => {
+					return { extra: true, type: type };
+				})}
+				handleOpenExtraPanel={(config: PanelConfig) => {
+					console.log(config);
+					// prepareExtraPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
 				}}
-			/> */}
+			/>
 		</>
 	);
 }
