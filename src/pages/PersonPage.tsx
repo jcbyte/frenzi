@@ -12,7 +12,7 @@ import {
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-import PanelGrid from "../components/PanelGrid";
+import MainPanelGrid from "../components/MainPanelGrid";
 import UnpaidCard from "../components/UnpaidCard";
 import { removePerson, updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
@@ -98,7 +98,7 @@ export default function PersonPage({
 				balance={personData.distance * userSettings.costPerDistance}
 				distance={personData.distance}
 			/>
-			<PanelGrid asSkeleton={asSkeleton} person={personData} setPeopleData={setPeopleData} />
+			<MainPanelGrid asSkeleton={asSkeleton} person={personData} setPeopleData={setPeopleData} />
 			<Button
 				color="primary"
 				variant="flat"

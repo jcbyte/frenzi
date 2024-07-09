@@ -34,7 +34,6 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 	return (
 		<>
 			<p className="text text-2xl font-thin mb-4">User Settings</p>
-
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Select
 					label="Currency"
@@ -53,7 +52,6 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					})}
 				</Select>
 			</Skeleton>
-
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Select
 					label="Distance units"
@@ -72,7 +70,6 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					})}
 				</Select>
 			</Skeleton>
-
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Input
 					label={`Cost per ${distanceUnits[userSettings.distanceUnit]}`}
@@ -89,7 +86,6 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					}}
 				/>
 			</Skeleton>
-
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<Input
 					label="Distance decimals"
@@ -106,7 +102,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					}}
 				/>
 			</Skeleton>
-
+			// TODO editable panelgrid
 			<Button
 				color="danger"
 				variant="flat"
