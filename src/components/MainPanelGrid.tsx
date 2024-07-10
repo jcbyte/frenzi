@@ -104,7 +104,6 @@ export default function MainPanelGrid({
 		onOpenChange: onOpenChangeExtraModal,
 	} = useDisclosure();
 
-	// Place each custom panel then place each permanent panel
 	return (
 		<>
 			<PanelGrid

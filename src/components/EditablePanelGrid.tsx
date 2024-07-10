@@ -22,16 +22,23 @@ const extraPanels: ExtraPanelType[] = ["new"];
 // TODO add panel
 // TODO remove panel
 
-function handleTrySavePanel(
+// Function to update the panels
+function savePanel(
 	config: PanelConfig,
 	i: number,
 	setUserPanels: React.Dispatch<React.SetStateAction<PanelConfig[]>>,
 	onClosePanelModal?: () => void | undefined
 ) {
-	console.log("dhf");
-	// TODO save
+	setUserPanels((prev) => {
+		let newUserPanels: PanelConfig[] = prev.map((panelConfig: PanelConfig, j: number) => {
+			return j != i ? panelConfig : config;
+		});
+		return newUserPanels;
+	});
+	if (onClosePanelModal) onClosePanelModal();
 }
 
+// Prepare the modal by resetting and set settings for it
 function preparePanelModal(
 	config: PanelConfig,
 	i: number,
@@ -46,7 +53,7 @@ function preparePanelModal(
 	}
 
 	setPanelModalType(config.type as PanelConfigType);
-	setPanelModalValue(config.value);
+	setPanelModalValue(Math.abs(config.value));
 	setPanelModalSign(config.value > 0);
 	setPanelModalIndexRef(i);
 	onOpenPanelModal();
@@ -168,7 +175,7 @@ export default function EditablePanelGrid({
 							variant="flat"
 							onPress={() => {
 								// Try to update the panel
-								handleTrySavePanel(
+								savePanel(
 									{
 										extra: false,
 										type: panelModalType,
