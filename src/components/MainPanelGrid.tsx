@@ -53,12 +53,12 @@ function handleTryApplyPanel(
 	person: PersonData,
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>,
 	userSettings: UserSettings,
-	onCloseOtherModal?: () => void | undefined
+	onCloseExtraModal?: () => void | undefined
 ) {
 	tryApplyPanel(config, person, setPeopleData, userSettings)
 		.then((res) => {
 			// No need for toast feedback as this can be seen directly on card
-			if (onCloseOtherModal) onCloseOtherModal();
+			if (onCloseExtraModal) onCloseExtraModal();
 		})
 		.catch((err) => {
 			toast.error(`Could not update: ${err.message}`);
@@ -68,19 +68,19 @@ function handleTryApplyPanel(
 // Prepare the modal by resetting and set settings for it
 function prepareExtraPanel(
 	config: PanelConfig,
-	setOtherModalType: React.Dispatch<React.SetStateAction<ExtraPanelType>>,
-	setOtherModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
-	setOtherModalSign: React.Dispatch<React.SetStateAction<boolean>>,
-	onOpenOtherModal: () => void
+	setExtraModalType: React.Dispatch<React.SetStateAction<ExtraPanelType>>,
+	setExtraModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
+	setExtraModalSign: React.Dispatch<React.SetStateAction<boolean>>,
+	onOpenExtraModal: () => void
 ) {
 	if (!config.extra) {
 		throw new Error("Cannot prepare a not `extra` panel");
 	}
 
-	setOtherModalType(config.type);
-	setOtherModalValue(undefined);
-	setOtherModalSign(true);
-	onOpenOtherModal();
+	setExtraModalType(config.type);
+	setExtraModalValue(undefined);
+	setExtraModalSign(true);
+	onOpenExtraModal();
 }
 
 export default function MainPanelGrid({
@@ -94,14 +94,14 @@ export default function MainPanelGrid({
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
-	const [otherModalType, setOtherModalType] = useState<ExtraPanelType>("currency");
-	const [otherModalValue, setOtherModalValue] = useState<number | undefined>(undefined);
-	const [otherModalPositive, setOtherModalSign] = useState<boolean>(true);
+	const [extraModalType, setExtraModalType] = useState<ExtraPanelType>("currency");
+	const [extraModalValue, setExtraModalValue] = useState<number | undefined>(undefined);
+	const [extraModalPositive, setExtraModalSign] = useState<boolean>(true);
 	const {
-		isOpen: isOtherModalOpen,
-		onOpen: onOpenOtherModal,
-		onClose: onCloseOtherModal,
-		onOpenChange: onOpenChangeOtherModal,
+		isOpen: isExtraModalOpen,
+		onOpen: onOpenExtraModal,
+		onClose: onCloseExtraModal,
+		onOpenChange: onOpenChangeExtraModal,
 	} = useDisclosure();
 
 	// Place each custom panel then place each permanent panel
@@ -116,63 +116,63 @@ export default function MainPanelGrid({
 					return { extra: true, type: type };
 				})}
 				handleOpenExtraPanel={(config: PanelConfig) => {
-					prepareExtraPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
+					prepareExtraPanel(config, setExtraModalType, setExtraModalValue, setExtraModalSign, onOpenExtraModal);
 				}}
 			/>
 
 			<Modal
-				isOpen={isOtherModalOpen}
-				onOpenChange={onOpenChangeOtherModal}
+				isOpen={isExtraModalOpen}
+				onOpenChange={onOpenChangeExtraModal}
 				placement="center"
 				backdrop="blur"
 				className="dark text-foreground"
 			>
 				<ModalContent>
-					<ModalHeader>Other {otherModalType === "currency" ? "Balance" : "Distance"}</ModalHeader>
+					<ModalHeader>Other {extraModalType === "currency" ? "Balance" : "Distance"}</ModalHeader>
 					<ModalBody>
 						<div className="flex items-center gap-1">
 							<Button
 								className="min-w-0 aspect-square"
 								variant="flat"
 								color={
-									(otherModalType === "currency" && otherModalPositive) ||
-									(otherModalType === "distance" && !otherModalPositive)
+									(extraModalType === "currency" && extraModalPositive) ||
+									(extraModalType === "distance" && !extraModalPositive)
 										? "success"
 										: "danger"
 								}
 								onClick={() => {
-									setOtherModalSign((prev) => !prev);
+									setExtraModalSign((prev) => !prev);
 								}}
 							>
-								<p className="text-lg">{otherModalPositive ? "+" : "-"}</p>
+								<p className="text-lg">{extraModalPositive ? "+" : "-"}</p>
 							</Button>
 							<Input
-								label={otherModalType === "currency" ? "Balance" : "Distance"}
+								label={extraModalType === "currency" ? "Balance" : "Distance"}
 								type="number"
 								min={0}
 								className="w-fit min-w-80"
-								value={otherModalValue ? String(otherModalValue) : ""}
-								startContent={otherModalType === "currency" ? currencies[userSettings.currency] : undefined}
-								endContent={otherModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
+								value={extraModalValue ? String(extraModalValue) : ""}
+								startContent={extraModalType === "currency" ? currencies[userSettings.currency] : undefined}
+								endContent={extraModalType === "distance" ? distanceUnits[userSettings.distanceUnit] : undefined}
 								onValueChange={(newValue) => {
 									if (newValue) {
 										let roundedValue = roundTo(
 											newValue,
-											otherModalType === "currency" ? 2 : userSettings.distanceDecimals
+											extraModalType === "currency" ? 2 : userSettings.distanceDecimals
 										);
 										if (roundedValue < 0) {
-											setOtherModalSign(false);
+											setExtraModalSign(false);
 										}
-										setOtherModalValue(Math.abs(roundedValue));
+										setExtraModalValue(Math.abs(roundedValue));
 									} else {
-										setOtherModalValue(undefined);
+										setExtraModalValue(undefined);
 									}
 								}}
 							/>
 						</div>
 					</ModalBody>
 					<ModalFooter>
-						<Button color="danger" variant="flat" onPress={onCloseOtherModal}>
+						<Button color="danger" variant="flat" onPress={onCloseExtraModal}>
 							Close
 						</Button>
 						<Button
@@ -183,13 +183,13 @@ export default function MainPanelGrid({
 								handleTryApplyPanel(
 									{
 										extra: false,
-										type: otherModalType,
-										value: (otherModalValue ?? 0) * (otherModalPositive ? 1 : -1),
+										type: extraModalType,
+										value: (extraModalValue ?? 0) * (extraModalPositive ? 1 : -1),
 									} as PanelConfig,
 									person,
 									setPeopleData,
 									userSettings,
-									onCloseOtherModal
+									onCloseExtraModal
 								);
 							}}
 						>
