@@ -11,9 +11,9 @@ export default function PanelGrid({
 	handleOpenExtraPanel,
 }: {
 	asSkeleton?: boolean;
-	handleTryApplyPanel: (config: PanelConfig) => void;
+	handleTryApplyPanel: (config: PanelConfig, index: number) => void;
 	extraPanels: PanelConfig[];
-	handleOpenExtraPanel: (config: PanelConfig) => void;
+	handleOpenExtraPanel: (config: PanelConfig, index: number) => void;
 }) {
 	const { userPanels } = useContext(UserPanelsContext);
 
@@ -27,7 +27,7 @@ export default function PanelGrid({
 						asSkeleton={asSkeleton}
 						config={config}
 						onPress={(config) => {
-							handleTryApplyPanel(config);
+							handleTryApplyPanel(config, i);
 						}}
 					/>
 				))}
@@ -36,7 +36,7 @@ export default function PanelGrid({
 						key={userPanels.length + i}
 						config={config}
 						onPress={(config) => {
-							handleOpenExtraPanel(config);
+							handleOpenExtraPanel(config, i);
 						}}
 					/>
 				))}
