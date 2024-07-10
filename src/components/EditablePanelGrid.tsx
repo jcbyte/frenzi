@@ -20,7 +20,6 @@ import PanelGrid from "./PanelGrid";
 const extraPanels: ExtraPanelType[] = ["new"];
 
 // TODO add panel
-// TODO remove panel
 
 // Function to update the panels
 function savePanel(
@@ -32,6 +31,21 @@ function savePanel(
 	setUserPanels((prev) => {
 		let newUserPanels: PanelConfig[] = prev.map((panelConfig: PanelConfig, j: number) => {
 			return j != i ? panelConfig : config;
+		});
+		return newUserPanels;
+	});
+	if (onClosePanelModal) onClosePanelModal();
+}
+
+// Function to remove a panel
+function removePanel(
+	i: number,
+	setUserPanels: React.Dispatch<React.SetStateAction<PanelConfig[]>>,
+	onClosePanelModal?: () => void | undefined
+) {
+	setUserPanels((prev) => {
+		let newUserPanels: PanelConfig[] = prev.filter((panelConfig: PanelConfig, j: number) => {
+			return j != i;
 		});
 		return newUserPanels;
 	});
@@ -121,7 +135,6 @@ export default function EditablePanelGrid({
 								setPanelModalType(newValue.target.value as PanelConfigType);
 							}}
 						>
-							{/* List out the valid distance units defined in `static.ts` */}
 							<SelectItem key={"currency"}>Balance</SelectItem>
 							<SelectItem key={"distance"}>Distance</SelectItem>
 						</Select>
@@ -166,7 +179,18 @@ export default function EditablePanelGrid({
 							/>
 						</div>
 					</ModalBody>
-					<ModalFooter>
+					<ModalFooter className="justify-start">
+						<Button
+							color="warning"
+							variant="flat"
+							onPress={() => {
+								removePanel(panelModalIndexRef, setUserPanels, onClosePanelModal);
+							}}
+						>
+							Remove
+						</Button>
+						{/* To align these buttons below on the right */}
+						<div className="grow" />
 						<Button color="danger" variant="flat" onPress={onClosePanelModal}>
 							Close
 						</Button>
