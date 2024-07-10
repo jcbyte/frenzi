@@ -22,6 +22,9 @@ export const DEFAULT_PANELS: PanelConfig[] = [
 	{ extra: false, type: "currency", value: 10 },
 ];
 
+// The default panel when adding new panels
+export const DEFAULT_PANEL: PanelConfig = { extra: false, type: "currency", value: 10 };
+
 // Records for extra data linked to valid settings
 export const currencies: Record<ValidCurrencies, string> = { GBP: "£", USD: "$", EUR: "€" };
 export const distanceUnits: Record<ValidDistanceUnits, string> = { Miles: "mi", Kilometers: "km" };

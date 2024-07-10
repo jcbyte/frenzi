@@ -14,7 +14,7 @@ import { updatePersonData } from "../firestore/db";
 import { UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
-import { ExtraPanelType, PanelConfig, PersonData, UserSettings } from "../types";
+import { ExtraPanelType, PanelConfig, PanelConfigType, PersonData, UserSettings } from "../types";
 import PanelGrid from "./PanelGrid";
 
 const extraPanels: ExtraPanelType[] = ["distance", "currency"];
@@ -68,7 +68,7 @@ function handleTryApplyPanel(
 // Prepare the modal by resetting and set settings for it
 function prepareExtraPanel(
 	config: PanelConfig,
-	setExtraModalType: React.Dispatch<React.SetStateAction<ExtraPanelType>>,
+	setExtraModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
 	setExtraModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
 	setExtraModalSign: React.Dispatch<React.SetStateAction<boolean>>,
 	onOpenExtraModal: () => void
@@ -77,7 +77,7 @@ function prepareExtraPanel(
 		throw new Error("Cannot prepare a not `extra` panel");
 	}
 
-	setExtraModalType(config.type);
+	setExtraModalType(config.type as PanelConfigType);
 	setExtraModalValue(undefined);
 	setExtraModalSign(true);
 	onOpenExtraModal();
@@ -94,7 +94,7 @@ export default function MainPanelGrid({
 }) {
 	const { userSettings } = useContext(UserSettingsContext);
 
-	const [extraModalType, setExtraModalType] = useState<ExtraPanelType>("currency");
+	const [extraModalType, setExtraModalType] = useState<PanelConfigType>("currency");
 	const [extraModalValue, setExtraModalValue] = useState<number | undefined>(undefined);
 	const [extraModalPositive, setExtraModalSign] = useState<boolean>(true);
 	const {
