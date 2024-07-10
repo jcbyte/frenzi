@@ -31,7 +31,7 @@ async function tryApplyPanel(
 	}
 
 	// Try and update firestore if accepted then update the local variable
-	let distanceChange: number = config.type == "currency" ? -config.value / userSettings.costPerDistance : config.value;
+	let distanceChange: number = config.type === "currency" ? -config.value / userSettings.costPerDistance : config.value;
 	let newPersonData: PersonData = {
 		...person,
 		distance: roundTo(person.distance + distanceChange, userSettings.distanceDecimals),

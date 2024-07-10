@@ -37,7 +37,7 @@ function savePanel(
 ) {
 	setUserPanels((prev) => {
 		let newUserPanels: PanelConfig[] = prev.map((panelConfig: PanelConfig, j: number) => {
-			return j != i ? panelConfig : config;
+			return j !== i ? panelConfig : config;
 		});
 		return newUserPanels;
 	});
@@ -52,7 +52,7 @@ function removePanel(
 ) {
 	setUserPanels((prev) => {
 		let newUserPanels: PanelConfig[] = prev.filter((panelConfig: PanelConfig, j: number) => {
-			return j != i;
+			return j !== i;
 		});
 		return newUserPanels;
 	});
