@@ -45,14 +45,6 @@ export default function App() {
 			setDataLoaded(false);
 
 			if (user) {
-				await checkRepairFirestore()
-					.then((res: boolean) => {
-						if (res) toast.success("Repaired firestore");
-					})
-					.catch((err) => {
-						toast.error(`Error validating and repairing firestore: ${err.message}`);
-					});
-
 				// If the user has signed in then we need to load the data from firestore
 				// so set our retrieving data flags
 				retrievingUserSettings.current = true;
@@ -65,6 +57,15 @@ export default function App() {
 					setPeopleData([]);
 					setDataLoaded(true);
 				} else {
+					// Check the firestore data is valid
+					await checkRepairFirestore()
+						.then((res: boolean) => {
+							if (res) toast.success("Repaired firestore");
+						})
+						.catch((err) => {
+							toast.error(`Error validating and repairing firestore: ${err.message}`);
+						});
+
 					// Retrieve and set data from firestore
 					let getDataPromises: Promise<void>[] = [
 						getUserSettings().then((res) => {

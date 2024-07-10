@@ -20,11 +20,15 @@ export async function initialiseNewUser(): Promise<boolean> {
 		throw new Error("Not authenticated");
 	}
 
+	console.log("aa");
+
 	// If it is a new user then set up there firestore
 	if (await isNewUser()) {
-		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"), DEFAULT_SETTINGS);
-		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), { data: DEFAULT_PANELS });
-		setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: [] });
+		await Promise.all([
+			setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"), DEFAULT_SETTINGS),
+			setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), { data: DEFAULT_PANELS }),
+			setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid), { people: [] }),
+		]);
 		return true;
 	}
 
