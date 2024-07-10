@@ -1,8 +1,7 @@
 import { Button, Skeleton } from "@nextui-org/react";
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
-import { currencies, distanceUnits } from "../static";
-import { readableSignedBalance, readableSignedDistance } from "../tools/utils";
+import { getExtraPanelName, readableSignedBalance, readableSignedDistance } from "../tools/utils";
 import { PanelConfig } from "../types";
 
 export default function Panel({
@@ -22,10 +21,7 @@ export default function Panel({
 
 	if (!asSkeleton) {
 		if (config.extra) {
-			// TODO work this out more nicely
-			buttonText = `Other ${
-				config.type === "currency" ? currencies[userSettings.currency] : distanceUnits[userSettings.distanceUnit]
-			}`;
+			buttonText = getExtraPanelName(config.type, userSettings.currency, userSettings.distanceUnit);
 			colour = "primary";
 		} else {
 			let sign: boolean = config.value >= 0;

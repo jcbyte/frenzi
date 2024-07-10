@@ -1,5 +1,5 @@
 import { currencies, distanceUnits } from "../static";
-import { ValidCurrencies, ValidDistanceUnits } from "../types";
+import { ExtraPanelType, ValidCurrencies, ValidDistanceUnits } from "../types";
 
 // helper function to round a number to a certain number of places
 export function roundTo(x: number | string, places: number): number {
@@ -26,4 +26,16 @@ export function readableSignedDistance(
 	return (
 		(distance >= 0 ? (showPositive ? "+" : "") : "-") + Math.abs(distance).toFixed(digits) + distanceUnits[distanceUnit]
 	);
+}
+
+export function getExtraPanelName(
+	panelType: ExtraPanelType,
+	currency: ValidCurrencies,
+	distanceUnit: ValidDistanceUnits
+): string {
+	if (panelType === "currency") return `Other ${currencies[currency]}`;
+	if (panelType === "distance") return `Other ${distanceUnits[distanceUnit]}`;
+	if (panelType === "new") return "New Panel";
+
+	return "Panel name not defined";
 }
