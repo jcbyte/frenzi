@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import EditablePanelGrid from "../components/EditablePanelGrid";
 import { signOutFirebase } from "../firestore/firebase";
-import { UserSettingsContext } from "../globalContexts";
+import { UserPanelsContext, UserSettingsContext } from "../globalContexts";
 import { currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ValidCurrencies, ValidDistanceUnits } from "../types";
@@ -29,6 +29,7 @@ function trySignOut(navigate: NavigateFunction) {
 export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 	const navigate = useNavigate();
 	const { userSettings, setUserSettings } = useContext(UserSettingsContext);
+	const { setUserPanels } = useContext(UserPanelsContext);
 
 	// Show all modifiable settings in with a component that makes sense
 	// These are all controlled using the `userSettings` state
@@ -107,7 +108,7 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 				/>
 			</Skeleton>
 
-			<EditablePanelGrid />
+			<EditablePanelGrid asSkeleton={asSkeleton} setUserPanels={setUserPanels} />
 
 			<Button
 				color="danger"

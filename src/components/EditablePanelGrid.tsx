@@ -19,13 +19,26 @@ import PanelGrid from "./PanelGrid";
 
 const extraPanels: ExtraPanelType[] = ["new"];
 
-// TODO modals and handler functions
+// TODO add panel
+// TODO remove panel
+
+function handleTrySavePanel(
+	config: PanelConfig,
+	i: number,
+	setUserPanels: React.Dispatch<React.SetStateAction<PanelConfig[]>>,
+	onClosePanelModal?: () => void | undefined
+) {
+	console.log("dhf");
+	// TODO save
+}
 
 function preparePanelModal(
 	config: PanelConfig,
+	i: number,
 	setPanelModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
 	setPanelModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
 	setPanelModalSign: React.Dispatch<React.SetStateAction<boolean>>,
+	setPanelModalIndexRef: React.Dispatch<React.SetStateAction<number>>,
 	onOpenPanelModal: () => void
 ) {
 	if (config.extra) {
@@ -35,15 +48,23 @@ function preparePanelModal(
 	setPanelModalType(config.type as PanelConfigType);
 	setPanelModalValue(config.value);
 	setPanelModalSign(config.value > 0);
+	setPanelModalIndexRef(i);
 	onOpenPanelModal();
 }
 
-export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?: boolean }) {
+export default function EditablePanelGrid({
+	asSkeleton = false,
+	setUserPanels,
+}: {
+	asSkeleton?: boolean;
+	setUserPanels: React.Dispatch<React.SetStateAction<PanelConfig[]>>;
+}) {
 	const { userSettings } = useContext(UserSettingsContext);
 
 	const [panelModalType, setPanelModalType] = useState<PanelConfigType>("currency");
 	const [panelModalValue, setPanelModalValue] = useState<number | undefined>(undefined);
 	const [panelModalPositive, setPanelModalSign] = useState<boolean>(true);
+	const [panelModalIndexRef, setPanelModalIndexRef] = useState<number>(0);
 	const {
 		isOpen: isPanelModalOpen,
 		onOpen: onOpenPanelModal,
@@ -56,7 +77,15 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 			<PanelGrid
 				asSkeleton={asSkeleton}
 				handleTryApplyPanel={(config: PanelConfig, i: number) => {
-					preparePanelModal(config, setPanelModalType, setPanelModalValue, setPanelModalSign, onOpenPanelModal);
+					preparePanelModal(
+						config,
+						i,
+						setPanelModalType,
+						setPanelModalValue,
+						setPanelModalSign,
+						setPanelModalIndexRef,
+						onOpenPanelModal
+					);
 				}}
 				extraPanels={extraPanels.map((type: ExtraPanelType) => {
 					return { extra: true, type: type };
@@ -139,18 +168,16 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 							variant="flat"
 							onPress={() => {
 								// Try to update the panel
-								// TODO
-								// handleTryApplyPanel(
-								// 	{
-								// 		extra: false,
-								// 		type: panelModalConfig,
-								// 		value: (panelModalValue ?? 0) * (panelModalPositive ? 1 : -1),
-								// 	} as PanelConfig,
-								// 	person,
-								// 	setPeopleData,
-								// 	userSettings,
-								// 	onClosePanelModal
-								// );
+								handleTrySavePanel(
+									{
+										extra: false,
+										type: panelModalType,
+										value: (panelModalValue ?? 0) * (panelModalPositive ? 1 : -1),
+									} as PanelConfig,
+									panelModalIndexRef,
+									setUserPanels,
+									onClosePanelModal
+								);
 							}}
 						>
 							Save
