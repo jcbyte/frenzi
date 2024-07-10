@@ -12,14 +12,21 @@ import {
 } from "@nextui-org/react";
 import { useContext, useState } from "react";
 import { UserSettingsContext } from "../globalContexts";
-import { currencies, distanceUnits } from "../static";
+import { currencies, DEFAULT_PANEL, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ExtraPanelType, PanelConfig, PanelConfigType } from "../types";
 import PanelGrid from "./PanelGrid";
 
 const extraPanels: ExtraPanelType[] = ["new"];
 
-// TODO add panel
+// Function to add a new default panel
+function addPanel(setUserPanels: React.Dispatch<React.SetStateAction<PanelConfig[]>>) {
+	setUserPanels((prev) => {
+		let newUserPanels: PanelConfig[] = [...prev];
+		newUserPanels.push(DEFAULT_PANEL);
+		return newUserPanels;
+	});
+}
 
 // Function to update the panels
 function savePanel(
@@ -112,8 +119,7 @@ export default function EditablePanelGrid({
 					return { extra: true, type: type };
 				})}
 				handleOpenExtraPanel={(config: PanelConfig) => {
-					console.log(config);
-					// prepareExtraPanel(config, setOtherModalType, setOtherModalValue, setOtherModalSign, onOpenOtherModal);
+					addPanel(setUserPanels);
 				}}
 			/>
 
