@@ -10,6 +10,7 @@ import {
 	getUserPanels,
 	getUserSettings,
 	initialiseNewUser,
+	saveUserPanels,
 	saveUserSettings,
 } from "./firestore/db";
 import { auth } from "./firestore/firebase";
@@ -109,7 +110,20 @@ export default function App() {
 			});
 	}, [userSettings]);
 
-	// TODO update userPanels
+	// When `userPanels` are changed we need to save them to firestore
+	useEffect(() => {
+		// If they have changed due to loading them then do not save
+		if (retrievingUserSettings.current) return;
+
+		// Save the panels and show toast feedback to user
+		saveUserPanels(userPanels)
+			.then(() => {
+				toast.success("Saved");
+			})
+			.catch((err) => {
+				toast.error(`Could not save: ${err.message}`);
+			});
+	}, [userPanels]);
 
 	return (
 		<>

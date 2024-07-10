@@ -246,9 +246,12 @@ export async function saveUserPanels(userPanels: PanelConfig[]): Promise<void> {
 		throw new Error("Not authenticated");
 	}
 
-	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), { data: userPanels }).catch(
-		(err) => {
-			throw new Error(err.message);
-		}
-	);
+	await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"), {
+		data: userPanels.map((panelConfig: PanelConfig) => {
+			let { extra: _, ...firestorePanelConfig } = panelConfig;
+			return firestorePanelConfig;
+		}),
+	}).catch((err) => {
+		throw new Error(err.message);
+	});
 }
