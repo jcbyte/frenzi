@@ -81,14 +81,9 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 							label="Balance/Distance"
 							popoverProps={{ className: "dark text-foreground" }}
 							selectedKeys={[panelModalType]}
-							// onChange={(newValue) => {
-							// 	setUserPanels((prev) => {
-							// 		let newUserPanels: PanelConfig[] = prev.map((panelConfig, i) => {
-							// 			return i != rowNum ? panelConfig : { ...panelConfig, type: newValue.target.value as PanelConfigType };
-							// 		});
-							// 		return newUserPanels;
-							// 	});
-							//}}
+							onChange={(newValue) => {
+								setPanelModalType(newValue.target.value as PanelConfigType);
+							}}
 						>
 							{/* List out the valid distance units defined in `static.ts` */}
 							<SelectItem key={"currency"}>Balance</SelectItem>
@@ -143,7 +138,8 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 							color="primary"
 							variant="flat"
 							onPress={() => {
-								// Try to update the person
+								// Try to update the panel
+								// TODO
 								// handleTryApplyPanel(
 								// 	{
 								// 		extra: false,
@@ -155,7 +151,6 @@ export default function EditablePanelGrid({ asSkeleton = false }: { asSkeleton?:
 								// 	userSettings,
 								// 	onClosePanelModal
 								// );
-								console.log("udgfb");
 							}}
 						>
 							Save
