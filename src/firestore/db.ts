@@ -31,7 +31,6 @@ export async function initialiseNewUser(): Promise<boolean> {
 	return false;
 }
 
-// TODO Check settings exist
 // Check that the firestore database is as expected and repair it if is not
 // returns true if a repair had to be done
 export async function checkRepairFirestore(): Promise<boolean> {
@@ -39,6 +38,8 @@ export async function checkRepairFirestore(): Promise<boolean> {
 	if (!isAuth()) {
 		throw new Error("Not authenticated");
 	}
+
+	let repairNeeded: boolean = false;
 
 	// Get a list of all peoples names from an array on users profile
 	let people: string[] = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid))
@@ -59,7 +60,7 @@ export async function checkRepairFirestore(): Promise<boolean> {
 	});
 
 	// Get an array of names of people which are on users profile but do not have a document
-	let nonExistingPeople = await Promise.all(peopleExistPromise)
+	let nonExistingPeople: string[] = await Promise.all(peopleExistPromise)
 		.then((peopleExist) =>
 			peopleExist.filter((personExists) => !personExists.exists).map((personExists) => personExists.name)
 		)
@@ -67,23 +68,57 @@ export async function checkRepairFirestore(): Promise<boolean> {
 			throw new Error(err.message);
 		});
 
-	if (nonExistingPeople.length === 0) return false;
+	if (nonExistingPeople.length !== 0) {
+		repairNeeded = true;
 
-	// Add the document to all these people
-	let peopleRepairedPromise: Promise<void>[] = nonExistingPeople.map(async (person: string) => {
-		await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
-			...DEFAULT_PERSON_DATA,
-			name: person,
-		}).catch((err) => {
+		// Add the document to all these people
+		let peopleRepairedPromise: Promise<void>[] = nonExistingPeople.map(async (person: string) => {
+			await setDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person), {
+				...DEFAULT_PERSON_DATA,
+				name: person,
+			}).catch((err) => {
+				throw new Error(err.message);
+			});
+		});
+
+		await Promise.all(peopleRepairedPromise).catch((err) => {
 			throw new Error(err.message);
 		});
-	});
+	}
 
-	await Promise.all(peopleRepairedPromise).catch((err) => {
-		throw new Error(err.message);
-	});
+	// Get if userSettings document exists
+	let userSettingsExist: boolean = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"))
+		.then((res) => {
+			return res.exists();
+		})
+		.catch((err) => {
+			throw new Error(err.message);
+		});
 
-	return true;
+	// If they doesn't then create it
+	if (!userSettingsExist) {
+		repairNeeded = true;
+
+		await saveUserSettings(DEFAULT_SETTINGS);
+	}
+
+	// Get if userPanels document exists and if the data variable is defined
+	let userPanelsExist: boolean = await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "panels"))
+		.then((res) => {
+			return res.exists() && "data" in res.data();
+		})
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	// If it doesn't then create it
+	if (!userPanelsExist) {
+		repairNeeded = true;
+
+		await saveUserPanels(DEFAULT_PANELS);
+	}
+
+	return repairNeeded;
 }
 
 // Retrieve a singular persons data from to firestore
