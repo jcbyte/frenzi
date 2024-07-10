@@ -134,7 +134,7 @@ export default function PersonPage({
 							endContent={distanceUnits[userSettings.distanceUnit]}
 							onValueChange={(newValue) => {
 								setSetModalDistance(newValue ? roundTo(newValue, userSettings.distanceDecimals) : undefined);
-								setSetModalBalance(newValue ? roundTo(Number(newValue) / userSettings.costPerDistance, 2) : undefined);
+								setSetModalBalance(newValue ? roundTo(Number(newValue) * userSettings.costPerDistance, 2) : undefined);
 							}}
 						/>
 						<Input
@@ -148,7 +148,7 @@ export default function PersonPage({
 								setSetModalBalance(newValue ? roundTo(newValue, 2) : undefined);
 								setSetModalDistance(
 									newValue
-										? roundTo(Number(newValue) * userSettings.costPerDistance, userSettings.distanceDecimals)
+										? roundTo(Number(newValue) / userSettings.costPerDistance, userSettings.distanceDecimals)
 										: undefined
 								);
 							}}
