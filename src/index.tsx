@@ -6,6 +6,7 @@ import { BrowserRouter, useNavigate } from "react-router-dom";
 import { NextUIProvider } from "@nextui-org/react";
 import App from "./App";
 import SnazzyBackground from "./background/SnazzyBackground";
+import Signature from "./components/Signature";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -26,6 +27,7 @@ function NextApp() {
 			<main className="dark text-foreground bg-background">
 				<SnazzyBackground />
 				<App />
+				<Signature />
 			</main>
 		</NextUIProvider>
 	);
