@@ -18,6 +18,7 @@ export default function Panel({
 	// Create the button text and colour from the config provided
 	let buttonText: string = "";
 	let colour: "primary" | "success" | "danger" | "default" = "default";
+	let labelText: string | undefined = undefined;
 
 	if (!asSkeleton) {
 		if (config.extra) {
@@ -38,6 +39,8 @@ export default function Panel({
 				);
 				colour = sign ? "danger" : "success";
 			}
+
+			labelText = config.label;
 		}
 	}
 
@@ -56,7 +59,10 @@ export default function Panel({
 							onPress(config);
 						}}
 					>
-						<p className="text-2xl">{buttonText}</p>
+						<div>
+							<p className="text-2xl">{buttonText}</p>
+							<p className="text-xs">{labelText}</p>
+						</div>
 					</Button>
 				</div>
 			)}
