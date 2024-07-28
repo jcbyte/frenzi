@@ -22,6 +22,7 @@ export type PanelConfig =
 			extra: false;
 			type: PanelConfigType;
 			value: number;
+			label?: string;
 	  }
 	| {
 			extra: true;

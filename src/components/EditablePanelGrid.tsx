@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useContext, useState } from "react";
 import { UserSettingsContext } from "../globalContexts";
-import { currencies, DEFAULT_PANEL, distanceUnits } from "../static";
+import { DEFAULT_PANEL, currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
 import { ExtraPanelType, PanelConfig, PanelConfigType } from "../types";
 import PanelGrid from "./PanelGrid";
@@ -65,6 +65,7 @@ function preparePanelModal(
 	i: number,
 	setPanelModalType: React.Dispatch<React.SetStateAction<PanelConfigType>>,
 	setPanelModalValue: React.Dispatch<React.SetStateAction<number | undefined>>,
+	setPanelModalLabel: React.Dispatch<React.SetStateAction<string | undefined>>,
 	setPanelModalSign: React.Dispatch<React.SetStateAction<boolean>>,
 	setPanelModalIndexRef: React.Dispatch<React.SetStateAction<number>>,
 	onOpenPanelModal: () => void
@@ -75,6 +76,7 @@ function preparePanelModal(
 
 	setPanelModalType(config.type as PanelConfigType);
 	setPanelModalValue(Math.abs(config.value));
+	setPanelModalLabel(config.label);
 	setPanelModalSign(config.value > 0);
 	setPanelModalIndexRef(i);
 	onOpenPanelModal();
@@ -91,6 +93,7 @@ export default function EditablePanelGrid({
 
 	const [panelModalType, setPanelModalType] = useState<PanelConfigType>("currency");
 	const [panelModalValue, setPanelModalValue] = useState<number | undefined>(undefined);
+	const [panelModalLabel, setPanelModalLabel] = useState<string | undefined>(undefined);
 	const [panelModalPositive, setPanelModalSign] = useState<boolean>(true);
 	const [panelModalIndexRef, setPanelModalIndexRef] = useState<number>(0);
 	const {
@@ -110,6 +113,7 @@ export default function EditablePanelGrid({
 						i,
 						setPanelModalType,
 						setPanelModalValue,
+						setPanelModalLabel,
 						setPanelModalSign,
 						setPanelModalIndexRef,
 						onOpenPanelModal
@@ -184,6 +188,13 @@ export default function EditablePanelGrid({
 								}}
 							/>
 						</div>
+						<Input
+							label="Label"
+							value={panelModalLabel ?? ""}
+							onValueChange={(newValue) => {
+								setPanelModalLabel(newValue ? newValue : undefined);
+							}}
+						/>
 					</ModalBody>
 					<ModalFooter className="justify-start">
 						<Button
@@ -210,6 +221,7 @@ export default function EditablePanelGrid({
 										extra: false,
 										type: panelModalType,
 										value: (panelModalValue ?? 0) * (panelModalPositive ? 1 : -1),
+										label: panelModalLabel,
 									} as PanelConfig,
 									panelModalIndexRef,
 									setUserPanels,
