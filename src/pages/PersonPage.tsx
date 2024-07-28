@@ -9,6 +9,7 @@ import {
 	Skeleton,
 	useDisclosure,
 } from "@nextui-org/react";
+import { IconShare } from "@tabler/icons-react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -93,11 +94,17 @@ export default function PersonPage({
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
 				<p className="text-xl">{personData.name}</p>
 			</Skeleton>
-			<UnpaidCard
-				asSkeleton={asSkeleton}
-				balance={personData.distance * userSettings.costPerDistance}
-				distance={personData.distance}
-			/>
+			<div className="flex gap-2 items-end">
+				<UnpaidCard
+					asSkeleton={asSkeleton}
+					balance={personData.distance * userSettings.costPerDistance}
+					distance={personData.distance}
+				/>
+				{/* // TODO Share UnpaidCardData via link */}
+				<Button variant="flat" className="!size-12 p-0 min-w-0 min-h-0">
+					<IconShare />
+				</Button>
+			</div>
 			<MainPanelGrid asSkeleton={asSkeleton} person={personData} setPeopleData={setPeopleData} />
 			<Button
 				color="primary"
