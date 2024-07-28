@@ -50,7 +50,7 @@ export default function Panel({
 				// Skeleton around the button can cause issues so instead we make a standalone skeleton
 				<Skeleton className="w-full aspect-square rounded-xl" />
 			) : (
-				<div className="relative w-full aspect-square">
+				<div className="relative w-full max-w-36 aspect-square">
 					<Button
 						className="h-full w-full"
 						color={colour}
@@ -61,7 +61,7 @@ export default function Panel({
 					>
 						<div>
 							<p className="text-2xl">{buttonText}</p>
-							<p className="text-xs">{labelText}</p>
+							<p className="text-xs text-wrap">{labelText}</p>
 						</div>
 					</Button>
 				</div>
