@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import NoPage from "./pages/NoPage";
 import PersonPage from "./pages/PersonPage";
 import SettingsPage from "./pages/SettingsPage";
+import SharedPage from "./pages/SharedPage";
 import { PersonData } from "./types";
 
 export default function AppRoutes({
@@ -38,6 +39,7 @@ export default function AppRoutes({
 						</Route>
 						{/* These pages can be viewed if your are logged in or not */}
 						<Route path="/login" element={<LoginPage />} />
+						<Route path="/shared/:author/:personIndex" element={<SharedPage />} />
 						<Route path="*" element={<NoPage />} />
 					</Routes>
 				</div>
