@@ -221,7 +221,7 @@ export default function EditablePanelGrid({
 										extra: false,
 										type: panelModalType,
 										value: (panelModalValue ?? 0) * (panelModalPositive ? 1 : -1),
-										label: panelModalLabel,
+										...(panelModalLabel && { label: panelModalLabel }),
 									} as PanelConfig,
 									panelModalIndexRef,
 									setUserPanels,

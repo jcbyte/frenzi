@@ -61,7 +61,7 @@ export default function Panel({
 					>
 						<div>
 							<p className="text-2xl">{buttonText}</p>
-							<p className="text-xs text-wrap">{labelText}</p>
+							{labelText && <p className="text-xs text-wrap">{labelText}</p>}
 						</div>
 					</Button>
 				</div>
