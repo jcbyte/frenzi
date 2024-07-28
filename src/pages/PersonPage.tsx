@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MainPanelGrid from "../components/MainPanelGrid";
 import UnpaidCard from "../components/UnpaidCard";
 import { removePerson, updatePersonData } from "../firestore/db";
+import { auth } from "../firestore/firebase";
 import { UserSettingsContext } from "../globalContexts";
 import { DEFAULT_PERSON_DATA, currencies, distanceUnits } from "../static";
 import { roundTo } from "../tools/utils";
@@ -55,6 +56,10 @@ async function trySetPersonData(person: PersonData, setPeopleData: React.Dispatc
 		.catch((err) => {
 			throw new Error(err.message);
 		});
+}
+
+function getSharedLink(personIndex: string | number): string {
+	return `${window.location.origin}/shared/${auth.currentUser!.uid}/${personIndex}`;
 }
 
 export default function PersonPage({
@@ -101,7 +106,13 @@ export default function PersonPage({
 					distance={personData.distance}
 				/>
 				{/* // TODO Share UnpaidCardData via link */}
-				<Button variant="flat" className="!size-12 p-0 min-w-0 min-h-0">
+				<Button
+					variant="flat"
+					className="!size-12 p-0 min-w-0 min-h-0"
+					onClick={() => {
+						console.log(getSharedLink(personIndexStr ?? -1));
+					}}
+				>
 					<IconShare />
 				</Button>
 			</div>
