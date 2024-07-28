@@ -1,6 +1,6 @@
 import { PanelConfig, PersonData, UserSettings, ValidCurrencies, ValidDistanceUnits } from "./types";
 
-export const VERSION = "v1.4";
+export const VERSION = "v1.4.1";
 
 // The default user settings when no user logged in or for new users
 export const DEFAULT_SETTINGS: UserSettings = {
