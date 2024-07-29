@@ -10,10 +10,12 @@ import { PersonData } from "./types";
 
 export default function AppRoutes({
 	dataLoaded,
+	isAuthed,
 	peopleData,
 	setPeopleData,
 }: {
 	dataLoaded: boolean;
+	isAuthed: boolean;
 	peopleData: PersonData[];
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
@@ -23,7 +25,7 @@ export default function AppRoutes({
 				<div className="p-4 flex flex-col gap-2">
 					<Routes>
 						{/* These pages can only be viewed if you are logged in otherwise user will be redirected to login page */}
-						<Route path="/" element={<AuthorisedRoute redirect="/login" />}>
+						<Route path="/" element={<AuthorisedRoute isAuthed={isAuthed} redirect="/login" />}>
 							{/* Shows skeleton for pages until data is loaded */}
 							<Route
 								path=""
@@ -38,7 +40,7 @@ export default function AppRoutes({
 							<Route path="settings" element={<SettingsPage asSkeleton={!dataLoaded} />} />
 						</Route>
 						{/* These pages can be viewed if your are logged in or not */}
-						<Route path="/login" element={<LoginPage />} />
+						<Route path="/login" element={<LoginPage isAuthed={isAuthed} />} />
 						<Route path="/shared/:author/:personIndex" element={<SharedPage />} />
 						<Route path="*" element={<NoPage />} />
 					</Routes>

@@ -11,8 +11,8 @@ export const firestore = getFirestore(firebaseApp);
 export const auth = getAuth();
 auth.useDeviceLanguage();
 
-// ? should this be a state variable within app?
 // Returns whether the user is logged in
+// We should use the state variable within `App.tsx` if we require re-render, using this function will not
 export function isAuth(): boolean {
 	return auth.currentUser != null;
 }

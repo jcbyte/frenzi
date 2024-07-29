@@ -13,7 +13,7 @@ import {
 	saveUserPanels,
 	saveUserSettings,
 } from "./firestore/db";
-import { auth, isAuth } from "./firestore/firebase";
+import { auth } from "./firestore/firebase";
 import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
@@ -21,7 +21,9 @@ import { PanelConfig, PersonData, UserSettings } from "./types";
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);
+	const [isAuthed, setIsAuthed] = useState<boolean>(false);
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
+
 	// Flags describing if we are currently getting data from firestore to prevent re saving them on update
 	const retrievingUserSettings = useRef<boolean>(true);
 	const retrievingPeopleData = useRef<boolean>(true);
@@ -44,6 +46,9 @@ export default function App() {
 			setDataLoaded(false);
 
 			if (user) {
+				// If user state changes and there is a user then set auth to true
+				setIsAuthed(true);
+
 				// If the user has signed in then we need to load the data from firestore
 				// so set our retrieving data flags
 				retrievingUserSettings.current = true;
@@ -92,6 +97,9 @@ export default function App() {
 				// Data is now loaded so we un set our retrieving data flags
 				retrievingUserSettings.current = false;
 				retrievingPeopleData.current = false;
+			} else {
+				// If user state changes but no user then set auth to false
+				setIsAuthed(false);
 			}
 		});
 	}, []);
@@ -128,14 +136,19 @@ export default function App() {
 
 	return (
 		<>
-			<MyNavbar disabled={!(firebaseReady && isAuth())} />
+			<MyNavbar disabled={!isAuthed} />
 
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
 				<UserPanelsContext.Provider value={{ userPanels, setUserPanels }}>
 					{/* Do not show the app until firebase service starts as we do not know if you are logged in until then */}
 					{firebaseReady ? (
-						<AppRoutes dataLoaded={dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
+						<AppRoutes
+							dataLoaded={dataLoaded}
+							isAuthed={isAuthed}
+							peopleData={peopleData}
+							setPeopleData={setPeopleData}
+						/>
 					) : (
 						<Spinner label="Initialising Google Services" color="primary" size="lg" className="w-full mx-auto my-10" />
 					)}
