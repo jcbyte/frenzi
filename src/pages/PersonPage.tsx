@@ -58,6 +58,7 @@ async function trySetPersonData(person: PersonData, setPeopleData: React.Dispatc
 		});
 }
 
+// Function which returns the publicly viewable link to see this data
 function getSharedLink(personIndex: string | number): string {
 	return `${window.location.origin}/shared/${auth.currentUser!.uid}/${personIndex}`;
 }
@@ -109,15 +110,19 @@ export default function PersonPage({
 					variant="flat"
 					className="!size-12 p-0 min-w-0 min-h-0"
 					onClick={() => {
+						// Get link to share and place it inside a ShareData object for the navigator API
 						let sharedLink = getSharedLink(personIndexStr!);
 						let sharedData = {
 							title: "Frenzi",
 							text: "See your milage and current cost",
 							url: sharedLink,
 						};
+
+						// If this can be shared then share it
 						if (navigator.canShare(sharedData)) {
 							navigator.share(sharedData);
 						} else {
+							// Else copy to clipboard and display a confirmation
 							navigator.clipboard.writeText(sharedLink).then(() => {
 								toast.success("Copied link to clipboard");
 							});
