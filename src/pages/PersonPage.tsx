@@ -105,12 +105,18 @@ export default function PersonPage({
 					balance={personData.distance * userSettings.costPerDistance}
 					distance={personData.distance}
 				/>
-				{/* // TODO Share UnpaidCardData via link */}
 				<Button
 					variant="flat"
 					className="!size-12 p-0 min-w-0 min-h-0"
 					onClick={() => {
-						console.log(getSharedLink(personIndexStr ?? -1));
+						navigator.clipboard
+							.writeText(getSharedLink(personIndexStr!))
+							.then(() => {
+								toast.success("Copied link to clipboard");
+							})
+							.catch((err) => {
+								toast.error(`Issue copying to clipboard: ${err.message}`);
+							});
 					}}
 				>
 					<IconShare />
