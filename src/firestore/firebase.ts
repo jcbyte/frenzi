@@ -11,6 +11,7 @@ export const firestore = getFirestore(firebaseApp);
 export const auth = getAuth();
 auth.useDeviceLanguage();
 
+// ? should this be a state variable within app?
 // Returns whether the user is logged in
 export function isAuth(): boolean {
 	return auth.currentUser != null;

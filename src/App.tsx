@@ -13,7 +13,7 @@ import {
 	saveUserPanels,
 	saveUserSettings,
 } from "./firestore/db";
-import { auth } from "./firestore/firebase";
+import { auth, isAuth } from "./firestore/firebase";
 import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
@@ -128,7 +128,7 @@ export default function App() {
 
 	return (
 		<>
-			<MyNavbar />
+			<MyNavbar disabled={!(firebaseReady && isAuth())} />
 
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
