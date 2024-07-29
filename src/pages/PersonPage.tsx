@@ -101,11 +101,7 @@ export default function PersonPage({
 				<p className="text-xl">{personData.name}</p>
 			</Skeleton>
 			<div className="flex gap-2 items-end">
-				<UnpaidCard
-					asSkeleton={asSkeleton}
-					balance={personData.distance * userSettings.costPerDistance}
-					distance={personData.distance}
-				/>
+				<UnpaidCard asSkeleton={asSkeleton} distance={personData.distance} />
 				<Button
 					variant="flat"
 					className="!size-12 p-0 min-w-0 min-h-0"

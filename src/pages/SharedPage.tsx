@@ -46,12 +46,7 @@ export default function SharedPage() {
 			</Skeleton>
 
 			<div className="flex gap-2 items-end">
-				<UnpaidCard
-					asSkeleton={asSkeleton}
-					balance={personData.distance * authorUserSettings.costPerDistance}
-					distance={personData.distance}
-					overrideSettings={authorUserSettings}
-				/>
+				<UnpaidCard asSkeleton={asSkeleton} distance={personData.distance} overrideSettings={authorUserSettings} />
 			</div>
 		</>
 	);

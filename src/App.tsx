@@ -18,6 +18,8 @@ import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
 
+// ! we must disallow same names
+
 export default function App() {
 	// Flags describing if certain services or data is loaded (these require re-render)
 	const [firebaseReady, setFirebaseReady] = useState<boolean>(false);

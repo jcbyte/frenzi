@@ -68,11 +68,7 @@ export default function DashboardPage({
 
 	return (
 		<>
-			<UnpaidCard
-				asSkeleton={asSkeleton}
-				balance={totalDistance * userSettings.costPerDistance}
-				distance={totalDistance}
-			/>
+			<UnpaidCard asSkeleton={asSkeleton} distance={totalDistance} />
 			<PeopleList asSkeleton={asSkeleton} peopleData={peopleData} />
 			<Button
 				color="primary"
