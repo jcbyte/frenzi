@@ -13,7 +13,7 @@ function navigateOrBack(to: string, location: any, navigate: NavigateFunction): 
 	}
 }
 
-export default function MyNavbar({ disabled = false }: { disabled?: boolean }) {
+export default function MyNavbar({ showAuthed }: { showAuthed: boolean }) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -21,25 +21,25 @@ export default function MyNavbar({ disabled = false }: { disabled?: boolean }) {
 		<Navbar>
 			<NavbarBrand
 				onClick={() => {
-					// This should always redirect to '/' even if navbar is not enabled
 					navigate("/");
 				}}
 			>
 				<p className="font-bold text-inherit">Frenzi</p>
 			</NavbarBrand>
 			<NavbarContent justify="end">
-				<NavbarItem>
-					<Button
-						isIconOnly
-						color="default"
-						onPress={() => {
-							navigateOrBack("/settings", location, navigate);
-						}}
-						isDisabled={disabled}
-					>
-						<IconSettings />
-					</Button>
-				</NavbarItem>
+				{showAuthed && (
+					<NavbarItem>
+						<Button
+							isIconOnly
+							color="default"
+							onPress={() => {
+								navigateOrBack("/settings", location, navigate);
+							}}
+						>
+							<IconSettings />
+						</Button>
+					</NavbarItem>
+				)}
 			</NavbarContent>
 		</Navbar>
 	);

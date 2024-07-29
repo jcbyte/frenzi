@@ -136,7 +136,7 @@ export default function App() {
 
 	return (
 		<>
-			<MyNavbar disabled={!isAuthed} />
+			<MyNavbar showAuthed={isAuthed} />
 
 			{/* Use context provider to access settings from anywhere within the app */}
 			<UserSettingsContext.Provider value={{ userSettings, setUserSettings }}>
