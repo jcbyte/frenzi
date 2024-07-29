@@ -2,18 +2,25 @@ import { Card, Skeleton } from "@nextui-org/react";
 import { useContext } from "react";
 import { UserSettingsContext } from "../globalContexts";
 import { readableSignedBalance, readableSignedDistance } from "../tools/utils";
+import { UserSettings } from "../types";
+
+// ? why is balance separate, surely this can be calculated here?
 
 // Component displaying an unpaid balance and distance
 export default function UnpaidCard({
 	asSkeleton = false,
 	balance,
 	distance,
+	overrideSettings,
 }: {
 	asSkeleton?: boolean;
 	balance: number;
 	distance: number;
+	overrideSettings?: UserSettings;
 }) {
-	const { userSettings } = useContext(UserSettingsContext);
+	const { userSettings: currentUserSettings } = useContext(UserSettingsContext);
+	// (derived state)
+	let userSettings: UserSettings = overrideSettings ?? currentUserSettings;
 
 	return (
 		<Card className="p-4 w-fit min-w-80">
