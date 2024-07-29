@@ -142,7 +142,7 @@ export default function PersonPage({
 				Set Distance
 			</Button>
 			<Button color="danger" variant="flat" className="mt-4 w-fit min-w-40" onClick={onOpenRemoveModal}>
-				Remove
+				Delete
 			</Button>
 
 			<Modal
@@ -237,7 +237,7 @@ export default function PersonPage({
 									});
 							}}
 						>
-							Remove
+							Delete
 						</Button>
 					</ModalFooter>
 				</ModalContent>
