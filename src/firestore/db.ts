@@ -160,6 +160,21 @@ export async function getPeopleData(): Promise<PersonData[]> {
 	});
 }
 
+// Retrieve a persons data on another persons account
+export async function getSharedPersonsData(author: string, person: number): Promise<PersonData> {
+	let authorsPeople: string[] = await getDoc(doc(firestore, DB_NAME, author))
+		.then((res) => res.data()!.people)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	return await getDoc(doc(firestore, DB_NAME, author, "people", authorsPeople[person]))
+		.then((res) => res.data() as PersonData)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+}
+
 // Update person data in firestore
 export async function updatePersonData(personData: PersonData): Promise<void> {
 	// If not logged in then throw an exception
@@ -238,13 +253,15 @@ export async function removePerson(person: string): Promise<void> {
 }
 
 // Retrieve the settings from to firestore
-export async function getUserSettings(): Promise<UserSettings> {
-	// If not logged in then throw an exception
-	if (!isAuth()) {
-		throw new Error("Not authenticated");
+export async function getUserSettings(author?: string): Promise<UserSettings> {
+	if (!author) {
+		// If not logged in then throw an exception
+		if (!isAuth()) {
+			throw new Error("Not authenticated");
+		}
 	}
 
-	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "settings", "main"))
+	return await getDoc(doc(firestore, DB_NAME, author ?? auth.currentUser!.uid, "settings", "main"))
 		.then((res) => res.data() as UserSettings)
 		.catch((err) => {
 			throw new Error(err.message);
@@ -296,19 +313,4 @@ export async function saveUserPanels(userPanels: PanelConfig[]): Promise<void> {
 	}).catch((err) => {
 		throw new Error(err.message);
 	});
-}
-
-// Retrieve a persons data on another persons account
-export async function getSharedPersonsData(author: string, person: number): Promise<PersonData> {
-	let authorsPeople: string[] = await getDoc(doc(firestore, DB_NAME, author))
-		.then((res) => res.data()!.people)
-		.catch((err) => {
-			throw new Error(err.message);
-		});
-
-	return await getDoc(doc(firestore, DB_NAME, author, "people", authorsPeople[person]))
-		.then((res) => res.data() as PersonData)
-		.catch((err) => {
-			throw new Error(err.message);
-		});
 }
