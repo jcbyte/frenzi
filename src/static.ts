@@ -12,7 +12,7 @@ export const DEFAULT_SETTINGS: UserSettings = {
 
 // The default person data when adding people
 export const DEFAULT_PERSON_DATA: PersonData = {
-	name: "", // This must be set
+	name: "For Skeleton", // This is set with content so that skeletons will show
 	distance: 0,
 };
 

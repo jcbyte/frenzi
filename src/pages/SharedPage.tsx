@@ -7,8 +7,6 @@ import { getSharedPersonsData, getUserSettings } from "../firestore/db";
 import { DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
 import { PersonData, UserSettings } from "../types";
 
-// ! check what other data is loaded before getting to this page
-
 export default function SharedPage() {
 	const { author, personIndex: personIndexStr } = useParams();
 	const [personData, setPersonData] = useState<PersonData>(DEFAULT_PERSON_DATA);
@@ -41,8 +39,12 @@ export default function SharedPage() {
 	return (
 		<>
 			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-				<p className="text-xl">{personData.name}</p>
+				<div className="flex items-end gap-2">
+					<p className="text-xl">{personData.name}</p>
+					<p className="text-xs text-zinc-400">(Viewing)</p>
+				</div>
 			</Skeleton>
+
 			<div className="flex gap-2 items-end">
 				<UnpaidCard
 					asSkeleton={asSkeleton}
