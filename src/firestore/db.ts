@@ -125,6 +125,11 @@ export async function checkRepairFirestore(): Promise<boolean> {
 
 // Retrieve a singular persons data from to firestore
 async function getPersonData(person: string): Promise<PersonData> {
+	// If not logged in then throw an exception
+	if (!isAuth()) {
+		throw new Error("Not authenticated");
+	}
+
 	return await getDoc(doc(firestore, DB_NAME, auth.currentUser!.uid, "people", person))
 		.then((res) => res.data() as PersonData)
 		.catch((err) => {
@@ -291,4 +296,19 @@ export async function saveUserPanels(userPanels: PanelConfig[]): Promise<void> {
 	}).catch((err) => {
 		throw new Error(err.message);
 	});
+}
+
+// Retrieve a persons data on another persons account
+export async function getSharedPersonsData(author: string, person: number): Promise<PersonData> {
+	let authorsPeople: string[] = await getDoc(doc(firestore, DB_NAME, author))
+		.then((res) => res.data()!.people)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
+
+	return await getDoc(doc(firestore, DB_NAME, author, "people", authorsPeople[person]))
+		.then((res) => res.data() as PersonData)
+		.catch((err) => {
+			throw new Error(err.message);
+		});
 }
