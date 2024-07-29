@@ -24,7 +24,7 @@ export default function MyNavbar({ showAuthed }: { showAuthed: boolean }) {
 					navigate("/");
 				}}
 			>
-				<p className="font-bold text-inherit">Frenzi</p>
+				<p className="font-bold text-inherit cursor-pointer">Frenzi</p>
 			</NavbarBrand>
 			<NavbarContent justify="end">
 				{showAuthed && (
