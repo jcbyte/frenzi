@@ -20,8 +20,6 @@ export async function initialiseNewUser(): Promise<boolean> {
 		throw new Error("Not authenticated");
 	}
 
-	console.log("aa");
-
 	// If it is a new user then set up there firestore
 	if (await isNewUser()) {
 		await Promise.all([

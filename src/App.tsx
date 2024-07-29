@@ -13,7 +13,7 @@ import {
 	saveUserPanels,
 	saveUserSettings,
 } from "./firestore/db";
-import { auth, isAuth } from "./firestore/firebase";
+import { auth } from "./firestore/firebase";
 import { UserPanelsContext, UserSettingsContext } from "./globalContexts";
 import { DEFAULT_PANELS, DEFAULT_SETTINGS } from "./static";
 import { PanelConfig, PersonData, UserSettings } from "./types";
@@ -35,7 +35,6 @@ export default function App() {
 	useEffect(() => {
 		// Once firebase service is loaded the flag is set
 		auth.authStateReady().then(() => {
-			console.log(isAuth());
 			setFirebaseReady(true);
 		});
 
