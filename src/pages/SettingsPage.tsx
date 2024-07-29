@@ -102,7 +102,8 @@ export default function SettingsPage({ asSkeleton }: { asSkeleton?: boolean }) {
 					value={String(userSettings.distanceDecimals)}
 					onValueChange={(newValue) => {
 						setUserSettings((prev) => {
-							return { ...prev, distanceDecimals: roundTo(newValue, 0) };
+							// Clamp this setting to not allow ridiculous values or non integers
+							return { ...prev, distanceDecimals: Math.max(0, Math.min(Math.floor(Number(newValue)), 4), 0) };
 						});
 					}}
 				/>
