@@ -112,7 +112,7 @@ export default function PersonPage({
 							let sharedLink = getSharedLink(personIndexStr!);
 							let sharedData = {
 								title: "Frenzi",
-								text: "See your milage and current cost here: ",
+								text: "Track what you owe for shared mileage here: ",
 								url: sharedLink,
 							};
 
