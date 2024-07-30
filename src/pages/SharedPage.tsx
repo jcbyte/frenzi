@@ -2,6 +2,7 @@ import { Skeleton } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import GenericPage from "../components/GenericPage";
 import UnpaidCard from "../components/UnpaidCard";
 import { getSharedPersonsData, getUserSettings } from "../firestore/db";
 import { DEFAULT_PERSON_DATA, DEFAULT_SETTINGS } from "../static";
@@ -38,16 +39,18 @@ export default function SharedPage() {
 
 	return (
 		<>
-			<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
-				<div className="flex items-end gap-2">
-					<p className="text-xl">{personData.name}</p>
-					<p className="text-xs text-zinc-400">(Viewing)</p>
-				</div>
-			</Skeleton>
+			<GenericPage>
+				<Skeleton isLoaded={!asSkeleton} className="rounded-lg">
+					<div className="flex items-end gap-2">
+						<p className="text-xl">{personData.name}</p>
+						<p className="text-xs text-zinc-400">(Viewing)</p>
+					</div>
+				</Skeleton>
 
-			<div className="flex gap-2 items-end">
-				<UnpaidCard asSkeleton={asSkeleton} distance={personData.distance} overrideSettings={authorUserSettings} />
-			</div>
+				<div className="flex gap-2 items-end">
+					<UnpaidCard asSkeleton={asSkeleton} distance={personData.distance} overrideSettings={authorUserSettings} />
+				</div>
+			</GenericPage>
 		</>
 	);
 }

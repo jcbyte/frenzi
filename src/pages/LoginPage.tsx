@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/button";
 import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+import GenericPage from "../components/GenericPage";
 import { signInFirebaseGoogle } from "../firestore/firebase";
 
 // Function to try and sign in using google with toast feedback
@@ -25,33 +26,35 @@ export default function LoginPage({ isAuthed }: { isAuthed: boolean }) {
 
 	return (
 		<>
-			{isAuthed ? (
-				// If the user is already signed in then show a continue to app button
-				<Button
-					color="primary"
-					variant="flat"
-					onPress={() => {
-						navigate("/");
-					}}
-					size="lg"
-				>
-					Continue to app
-				</Button>
-			) : (
-				// If the user is not signed in show a sign in button
-				<Button
-					color="primary"
-					variant="flat"
-					startContent={<IconBrandGoogleFilled />}
-					onPress={() => {
-						tryGoogleSignIn(navigate);
-					}}
-					size="lg"
-					radius="full"
-				>
-					Sign in with Google
-				</Button>
-			)}
+			<GenericPage>
+				{isAuthed ? (
+					// If the user is already signed in then show a continue to app button
+					<Button
+						color="primary"
+						variant="flat"
+						onPress={() => {
+							navigate("/");
+						}}
+						size="lg"
+					>
+						Continue to app
+					</Button>
+				) : (
+					// If the user is not signed in show a sign in button
+					<Button
+						color="primary"
+						variant="flat"
+						startContent={<IconBrandGoogleFilled />}
+						onPress={() => {
+							tryGoogleSignIn(navigate);
+						}}
+						size="lg"
+						radius="full"
+					>
+						Sign in with Google
+					</Button>
+				)}
+			</GenericPage>
 		</>
 	);
 }

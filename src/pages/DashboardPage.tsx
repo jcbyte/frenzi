@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
+import GenericPage from "../components/GenericPage";
 import PeopleList from "../components/PeopleList";
 import UnpaidCard from "../components/UnpaidCard";
 import { addPerson } from "../firestore/db";
@@ -68,63 +69,65 @@ export default function DashboardPage({
 
 	return (
 		<>
-			<UnpaidCard asSkeleton={asSkeleton} distance={totalDistance} />
-			<PeopleList asSkeleton={asSkeleton} peopleData={peopleData} />
-			<Button
-				color="primary"
-				variant="flat"
-				className="w-fit min-w-40"
-				onClick={() => {
-					setAddModalName("");
-					onOpenAddModal();
-				}}
-			>
-				Add
-			</Button>
+			<GenericPage>
+				<UnpaidCard asSkeleton={asSkeleton} distance={totalDistance} />
+				<PeopleList asSkeleton={asSkeleton} peopleData={peopleData} />
+				<Button
+					color="primary"
+					variant="flat"
+					className="w-fit min-w-40"
+					onClick={() => {
+						setAddModalName("");
+						onOpenAddModal();
+					}}
+				>
+					Add
+				</Button>
 
-			<Modal
-				isOpen={isAddModalOpen}
-				onOpenChange={onOpenChangeAddModal}
-				placement="center"
-				backdrop="blur"
-				className="dark text-foreground"
-			>
-				<ModalContent>
-					<ModalHeader>Add</ModalHeader>
-					<ModalBody>
-						<Input
-							label="Name"
-							className="w-fit min-w-80"
-							value={addModalName}
-							onValueChange={(newValue) => {
-								setAddModalName(newValue);
-							}}
-						/>
-					</ModalBody>
-					<ModalFooter>
-						<Button color="danger" variant="flat" onPress={onCloseAddModal}>
-							Close
-						</Button>
-						<Button
-							color="primary"
-							variant="flat"
-							onPress={() => {
-								// Try and add the person and give the user a toast response
-								tryAddPerson(addModalName, peopleData, setPeopleData)
-									.then((res) => {
-										toast.success("Added");
-										onCloseAddModal();
-									})
-									.catch((err) => {
-										toast.error(`Could not add: ${err.message}`);
-									});
-							}}
-						>
-							Add
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+				<Modal
+					isOpen={isAddModalOpen}
+					onOpenChange={onOpenChangeAddModal}
+					placement="center"
+					backdrop="blur"
+					className="dark text-foreground"
+				>
+					<ModalContent>
+						<ModalHeader>Add</ModalHeader>
+						<ModalBody>
+							<Input
+								label="Name"
+								className="w-fit min-w-80"
+								value={addModalName}
+								onValueChange={(newValue) => {
+									setAddModalName(newValue);
+								}}
+							/>
+						</ModalBody>
+						<ModalFooter>
+							<Button color="danger" variant="flat" onPress={onCloseAddModal}>
+								Close
+							</Button>
+							<Button
+								color="primary"
+								variant="flat"
+								onPress={() => {
+									// Try and add the person and give the user a toast response
+									tryAddPerson(addModalName, peopleData, setPeopleData)
+										.then((res) => {
+											toast.success("Added");
+											onCloseAddModal();
+										})
+										.catch((err) => {
+											toast.error(`Could not add: ${err.message}`);
+										});
+								}}
+							>
+								Add
+							</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
+			</GenericPage>
 		</>
 	);
 }
