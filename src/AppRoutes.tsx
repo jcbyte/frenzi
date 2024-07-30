@@ -25,8 +25,8 @@ export default function AppRoutes({
 	return (
 		<>
 			{/* Will show skeleton for pages until data is loaded */}
-			<div className="flex justify-center w-full">
-				<AnimatePresence mode="wait">
+			<div className="flex justify-center w-full relative">
+				<AnimatePresence mode="sync">
 					<Routes key={location.pathname} location={location}>
 						{/* These pages can only be viewed if you are logged in otherwise user will be redirected to login page */}
 						<Route path="/" element={<AuthorisedRoute isAuthed={isAuthed} redirect="/login" />}>

@@ -10,12 +10,12 @@ const animation = {
 export default function GenericPage({ children }: { children: ReactNode }) {
 	return (
 		<motion.div
-			className="p-4 flex flex-col gap-2"
+			className="p-4 flex flex-col gap-2 absolute"
 			variants={animation}
 			initial="initial"
 			animate="animate"
 			exit="exit"
-			transition={{ duration: 1 }}
+			transition={{ duration: 0.2 }}
 		>
 			{children}
 		</motion.div>
