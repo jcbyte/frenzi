@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import { Route, Routes, useLocation } from "react-router-dom";
 import AnimatedPage from "./components/AnimatedPage";
 import AuthorisedRoute from "./components/AuthorisedRoute";
 import DashboardPage from "./pages/DashboardPage";
@@ -20,66 +21,70 @@ export default function AppRoutes({
 	peopleData: PersonData[];
 	setPeopleData: React.Dispatch<React.SetStateAction<PersonData[]>>;
 }) {
+	const location = useLocation();
+
 	return (
 		<>
 			{/* Will show skeleton for pages until data is loaded */}
 			<div className="flex justify-center w-full">
 				<div className="p-4 flex flex-col gap-2">
-					<Routes>
-						{/* These pages can only be viewed if you are logged in otherwise user will be redirected to login page */}
-						<Route path="/" element={<AuthorisedRoute isAuthed={isAuthed} redirect="/login" />}>
-							<Route
-								path=""
-								element={
-									<AnimatedPage>
-										<DashboardPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
-									</AnimatedPage>
-								}
-							/>
-							<Route
-								path="person/:personIndex"
-								element={
-									<AnimatedPage>
-										<PersonPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
-									</AnimatedPage>
-								}
-							/>
-							<Route
-								path="settings"
-								element={
-									<AnimatedPage>
-										<SettingsPage asSkeleton={!dataLoaded} />
-									</AnimatedPage>
-								}
-							/>
-						</Route>
+					<AnimatePresence mode="wait">
+						<Routes key={location.pathname} location={location}>
+							{/* These pages can only be viewed if you are logged in otherwise user will be redirected to login page */}
+							<Route path="/" element={<AuthorisedRoute isAuthed={isAuthed} redirect="/login" />}>
+								<Route
+									path=""
+									element={
+										<AnimatedPage>
+											<DashboardPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
+										</AnimatedPage>
+									}
+								/>
+								<Route
+									path="person/:personIndex"
+									element={
+										<AnimatedPage>
+											<PersonPage asSkeleton={!dataLoaded} peopleData={peopleData} setPeopleData={setPeopleData} />
+										</AnimatedPage>
+									}
+								/>
+								<Route
+									path="settings"
+									element={
+										<AnimatedPage>
+											<SettingsPage asSkeleton={!dataLoaded} />
+										</AnimatedPage>
+									}
+								/>
+							</Route>
 
-						{/* These pages can be viewed if your are logged in or not */}
-						<Route
-							path="/login"
-							element={
-								<AnimatedPage>
-									<LoginPage isAuthed={isAuthed} />
-								</AnimatedPage>
-							}
-						/>
-						<Route
-							path="/shared/:author/:personIndex"
-							element={
-								<AnimatedPage>
-									<SharedPage />
-								</AnimatedPage>
-							}
-						/>
-						<Route
-							path="*"
-							element={
-								<AnimatedPage>
-									<NoPage />
-								</AnimatedPage>
-							}
-						/>
-					</Routes>
+							{/* These pages can be viewed if your are logged in or not */}
+							<Route
+								path="/login"
+								element={
+									<AnimatedPage>
+										<LoginPage isAuthed={isAuthed} />
+									</AnimatedPage>
+								}
+							/>
+							<Route
+								path="/shared/:author/:personIndex"
+								element={
+									<AnimatedPage>
+										<SharedPage />
+									</AnimatedPage>
+								}
+							/>
+							<Route
+								path="*"
+								element={
+									<AnimatedPage>
+										<NoPage />
+									</AnimatedPage>
+								}
+							/>
+						</Routes>
+					</AnimatePresence>
 				</div>
 			</div>
 		</>
