@@ -1,6 +1,6 @@
 # <img src="public/favicon.ico" height="40"> &nbsp;Frenzi
 
-This app is for the driver of the group, use it to record how many miles you've driven your friends/colleagues so that you can charge them accordingly to make sure your not short changed.
+A mileage tracking web app for designated drivers. Easily log the miles driven for friends or colleagues and calculate their share of the cost to make sure your not short changed.
 
 ## Production Build
 
