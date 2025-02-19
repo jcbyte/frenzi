@@ -8,19 +8,19 @@ https://frenzi-phi.vercel.app/
 
 ## Run Locally
 
-Install dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Start tailwind
+Start tailwind:
 
 ```bash
 npm run dev-tailwind
 ```
 
-Start local development server
+Start local development server:
 
 ```bash
 npm run dev
