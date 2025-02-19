@@ -26,12 +26,6 @@ Start local development server
 npm run dev
 ```
 
-## Tech Stack
+## Licence
 
-**Client:** React, Typescript, TailwindCSS
-
-**Database:** Firestore
-
-## Authors
-
-- [@jcbyte](https://www.github.com/jcbyte)
+[Apache License 2.0](LICENSE)
